@@ -58,6 +58,38 @@
     .shake {
       animation: shake 0.35s ease-in-out;
     }
+    /* Ocultar barra de rolagem onde especificado */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+    /* Barras de rolagem escuras e discretas (elimina barra branca feia do Windows) */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A0A0A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #262626;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #383838;
+    }
+    * {
+      scrollbar-color: #262626 #0A0A0A;
+      scrollbar-width: thin;
+    }
+    .no-scrollbar {
+      scrollbar-width: none !important;
+    }
     @media print {
       body * {
         visibility: hidden;
@@ -427,9 +459,29 @@
 
         </div>
 
-        <!-- Carrossel de Categorias -->
-        <div id="menuCategoriesPills" class="flex items-center space-x-2 overflow-x-auto no-scrollbar pt-1">
-          <!-- Injetado dinamicamente via JS -->
+        <!-- Carrossel de Categorias com Botões de Navegação -->
+        <div class="relative flex items-center pt-1">
+          <button 
+            type="button" 
+            onclick="scrollKitchenCategories('left')" 
+            class="hidden sm:flex absolute left-0 z-10 w-7 h-7 rounded-full bg-neutral-900/95 hover:bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700 shadow-lg items-center justify-center transition -translate-x-2"
+            title="Rolar categorias para esquerda"
+          >
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+
+          <div id="menuCategoriesPills" class="flex items-center space-x-2 overflow-x-auto no-scrollbar scroll-smooth w-full px-1 py-0.5">
+            <!-- Injetado dinamicamente via JS -->
+          </div>
+
+          <button 
+            type="button" 
+            onclick="scrollKitchenCategories('right')" 
+            class="hidden sm:flex absolute right-0 z-10 w-7 h-7 rounded-full bg-neutral-900/95 hover:bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700 shadow-lg items-center justify-center transition translate-x-2"
+            title="Rolar categorias para direita"
+          >
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
         </div>
       </div>
 
@@ -1596,6 +1648,27 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
       });
 
       container.innerHTML = html;
+
+      if (!container.dataset.wheelBound) {
+        container.dataset.wheelBound = 'true';
+        container.addEventListener('wheel', (e) => {
+          if (e.deltaY !== 0) {
+            e.preventDefault();
+            container.scrollLeft += e.deltaY;
+          }
+        }, { passive: false });
+      }
+    }
+
+    function scrollKitchenCategories(direction) {
+      const container = document.getElementById('menuCategoriesPills');
+      if (!container) return;
+      const scrollAmount = 240;
+      if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
     }
 
     function setMenuCategoryFilter(cat, btn) {

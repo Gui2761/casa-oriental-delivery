@@ -45,11 +45,32 @@
       -webkit-tap-highlight-color: transparent;
     }
     .no-scrollbar::-webkit-scrollbar {
-      display: none;
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
     }
     .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+    /* Barras de rolagem escuras e elegantes globais */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0D0D0D;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #262626;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f3f;
+    }
+    * {
+      scrollbar-color: #262626 #0D0D0D;
+      scrollbar-width: thin;
     }
     .badge-pulse {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
