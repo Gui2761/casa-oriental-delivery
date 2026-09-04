@@ -1537,10 +1537,17 @@
                 ` : ''}
               </div>
 
-              <p class="text-neutral-400 text-[11px] flex items-center">
-                <i data-lucide="map-pin" class="w-3 h-3 text-brand-red mr-1 flex-shrink-0"></i>
-                <span class="truncate">${ord.clientAddress || ord.neighborhood || 'Retirada no Balcão'}</span>
-              </p>
+              <div class="flex items-center justify-between text-neutral-400 text-[11px]">
+                <p class="flex items-center truncate flex-1 mr-2">
+                  <i data-lucide="map-pin" class="w-3 h-3 text-brand-red mr-1 flex-shrink-0"></i>
+                  <span class="truncate">${ord.clientAddress || ord.neighborhood || 'Retirada no Balcão'}</span>
+                </p>
+                ${ord.distanceKm ? `
+                  <span class="px-1.5 py-0.5 rounded bg-blue-500/15 border border-blue-500/30 text-blue-300 font-mono text-[10px] flex-shrink-0">
+                    📏 ~${ord.distanceKm} km
+                  </span>
+                ` : ''}
+              </div>
 
               <!-- Discriminação dos Itens do Pedido -->
               <div class="mt-2 bg-neutral-900/90 rounded-xl p-2.5 border border-neutral-800/80 text-[11px] space-y-1">
@@ -1799,7 +1806,10 @@
         lines.push('ENDEREÇO DE ENTREGA:');
         lines.push(`${ord.clientAddress}`);
         if (ord.neighborhood && !ord.clientAddress.includes(ord.neighborhood)) {
-          lines.push(`Bairro: ${ord.neighborhood}`);
+          const distStr = ord.distanceKm ? ` (~${ord.distanceKm}km)` : '';
+          lines.push(`Bairro: ${ord.neighborhood}${distStr}`);
+        } else if (ord.distanceKm) {
+          lines.push(`Distância: ~${ord.distanceKm} km`);
         }
         if (ord.reference) {
           lines.push(`Ponto Ref: ${ord.reference}`);
@@ -1845,8 +1855,10 @@
 
       if (ord.deliveryFee && parseFloat(ord.deliveryFee) > 0) {
         const feeVal = parseFloat(ord.deliveryFee).toFixed(2).replace('.', ',');
-        const feePad = Math.max(1, 32 - 'Taxa de Entrega:'.length - `R$ ${feeVal}`.length);
-        lines.push(`Taxa de Entrega:${' '.repeat(feePad)}R$ ${feeVal}`);
+        const distStr = ord.distanceKm ? ` (${ord.distanceKm}km)` : '';
+        const feeLabel = `Taxa Entrega${distStr}:`;
+        const feePad = Math.max(1, 32 - feeLabel.length - `R$ ${feeVal}`.length);
+        lines.push(`${feeLabel}${' '.repeat(feePad)}R$ ${feeVal}`);
       }
 
       const totalPad = Math.max(1, 32 - 'TOTAL A PAGAR:'.length - `R$ ${totalVal}`.length);
@@ -1889,6 +1901,7 @@
         clientName: "Guilherme Santos",
         clientPhone: "(79) 98172-8613",
         neighborhood: "Parque dos Faróis",
+        distanceKm: 1.0,
         clientAddress: "Rua 58, 120 - Casa",
         reference: "Próximo ao Campo Beira Rio",
         itemsDescription: "1x Combo 25 Peças Especial - R$ 68,00\n2x Temaki Salmão Grelhado Hot - R$ 56,00\n1x Coca-Cola Lata 350ml - R$ 6,00",
