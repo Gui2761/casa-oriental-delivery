@@ -897,7 +897,7 @@
           <p class="text-xs font-bold text-white flex items-center">
             <i data-lucide="key" class="w-3.5 h-3.5 mr-1 text-emerald-400"></i> Chave PIX Oficial
           </p>
-          <input type="text" id="configPixKey" placeholder="Ex: 5579981728613 ou CNPJ" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-brand-red">
+          <input type="text" id="configPixKey" placeholder="Ex: d883ab34-450e-44d3-9a9b-d0586121b6d6" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-brand-red">
           <p class="text-[10px] text-neutral-500">Essa chave será usada nos disparos de cobrança do WhatsApp.</p>
         </div>
 
@@ -1679,7 +1679,7 @@
       }
 
       const clientName = ord.clientName || 'Cliente';
-      const pixKey = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || '5579981728613';
+      const pixKey = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || 'd883ab34-450e-44d3-9a9b-d0586121b6d6';
       const totalFormatted = (parseFloat(ord.total) || 0).toFixed(2).replace('.', ',');
       const orderShortId = String(ord.id).slice(-4);
       let message = '';
@@ -1688,8 +1688,8 @@
         message = `🍣 *CASA ORIENTAL — CHAVE PIX P/ PAGAMENTO* 🍣\n\n` +
                   `Olá, *${clientName}*! Agradecemos pelo seu pedido (*#${orderShortId}*) na *Casa Oriental Delivery*!\n\n` +
                   `Para confirmarmos e enviarmos imediatamente para a esteira do sushiman, realize a transferência via PIX:\n` +
-                  `💰 *Valor Total:* R$ ${totalFormatted}\n` +
-                  `🔑 *Chave PIX:* ${pixKey}\n` +
+                  `💰 *Valor Total:* R$ ${totalFormatted}\n\n` +
+                  `🔑 *Chave PIX (Copia e Cola):*\n${pixKey}\n\n` +
                   `👤 *Favorecido:* Casa Oriental Sushi Bar\n\n` +
                   `Por favor, envie o comprovante por aqui assim que efetuar o pagamento! 🙏🥢`;
       } else if (newStatus === 'preparo') {
@@ -2023,7 +2023,7 @@
 
     // ==================== CONFIGURAÇÕES DA COZINHA ====================
     function openSettingsModal() {
-      document.getElementById('configPixKey').value = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || '5579981728613';
+      document.getElementById('configPixKey').value = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || 'd883ab34-450e-44d3-9a9b-d0586121b6d6';
       document.getElementById('configNewPassword').value = '';
       const autoPrintEl = document.getElementById('configAutoPrint');
       if (autoPrintEl) {
