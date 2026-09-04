@@ -861,6 +861,7 @@
               <option value="PIX">⚡ PIX (Pagar no Cardápio)</option>
               <option value="Pagar na Entrega (Cartão)">🛵 Pagar na Entrega (Cartão Maquininha)</option>
               <option value="Pagar na Entrega (Dinheiro)">💵 Pagar na Entrega (Dinheiro)</option>
+              <option value="Pagar na Entrega (PIX)">⚡ Pagar na Entrega (PIX ao Motoboy)</option>
               <option value="Dinheiro ou Cartão na Loja">🏪 Dinheiro ou Cartão na Loja (Balcão)</option>
             </select>
           </div>
@@ -1229,10 +1230,11 @@
           return false;
         }
 
-        // Define status inicial padrão (PIX aguarda envio do comprovante; Entrega e Loja vão direto para preparo)
+        // Define status inicial padrão (PIX no cardápio aguarda comprovante; Entrega [mesmo com PIX ao motoboy] e Loja vão direto para preparo)
         if (!order.status) {
-          const isPix = (order.paymentMethodType === 'PIX' || (order.paymentText && order.paymentText.toUpperCase().includes('PIX')));
-          order.status = isPix ? 'pix' : 'preparo';
+          const isEntrega = (order.paymentMethodType === 'ENTREGA' || (order.paymentText && order.paymentText.toUpperCase().includes('ENTREGA')));
+          const isPixOnline = !isEntrega && (order.paymentMethodType === 'PIX' || (order.paymentText && order.paymentText.toUpperCase().includes('CARDÁPIO')) || (order.paymentText && order.paymentText.toUpperCase() === 'PIX'));
+          order.status = isPixOnline ? 'pix' : 'preparo';
         }
         if (!order.createdAt) {
           order.createdAt = Date.now();
@@ -1506,11 +1508,11 @@
 
         let payBadgeHTML = '';
         const payStr = (ord.paymentText || 'PIX').toUpperCase();
-        if (ord.paymentMethodType === 'PIX' || payStr.includes('PIX')) {
-          payBadgeHTML = `<span class="inline-flex items-center text-[10px] font-black text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md">⚡ PIX</span>`;
-        } else if (ord.paymentMethodType === 'ENTREGA' || payStr.includes('ENTREGA')) {
-          const sub = ord.paymentSubtype || (payStr.includes('CARTÃO') ? 'Cartão' : 'Dinheiro');
+        if (ord.paymentMethodType === 'ENTREGA' || payStr.includes('ENTREGA')) {
+          const sub = ord.paymentSubtype || (payStr.includes('CARTÃO') ? 'Cartão' : (payStr.includes('PIX') ? 'PIX' : 'Dinheiro'));
           payBadgeHTML = `<span class="inline-flex items-center text-[10px] font-black text-blue-400 bg-blue-500/15 border border-blue-500/30 px-2 py-0.5 rounded-md">🛵 Entrega (${sub})</span>`;
+        } else if (ord.paymentMethodType === 'PIX' || payStr.includes('PIX')) {
+          payBadgeHTML = `<span class="inline-flex items-center text-[10px] font-black text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md">⚡ PIX</span>`;
         } else if (ord.paymentMethodType === 'LOJA' || payStr.includes('LOJA') || ord.deliveryType === 'pickup' || ord.deliveryType === 'balcao') {
           payBadgeHTML = `<span class="inline-flex items-center text-[10px] font-black text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md">🏪 Na Loja</span>`;
         } else {
@@ -1700,8 +1702,8 @@
       const orderShortId = String(ord.id).slice(-4);
       let message = '';
 
-      const isPix = (ord.paymentMethodType === 'PIX' || (ord.paymentText && ord.paymentText.toUpperCase().includes('PIX')));
       const isEntrega = (ord.paymentMethodType === 'ENTREGA' || (ord.paymentText && ord.paymentText.toUpperCase().includes('ENTREGA')));
+      const isPix = !isEntrega && (ord.paymentMethodType === 'PIX' || (ord.paymentText && ord.paymentText.toUpperCase().includes('PIX')));
       const isLoja = (ord.paymentMethodType === 'LOJA' || (ord.paymentText && ord.paymentText.toUpperCase().includes('LOJA')) || ord.deliveryType === 'pickup' || ord.deliveryType === 'balcao');
 
       if (newStatus === 'pix') {
@@ -1721,11 +1723,24 @@
                     `⏱️ *Previsão de entrega:* ${estDelivery}\n` +
                     `Assim que o motoboy sair para entrega, te avisamos por aqui! 🛵💨`;
         } else if (isEntrega) {
-          const subInfo = ord.paymentSubtype === 'Cartão' ? 'Cartão na Maquininha' : ('Dinheiro' + (ord.changeAmount ? ` - Troco p/ R$ ${ord.changeAmount}` : ''));
+          const sub = ord.paymentSubtype || (ord.paymentText && ord.paymentText.includes('Cartão') ? 'Cartão' : (ord.paymentText && ord.paymentText.includes('PIX') ? 'PIX' : 'Dinheiro'));
+          let subInfo = 'Dinheiro';
+          let subNotice = '🛵 O motoboy levará seu troco certinho.';
+          if (sub === 'Cartão') {
+            subInfo = 'Cartão na Maquininha';
+            subNotice = '🛵 O motoboy levará a maquininha para o seu endereço.';
+          } else if (sub === 'PIX') {
+            subInfo = 'PIX ao Motoboy';
+            subNotice = '🛵 O motoboy apresentará a Chave PIX ou QR Code da loja na entrega.';
+          } else if (ord.changeAmount) {
+            subInfo = `Dinheiro (Troco p/ R$ ${ord.changeAmount})`;
+            subNotice = `🛵 O motoboy levará seu troco certinho para R$ ${ord.changeAmount}.`;
+          }
+
           message = `🍣 *CASA ORIENTAL — PEDIDO CONFIRMADO & EM PREPARO!* 🍣\n\n` +
                     `Olá, *${clientName}*! Seu pedido (*#${orderShortId}*) foi confirmado com sucesso e já está sendo preparado por nossos sushimans! 🥢✨\n\n` +
                     `💰 *Total a pagar na entrega:* R$ ${totalFormatted} (${subInfo})\n` +
-                    `🛵 O motoboy levará a maquininha/troco para o seu endereço.\n` +
+                    `${subNotice}\n` +
                     `⏱️ *Previsão de entrega:* ${estDelivery}\n` +
                     `Assim que o motoboy sair, te avisaremos aqui! 🛵💨`;
         } else {
@@ -1747,8 +1762,14 @@
                     `🗺️ *Rota Google Maps:* https://www.google.com/maps?q=-10.918189,-37.130500\n\n` +
                     `Te aguardamos com muito carinho! Tenha um excelente apetite! 😋✨`;
         } else {
+          const sub = ord.paymentSubtype || (ord.paymentText && ord.paymentText.includes('Cartão') ? 'Cartão' : (ord.paymentText && ord.paymentText.includes('PIX') ? 'PIX' : 'Dinheiro'));
+          let subReminder = 'Dinheiro';
+          if (sub === 'Cartão') subReminder = 'Cartão na Maquininha';
+          else if (sub === 'PIX') subReminder = 'PIX ao Motoboy na entrega';
+          else subReminder = 'Dinheiro' + (ord.changeAmount ? ' - Troco p/ R$ ' + ord.changeAmount : '');
+
           const payReminder = isEntrega 
-            ? `💰 *Lembrete de Cobrança na Entrega:* R$ ${totalFormatted} (${ord.paymentSubtype === 'Cartão' ? 'Cartão na Maquininha' : 'Dinheiro' + (ord.changeAmount ? ' - Troco p/ R$ ' + ord.changeAmount : '')})\n`
+            ? `💰 *Lembrete de Cobrança na Entrega:* R$ ${totalFormatted} (${subReminder})\n`
             : `✅ *Pagamento:* Já realizado via PIX no cardápio\n`;
 
           message = `🛵💨 *CASA ORIENTAL — SEU PEDIDO SAIU PARA ENTREGA!* 🍣\n\n` +
@@ -1909,15 +1930,15 @@
       lines.push(lineSgl);
 
       let pagDesc = ord.paymentText || 'PIX';
-      const isComandaPix = (ord.paymentMethodType === 'PIX' || pagDesc.toUpperCase().includes('PIX'));
       const isComandaEntrega = (ord.paymentMethodType === 'ENTREGA' || pagDesc.toUpperCase().includes('ENTREGA'));
       const isComandaLoja = (ord.paymentMethodType === 'LOJA' || pagDesc.toUpperCase().includes('LOJA') || isBalcao);
+      const isComandaPix = !isComandaEntrega && (ord.paymentMethodType === 'PIX' || pagDesc.toUpperCase().includes('PIX'));
 
-      if (isComandaPix) {
-        lines.push('PAGAMENTO: PIX (PAGO NO CARDÁPIO)');
-      } else if (isComandaEntrega) {
-        const sub = ord.paymentSubtype || (pagDesc.toUpperCase().includes('CARTÃO') ? 'CARTÃO' : 'DINHEIRO');
+      if (isComandaEntrega) {
+        const sub = ord.paymentSubtype || (pagDesc.toUpperCase().includes('CARTÃO') ? 'CARTÃO' : (pagDesc.toUpperCase().includes('PIX') ? 'PIX' : 'DINHEIRO'));
         lines.push(`PAGAMENTO: NA ENTREGA (${sub.toUpperCase()})`);
+      } else if (isComandaPix) {
+        lines.push('PAGAMENTO: PIX (PAGO NO CARDÁPIO)');
       } else if (isComandaLoja) {
         lines.push('PAGAMENTO: NA LOJA (NO BALCÃO)');
       } else {
