@@ -273,6 +273,42 @@
       </div>
     </header>
 
+    <!-- BANNER DE AVISO DE NOVO PEDIDO (SURGE COM SOM AO CHEGAR PEDIDO) -->
+    <div id="newOrderAlertBanner" class="hidden sticky top-[57px] z-50 bg-gradient-to-r from-red-700 via-brand-red to-amber-600 text-white px-4 py-3 shadow-2xl border-b-2 border-amber-400">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center space-x-3 w-full sm:w-auto">
+          <div class="w-11 h-11 rounded-2xl bg-white text-brand-red flex items-center justify-center flex-shrink-0 animate-bounce shadow-xl">
+            <i data-lucide="bell-ring" class="w-6 h-6"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-black/40 text-amber-300 border border-amber-400/50 text-[10px] font-black uppercase tracking-wider animate-pulse">NOVO PEDIDO CHEGOU!</span>
+              <span class="font-mono font-black text-white text-base" id="bannerOrderNumber">#0000</span>
+            </div>
+            <p class="text-xs sm:text-sm font-bold text-white truncate mt-0.5" id="bannerOrderSummary">Cliente • R$ 0,00</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+          <button 
+            id="bannerBtnPrint" 
+            onclick="triggerBannerPrint()" 
+            class="px-4 py-2.5 bg-neutral-950 hover:bg-neutral-900 text-amber-300 hover:text-white font-black text-xs rounded-xl shadow-xl border border-amber-500/50 transition flex items-center space-x-2 active:scale-95"
+          >
+            <i data-lucide="printer" class="w-4 h-4 text-amber-400"></i>
+            <span>IMPRIMIR COMANDA (58MM)</span>
+          </button>
+          <button 
+            onclick="dismissNewOrderBanner()" 
+            class="p-2 bg-black/40 hover:bg-black/60 text-white/80 hover:text-white rounded-xl text-xs font-bold transition"
+            title="Dispensar aviso"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- NAVEGAÇÃO PRINCIPAL ENTRE ABAS: PEDIDOS / CARDÁPIO & ESTOQUE -->
     <div class="bg-neutral-900/90 border-b border-neutral-800 px-4 py-2 sticky top-[57px] z-30 backdrop-blur-md">
       <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 flex-wrap">
@@ -883,13 +919,18 @@
           <p class="text-[10px] text-neutral-500">Abre a impressão da comanda térmica de 58mm automaticamente assim que o pedido do cliente cai na cozinha.</p>
         </div>
 
-        <!-- Teste de Som -->
-        <div class="flex items-center justify-between p-3 rounded-xl bg-neutral-900 border border-neutral-800">
-          <span class="text-xs text-neutral-300 font-semibold">Testar toque de novo pedido:</span>
-          <button onclick="playNotificationChime()" class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-lg text-xs font-bold flex items-center space-x-1">
-            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span>Tocar Som</span>
-          </button>
+        <!-- Teste de Som e Alerta -->
+        <div class="p-3.5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-white font-bold flex items-center">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5 mr-1.5 text-emerald-400"></i> Alerta Sonoro Alto & Aviso
+            </span>
+            <button type="button" onclick="testNewOrderAlertAndSound()" class="px-3 py-1.5 bg-brand-red hover:bg-brand-redHover text-white rounded-xl text-xs font-black flex items-center space-x-1.5 shadow-md shadow-red-950/40 active:scale-95 transition">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i>
+              <span>Testar Agora</span>
+            </button>
+          </div>
+          <p class="text-[10px] text-neutral-500">Dispara o som de alto volume de cozinha e exibe o banner animado de novo pedido na tela.</p>
         </div>
       </div>
 
@@ -1152,14 +1193,15 @@
     function handleIncomingCloudOrder(order) {
       const wasAdded = saveOrderToLocalHistory(order, true);
       if (wasAdded) {
-        playNotificationChime();
+        playNotificationChime(true);
+        showNewOrderAlertBanner(order);
         renderOrdersList();
         
         // Auto-impressão de comanda térmica 58mm se configurada
         if (localStorage.getItem('casa_oriental_auto_print') === 'true') {
           setTimeout(() => {
             previewOrderComanda(order.id);
-          }, 500);
+          }, 600);
         }
 
         // Exibe notificação visual na tela
@@ -1202,41 +1244,166 @@
       }
     }
 
-    // ==================== ALERTA SONORO (WEB AUDIO API) ====================
-    function playNotificationChime() {
+    // ==================== ALERTA SONORO DE ALTO VOLUME (WEB AUDIO API) ====================
+    let audioCtxInstance = null;
+
+    function getAudioContext() {
+      try {
+        if (!audioCtxInstance) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            audioCtxInstance = new AudioCtx();
+          }
+        }
+        if (audioCtxInstance && audioCtxInstance.state === 'suspended') {
+          audioCtxInstance.resume();
+        }
+        return audioCtxInstance;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Toca uma nota potente com harmônicos ricos (triângulo + senóides) para cortar o ruído da cozinha
+    function playHarmonicTone(ctx, freq, startTime, duration, volume = 0.95) {
+      const osc1 = ctx.createOscillator();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(freq, startTime);
+
+      const osc2 = ctx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(freq * 2, startTime);
+
+      const osc3 = ctx.createOscillator();
+      osc3.type = 'sine';
+      osc3.frequency.setValueAtTime(freq * 3, startTime);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(volume, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
+      osc3.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc1.start(startTime);
+      osc1.stop(startTime + duration);
+      osc2.start(startTime);
+      osc2.stop(startTime + duration);
+      osc3.start(startTime);
+      osc3.stop(startTime + duration);
+    }
+
+    function playNotificationChime(isUrgent = true) {
       if (isAudioMuted) return;
       try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
+        const ctx = getAudioContext();
+        if (!ctx) return;
 
-        const now = ctx.currentTime;
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
+        const now = ctx.currentTime + 0.05;
 
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(587.33, now); // D5
-        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.15); // A5
+        // Padrão Fanfarra de Atenção de Restaurante (Sol 5 -> Si 5 -> Ré 6)
+        playHarmonicTone(ctx, 784, now, 0.40, 0.9);
+        playHarmonicTone(ctx, 988, now + 0.22, 0.45, 0.95);
+        playHarmonicTone(ctx, 1175, now + 0.44, 0.70, 1.0);
 
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(880, now + 0.18);
-        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.35); // D6
-
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start(now);
-        osc1.stop(now + 0.2);
-        osc2.start(now + 0.18);
-        osc2.stop(now + 0.5);
+        // Se for pedido novo, dispara segunda rajada de confirmação logo após
+        if (isUrgent) {
+          const secondWave = now + 0.92;
+          playHarmonicTone(ctx, 880, secondWave, 0.35, 0.95);
+          playHarmonicTone(ctx, 1175, secondWave + 0.20, 0.75, 1.0);
+        }
       } catch (e) {
         console.warn('Erro ao reproduzir som:', e);
       }
+    }
+
+    // ==================== BANNER E CONTROLE DE AVISO DE NOVO PEDIDO ====================
+    let bannerActiveOrderId = null;
+    let originalDocTitle = document.title || 'Cozinha — Casa Oriental';
+    let docTitleFlashTimer = null;
+
+    function showNewOrderAlertBanner(order) {
+      bannerActiveOrderId = order.id;
+      const banner = document.getElementById('newOrderAlertBanner');
+      const numEl = document.getElementById('bannerOrderNumber');
+      const sumEl = document.getElementById('bannerOrderSummary');
+
+      const orderShortId = String(order.id).slice(-4);
+      const totalFmt = (parseFloat(order.total) || 0).toFixed(2).replace('.', ',');
+      const payText = order.paymentText || 'PIX';
+      const itemsBrief = order.itemsDescription 
+        ? order.itemsDescription.split('\n')[0] 
+        : `${order.itemsCount || 1}x itens`;
+
+      if (numEl) numEl.innerText = `#${orderShortId}`;
+      if (sumEl) sumEl.innerText = `${order.clientName || 'Cliente'} • R$ ${totalFmt} (${payText}) • ${itemsBrief}`;
+
+      if (banner) {
+        banner.classList.remove('hidden');
+      }
+
+      flashBrowserTabAlert(`🚨 NOVO PEDIDO #${orderShortId}!`);
+      lucide.createIcons();
+
+      // Fecha automaticamente após 35 segundos se não interagido
+      clearTimeout(window.__bannerDismissTimer);
+      window.__bannerDismissTimer = setTimeout(() => {
+        dismissNewOrderBanner();
+      }, 35000);
+    }
+
+    function dismissNewOrderBanner() {
+      const banner = document.getElementById('newOrderAlertBanner');
+      if (banner) banner.classList.add('hidden');
+      stopBrowserTabAlert();
+    }
+
+    function triggerBannerPrint() {
+      if (!bannerActiveOrderId) return;
+      const id = bannerActiveOrderId;
+      dismissNewOrderBanner();
+      previewOrderComanda(id);
+    }
+
+    function flashBrowserTabAlert(alertText) {
+      stopBrowserTabAlert();
+      let toggle = false;
+      docTitleFlashTimer = setInterval(() => {
+        document.title = toggle ? alertText : originalDocTitle;
+        toggle = !toggle;
+      }, 900);
+
+      window.addEventListener('focus', () => {
+        stopBrowserTabAlert();
+      }, { once: true });
+    }
+
+    function stopBrowserTabAlert() {
+      if (docTitleFlashTimer) {
+        clearInterval(docTitleFlashTimer);
+        docTitleFlashTimer = null;
+      }
+      document.title = originalDocTitle;
+    }
+
+    function testNewOrderAlertAndSound() {
+      const demoOrder = {
+        id: Date.now(),
+        clientName: "Guilherme Santos",
+        clientPhone: "(79) 98172-8613",
+        neighborhood: "13 de Julho",
+        clientAddress: "Rua das Flores, 120 - Ap 402",
+        itemsDescription: "1x Combo 25 Peças Especial - R$ 68,00\n2x Temaki Salmão Grelhado Hot - R$ 56,00",
+        itemsCount: 3,
+        total: 124.00,
+        paymentText: "PIX",
+        time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      playNotificationChime(true);
+      showNewOrderAlertBanner(demoOrder);
     }
 
     function toggleAudioMute() {
@@ -1802,6 +1969,8 @@
       };
 
       saveOrderToLocalHistory(newOrder, true);
+      playNotificationChime(true);
+      showNewOrderAlertBanner(newOrder);
       renderOrdersList();
       closeManualOrderModal();
 
@@ -1814,7 +1983,6 @@
       document.getElementById('manualTotal').value = '';
     }
 
-    // ==================== CONFIGURAÇÕES DA COZINHA ====================
     // ==================== CONFIGURAÇÕES DA COZINHA ====================
     function openSettingsModal() {
       document.getElementById('configPixKey').value = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || '5579981728613';
