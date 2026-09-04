@@ -90,23 +90,57 @@
     .no-scrollbar {
       scrollbar-width: none !important;
     }
+    @page {
+      size: 58mm auto;
+      margin: 0mm;
+    }
     @media print {
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFF !important;
+        color: #000 !important;
+        width: 58mm !important;
+      }
       body * {
-        visibility: hidden;
+        visibility: hidden !important;
       }
       #printContainer, #printContainer * {
-        visibility: visible;
+        visibility: visible !important;
       }
       #printContainer {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 58mm;
-        font-family: monospace;
-        font-size: 11px;
-        color: #000;
-        background: #FFF;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 58mm !important;
+        max-width: 58mm !important;
+        padding: 1mm 2mm !important;
+        box-sizing: border-box !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 11px !important;
+        line-height: 1.25 !important;
+        color: #000 !important;
+        background: #FFF !important;
       }
+    }
+    .thermal-paper {
+      background: #FAFAFA;
+      color: #111;
+      font-family: 'Courier New', Courier, monospace;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .thermal-paper::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(135deg, transparent 4px, #FAFAFA 4px) 0 0,
+                  linear-gradient(-135deg, transparent 4px, #FAFAFA 4px) 0 0;
+      background-repeat: repeat-x;
+      background-size: 8px 8px;
     }
   </style>
 </head>
@@ -195,6 +229,16 @@
           >
             <i id="soundIcon" data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
             <span class="hidden md:inline text-[11px]">Som</span>
+          </button>
+
+          <!-- Testar Impressão 58mm (Maquininha) -->
+          <button 
+            onclick="previewDemoOrderComanda()" 
+            title="Visualizar e testar impressão de comanda 58mm na maquininha"
+            class="p-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center space-x-1.5"
+          >
+            <i data-lucide="printer" class="w-4 h-4 text-amber-400"></i>
+            <span class="hidden sm:inline text-[11px]">Testar 58mm</span>
           </button>
 
           <!-- Novo Pedido Manual -->
@@ -828,6 +872,17 @@
           <p class="text-[10px] text-neutral-500">Deixe em branco caso não queira alterar a senha atual.</p>
         </div>
 
+        <!-- Impressão Automática de Comanda 58mm -->
+        <div class="p-3.5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-1.5">
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="text-xs font-bold text-white flex items-center">
+              <i data-lucide="printer" class="w-3.5 h-3.5 mr-1.5 text-amber-400"></i> Auto-Imprimir Pedidos (58mm)
+            </span>
+            <input type="checkbox" id="configAutoPrint" class="w-4 h-4 rounded text-brand-red focus:ring-0 cursor-pointer accent-red-600">
+          </label>
+          <p class="text-[10px] text-neutral-500">Abre a impressão da comanda térmica de 58mm automaticamente assim que o pedido do cliente cai na cozinha.</p>
+        </div>
+
         <!-- Teste de Som -->
         <div class="flex items-center justify-between p-3 rounded-xl bg-neutral-900 border border-neutral-800">
           <span class="text-xs text-neutral-300 font-semibold">Testar toque de novo pedido:</span>
@@ -843,6 +898,69 @@
           SALVAR ALTERAÇÕES
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DE PRÉ-VISUALIZAÇÃO DA COMANDA 58MM ==================== -->
+  <div id="printPreviewModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="w-full max-w-sm bg-[#161616] border border-neutral-800 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 max-h-[94vh] flex flex-col my-auto">
+      
+      <!-- Topo do Modal -->
+      <div class="flex items-center justify-between border-b border-neutral-800 pb-2.5 flex-shrink-0">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-white">Comanda Térmica (58mm)</h3>
+            <p class="text-[10px] text-neutral-400 font-mono">Bobina Térmica • 32 Colunas</p>
+          </div>
+        </div>
+        <button onclick="closePrintPreviewModal()" class="p-1.5 text-neutral-400 hover:text-white rounded-full hover:bg-neutral-800 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Simulação Visual Fiel do Papel Térmico da Maquininha (58mm) -->
+      <div class="flex-1 overflow-y-auto p-1 text-center no-scrollbar">
+        <div class="thermal-paper p-3.5 text-left mx-auto rounded-t-sm w-full max-w-[285px] text-[11px] leading-tight select-all shadow-2xl font-mono text-black">
+          <pre id="comandaReceiptContent" class="font-mono whitespace-pre-wrap leading-[1.3] text-[11px] text-black m-0"></pre>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="space-y-2 pt-2 border-t border-neutral-800 flex-shrink-0">
+        <button 
+          id="btnModalPrintNow" 
+          onclick="executeCurrentPrint()" 
+          class="w-full py-3 bg-brand-red hover:bg-brand-redHover active:scale-[0.98] text-white font-black text-xs rounded-xl shadow-lg shadow-red-950/50 transition flex items-center justify-center space-x-2"
+        >
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>IMPRIMIR NA MAQUININHA (58MM)</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button 
+            onclick="copyComandaText()" 
+            class="py-2.5 px-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-[11px] rounded-xl transition flex items-center justify-center space-x-1 border border-neutral-700"
+          >
+            <i data-lucide="copy" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span id="btnCopyComandaText">Copiar Texto</span>
+          </button>
+          
+          <button 
+            onclick="closePrintPreviewModal()" 
+            class="py-2.5 px-3 bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white font-bold text-[11px] rounded-xl transition border border-neutral-800"
+          >
+            Fechar
+          </button>
+        </div>
+
+        <p class="text-[10px] text-center text-neutral-500 leading-tight">
+          💡 Compatível com impressoras térmicas USB/Bluetooth e maquininhas Smart POS (Sunmi, Elgin, Gertec, Stone, Cielo Lio, Rede).
+        </p>
+      </div>
+
     </div>
   </div>
 
@@ -1037,6 +1155,13 @@
         playNotificationChime();
         renderOrdersList();
         
+        // Auto-impressão de comanda térmica 58mm se configurada
+        if (localStorage.getItem('casa_oriental_auto_print') === 'true') {
+          setTimeout(() => {
+            previewOrderComanda(order.id);
+          }, 500);
+        }
+
         // Exibe notificação visual na tela
         if (Notification.permission === "granted") {
           new Notification("🍣 Novo Pedido Casa Oriental!", {
@@ -1257,13 +1382,22 @@
               </div>
             </div>
 
+            <!-- Botão de Destaque: Imprimir Comanda 58mm -->
+            <div class="pt-1">
+              <button 
+                onclick="previewOrderComanda(${ord.id})" 
+                class="w-full py-2.5 px-3 rounded-xl bg-neutral-900 hover:bg-neutral-850 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-400/50 text-xs font-black flex items-center justify-center space-x-2 transition active:scale-[0.98] shadow-sm"
+                title="Pré-visualizar e imprimir comanda térmica de 58mm"
+              >
+                <i data-lucide="printer" class="w-4 h-4 text-amber-400"></i>
+                <span>IMPRIMIR COMANDA (58MM)</span>
+              </button>
+            </div>
+
             <!-- Botões Rápidos de Ação e Disparo WhatsApp -->
             <div class="pt-2 border-t border-neutral-800/80 space-y-1.5">
-              <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider flex items-center justify-between">
-                <span>Notificar Cliente (WhatsApp)</span>
-                <button onclick="printOrderComanda(${ord.id})" title="Imprimir comanda térmica 58mm" class="text-neutral-400 hover:text-white flex items-center text-[10px]">
-                  <i data-lucide="printer" class="w-3 h-3 mr-0.5"></i> 58mm
-                </button>
+              <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+                Notificar Cliente (WhatsApp):
               </p>
 
               <!-- Grade de 5 Botões de Status Prontos -->
@@ -1455,35 +1589,178 @@
       }
     }
 
-    // ==================== IMPRESSÃO DIRETA DE COMANDA (58MM) ====================
-    function printOrderComanda(orderId) {
+    // ==================== IMPRESSÃO DIRETA & PRÉ-VISUALIZAÇÃO DE COMANDA (58MM) ====================
+    let currentPrintOrderId = null;
+
+    function generateComandaTicketText(ord) {
+      const lineDbl = '================================';
+      const lineSgl = '--------------------------------';
+      const orderShortId = String(ord.id).slice(-4);
+      const dataHora = ord.date && ord.time 
+        ? `${ord.date} ${ord.time}` 
+        : (ord.time || new Date().toLocaleString('pt-BR'));
+
+      let lines = [];
+      lines.push(lineDbl);
+      lines.push('     CASA ORIENTAL DELIVERY     ');
+      lines.push('       COMANDA DA COZINHA       ');
+      lines.push(lineDbl);
+      lines.push(`PEDIDO:  #${orderShortId}`);
+      lines.push(`DATA:    ${dataHora}`);
+      lines.push(`CLIENTE: ${(ord.clientName || 'Cliente').slice(0, 23)}`);
+      if (ord.clientPhone) {
+        lines.push(`TEL:     ${ord.clientPhone}`);
+      }
+      const isBalcao = (ord.deliveryType === 'balcao' || ord.clientAddress === 'Retirada no Balcão');
+      lines.push(`TIPO:    ${isBalcao ? 'RETIRADA NO BALCÃO' : 'ENTREGA (DELIVERY)'}`);
+
+      if (!isBalcao && ord.clientAddress) {
+        lines.push(lineSgl);
+        lines.push('ENDEREÇO DE ENTREGA:');
+        lines.push(`${ord.clientAddress}`);
+        if (ord.neighborhood && !ord.clientAddress.includes(ord.neighborhood)) {
+          lines.push(`Bairro: ${ord.neighborhood}`);
+        }
+        if (ord.reference) {
+          lines.push(`Ponto Ref: ${ord.reference}`);
+        }
+      }
+
+      lines.push(lineSgl);
+      lines.push('QTD  ITEM                 VALOR ');
+      lines.push(lineSgl);
+
+      if (Array.isArray(ord.cartItems) && ord.cartItems.length > 0) {
+        ord.cartItems.forEach(item => {
+          const qtyStr = `${item.qty}x`.padEnd(4, ' ');
+          const totalItemVal = (item.price * item.qty).toFixed(2).replace('.', ',');
+          const priceStr = `R$ ${totalItemVal}`;
+          const maxNameLen = 32 - 4 - priceStr.length - 1;
+          const nameStr = item.name.length > maxNameLen ? item.name.slice(0, maxNameLen - 1) + '.' : item.name;
+          const spaces = Math.max(1, 32 - 4 - nameStr.length - priceStr.length);
+          lines.push(`${qtyStr}${nameStr}${' '.repeat(spaces)}${priceStr}`);
+        });
+      } else if (ord.itemsDescription) {
+        const rawLines = ord.itemsDescription.split('\n');
+        rawLines.forEach(l => {
+          const cleanL = l.trim();
+          if (cleanL) {
+            lines.push(cleanL.length > 32 ? cleanL.slice(0, 31) + '…' : cleanL);
+          }
+        });
+      } else {
+        lines.push(`${ord.itemsCount || 1}x Item(ns) do cardápio`);
+      }
+
+      lines.push(lineSgl);
+      const subtotalNum = parseFloat(ord.subtotal || ord.total) || 0;
+      const totalNum = parseFloat(ord.total) || 0;
+      const subtotalVal = subtotalNum.toFixed(2).replace('.', ',');
+      const totalVal = totalNum.toFixed(2).replace('.', ',');
+
+      if (ord.deliveryFee && parseFloat(ord.deliveryFee) > 0) {
+        const feeVal = parseFloat(ord.deliveryFee).toFixed(2).replace('.', ',');
+        const feePad = Math.max(1, 32 - 'Taxa de Entrega:'.length - `R$ ${feeVal}`.length);
+        lines.push(`Taxa de Entrega:${' '.repeat(feePad)}R$ ${feeVal}`);
+      }
+
+      const totalPad = Math.max(1, 32 - 'TOTAL A PAGAR:'.length - `R$ ${totalVal}`.length);
+      lines.push(`TOTAL A PAGAR:${' '.repeat(totalPad)}R$ ${totalVal}`);
+      lines.push(lineSgl);
+
+      lines.push(`PAGAMENTO: ${ord.paymentText || 'PIX'}`);
+      if (ord.changeAmount) {
+        lines.push(`Troco para: R$ ${ord.changeAmount}`);
+      }
+      if (ord.notes || ord.orderNotes) {
+        lines.push('OBSERVAÇÕES:');
+        lines.push(`${ord.notes || ord.orderNotes}`);
+      }
+
+      lines.push(lineDbl);
+      lines.push('   AGRADECEMOS A PREFERÊNCIA!   ');
+      lines.push('    Instagram: @casaoriental    ');
+      lines.push(lineDbl);
+      lines.push('\n\n\n'); // Avanço de papel térmico
+
+      return lines.join('\n');
+    }
+
+    function previewOrderComanda(orderId) {
       const orders = getOrdersFromStorage();
       const ord = orders.find(o => o.id === orderId);
       if (!ord) return;
 
+      currentPrintOrderId = orderId;
+      const text = generateComandaTicketText(ord);
+      document.getElementById('comandaReceiptContent').innerText = text;
+      document.getElementById('printPreviewModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function previewDemoOrderComanda() {
+      const demoOrder = {
+        id: Date.now(),
+        clientName: "Guilherme Santos",
+        clientPhone: "(79) 98172-8613",
+        neighborhood: "13 de Julho",
+        clientAddress: "Rua das Flores, 120 - Ap 402",
+        reference: "Próximo à Praça dos Namorados",
+        itemsDescription: "1x Combo 25 Peças Especial - R$ 68,00\n2x Temaki Salmão Grelhado Hot - R$ 56,00\n1x Coca-Cola Lata 350ml - R$ 6,00",
+        itemsCount: 4,
+        subtotal: 130.00,
+        deliveryFee: 6.00,
+        total: 136.00,
+        paymentText: "PIX",
+        orderNotes: "Mandar tarê extra e 2 pares de hashi por favor!",
+        time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toLocaleDateString('pt-BR')
+      };
+
+      currentPrintOrderId = 'demo';
+      window.__lastDemoOrder = demoOrder;
+      const text = generateComandaTicketText(demoOrder);
+      document.getElementById('comandaReceiptContent').innerText = text;
+      document.getElementById('printPreviewModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePrintPreviewModal() {
+      document.getElementById('printPreviewModal').classList.add('hidden');
+    }
+
+    function executeCurrentPrint() {
+      if (!currentPrintOrderId) return;
+      printOrderComanda(currentPrintOrderId);
+    }
+
+    function printOrderComanda(orderId) {
+      let ord = null;
+      if (orderId === 'demo') {
+        ord = window.__lastDemoOrder;
+      } else {
+        const orders = getOrdersFromStorage();
+        ord = orders.find(o => o.id === orderId);
+      }
+      if (!ord) return;
+
+      const ticketText = generateComandaTicketText(ord);
       const printDiv = document.getElementById('printContainer');
-      printDiv.innerHTML = `
-        <pre>
-================================
-       CASA ORIENTAL DELIVERY   
-          COMANDA DA COZINHA    
-================================
-Pedido: #${String(ord.id).slice(-4)}
-Data:   ${ord.time || new Date().toLocaleString('pt-BR')}
-Cliente: ${ord.clientName}
-Tel:     ${ord.clientPhone || 'N/A'}
-Endereço:
-${ord.clientAddress || ord.neighborhood || 'Retirada no Balcão'}
---------------------------------
-ITENS:
-${ord.itemsDescription || `${ord.itemsCount || 1}x Item(ns)`}
---------------------------------
-Pagamento: ${ord.paymentText || 'PIX'}
-TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
-================================
-        </pre>
-      `;
+      printDiv.innerHTML = `<pre class="font-mono text-[11px] leading-tight text-black m-0">${ticketText}</pre>`;
       window.print();
+    }
+
+    function copyComandaText() {
+      const text = document.getElementById('comandaReceiptContent').innerText;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.getElementById('btnCopyComandaText');
+          if (btn) btn.innerText = 'Copiado!';
+          setTimeout(() => { if (btn) btn.innerText = 'Copiar Texto'; }, 2000);
+        });
+      } else {
+        prompt('Copie o texto da comanda abaixo:', text);
+      }
     }
 
     // ==================== PEDIDO MANUAL ====================
@@ -1538,9 +1815,14 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
     }
 
     // ==================== CONFIGURAÇÕES DA COZINHA ====================
+    // ==================== CONFIGURAÇÕES DA COZINHA ====================
     function openSettingsModal() {
       document.getElementById('configPixKey').value = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || '5579981728613';
       document.getElementById('configNewPassword').value = '';
+      const autoPrintEl = document.getElementById('configAutoPrint');
+      if (autoPrintEl) {
+        autoPrintEl.checked = localStorage.getItem('casa_oriental_auto_print') === 'true';
+      }
       document.getElementById('settingsModal').classList.remove('hidden');
     }
     function closeSettingsModal() {
@@ -1550,6 +1832,7 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
     function saveKitchenSettings() {
       const newPix = document.getElementById('configPixKey').value.trim();
       const newPass = document.getElementById('configNewPassword').value.trim();
+      const autoPrintEl = document.getElementById('configAutoPrint');
 
       if (newPix) {
         localStorage.setItem(KITCHEN_STORAGE_KEYS.PIX_KEY, newPix);
@@ -1560,6 +1843,9 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
           return;
         }
         localStorage.setItem(KITCHEN_STORAGE_KEYS.PASSWORD, newPass);
+      }
+      if (autoPrintEl) {
+        localStorage.setItem('casa_oriental_auto_print', autoPrintEl.checked ? 'true' : 'false');
       }
 
       alert('Configurações salvas com sucesso!');
