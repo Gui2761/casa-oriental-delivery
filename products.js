@@ -1,5 +1,5 @@
 // ==================== CATÁLOGO OFICIAL — CASA ORIENTAL DELIVERY ====================
-// Aracaju / SE — WhatsApp: (79) 98172-8613
+// Parque dos Faróis, N. Sra. do Socorro / Aracaju - SE — WhatsApp: (79) 98172-8613
 
 const PRODUCTS = [
   // 1. COMBOS

@@ -109,7 +109,7 @@
           <p class="text-xs text-neutral-400 flex items-center space-x-2 mt-0.5">
             <span class="text-amber-400 flex items-center font-medium"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 mr-1 inline"></i> 4.9</span>
             <span>•</span>
-            <span>📍 Aracaju, SE</span>
+            <span>📍 Parque dos Faróis (Socorro)</span>
             <span>•</span>
             <span id="storeDeliveryTimeDisplay">⏱️ 30-50 min</span>
           </p>
@@ -222,7 +222,7 @@
     <div class="flex items-center justify-center space-x-2 cursor-pointer select-none" onclick="handleSecretFooterClick()">
       <span class="font-bold text-neutral-400">CASA ORIENTAL</span>
       <span>•</span>
-      <span>Aracaju, SE</span>
+      <span>Parque dos Faróis, Socorro - SE</span>
     </div>
     <p class="text-[11px] text-neutral-600">Cardápio Digital & Delivery Direto no WhatsApp</p>
     <p class="text-[10px] text-neutral-700 pt-1 select-none" onclick="handleSecretFooterClick()">© 2026 Casa Oriental Delivery. Todos os direitos reservados.</p>
@@ -280,7 +280,7 @@
           <div class="grid grid-cols-2 gap-2">
             <button type="button" onclick="setDeliveryType('delivery')" id="btnDelivery" class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red">
               <i data-lucide="bike" class="w-4 h-4"></i>
-              <span>Entrega em Aracaju</span>
+              <span>Entrega em Domicílio</span>
             </button>
             <button type="button" onclick="setDeliveryType('pickup')" id="btnPickup" class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700">
               <i data-lucide="store" class="w-4 h-4"></i>
@@ -293,61 +293,73 @@
         <div id="deliveryAddressSection" class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-3">
           <div class="flex items-center justify-between">
             <p class="text-xs font-bold text-neutral-300 uppercase tracking-wider flex items-center">
-              <i data-lucide="map-pin" class="w-4 h-4 text-brand-red mr-1.5"></i> Destino da Entrega (Aracaju)
+              <i data-lucide="map-pin" class="w-4 h-4 text-brand-red mr-1.5"></i> Destino da Entrega (Socorro / Aracaju)
             </p>
             <span class="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md" id="neighborhoodFeeTag">
-              Frete: R$ 6,00
+              Frete: R$ 4,00
             </span>
           </div>
 
-          <!-- Seletor de Bairros de Aracaju -->
+          <!-- Seletor de Bairros centrados na sede Parque dos Faróis -->
           <div>
-            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Selecione o seu Bairro em Aracaju *</label>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Selecione o seu Bairro (Socorro / Aracaju) *</label>
             <select id="aracajuNeighborhood" onchange="updateNeighborhoodFee()" class="w-full px-3 py-2.5 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white focus:outline-none focus:border-brand-red">
-              <optgroup label="Zona Sul (Mais Próximo)">
-                <option value="6.00" data-name="13 de Julho">13 de Julho — R$ 6,00</option>
-                <option value="6.00" data-name="Jardins">Jardins — R$ 6,00</option>
-                <option value="6.00" data-name="Garcia">Garcia — R$ 6,00</option>
-                <option value="6.00" data-name="Grageru">Grageru — R$ 6,00</option>
-                <option value="6.00" data-name="Salgado Filho">Salgado Filho — R$ 6,00</option>
-                <option value="7.00" data-name="Luzia">Luzia — R$ 7,00</option>
-                <option value="7.00" data-name="Inácio Barbosa">Inácio Barbosa — R$ 7,00</option>
-                <option value="7.00" data-name="Suíça">Suíça — R$ 7,00</option>
+              <optgroup label="📍 Nossa Senhora do Socorro (Sede da Loja)">
+                <option value="4.00" data-name="Parque dos Faróis" selected>Parque dos Faróis (Bairro da Loja) — R$ 4,00</option>
+                <option value="5.00" data-name="Marcos Freire I">Marcos Freire I — R$ 5,00</option>
+                <option value="5.00" data-name="Marcos Freire II">Marcos Freire II — R$ 5,00</option>
+                <option value="6.00" data-name="Marcos Freire III">Marcos Freire III — R$ 6,00</option>
+                <option value="6.00" data-name="Piabeta">Piabeta — R$ 6,00</option>
+                <option value="6.00" data-name="Taiçoca">Taiçoca (De Dentro / Fora) — R$ 6,00</option>
+                <option value="6.00" data-name="João Alves">João Alves — R$ 6,00</option>
+                <option value="7.00" data-name="Albano Franco">Albano Franco — R$ 7,00</option>
+                <option value="7.00" data-name="Conjunto Jardim">Conjunto Jardim — R$ 7,00</option>
+                <option value="8.00" data-name="Guajará">Guajará — R$ 8,00</option>
+                <option value="8.00" data-name="Palestina">Palestina — R$ 8,00</option>
+                <option value="9.00" data-name="Sede de Socorro">Sede de Socorro (Centro) — R$ 9,00</option>
               </optgroup>
-              <optgroup label="Orla & Região das Praias">
-                <option value="8.00" data-name="Atalaia">Atalaia — R$ 8,00</option>
-                <option value="7.00" data-name="Coroa do Meio">Coroa do Meio — R$ 7,00</option>
-                <option value="8.00" data-name="Farolândia / Unit">Farolândia / Unit — R$ 8,00</option>
-                <option value="8.00" data-name="Aeroporto">Aeroporto — R$ 8,00</option>
-                <option value="10.00" data-name="Aruana">Aruana — R$ 10,00</option>
-                <option value="15.00" data-name="Mosqueiro">Mosqueiro — R$ 15,00</option>
-              </optgroup>
-              <optgroup label="Zona Centro">
-                <option value="6.00" data-name="Centro">Centro — R$ 6,00</option>
-                <option value="6.00" data-name="São José">São José — R$ 6,00</option>
-                <option value="7.00" data-name="Getúlio Vargas">Getúlio Vargas — R$ 7,00</option>
-                <option value="7.00" data-name="Cirurgia">Cirurgia — R$ 7,00</option>
-              </optgroup>
-              <optgroup label="Zona Oeste">
-                <option value="8.00" data-name="Jabotiana">Jabotiana — R$ 8,00</option>
-                <option value="8.00" data-name="Ponto Novo">Ponto Novo — R$ 8,00</option>
-                <option value="8.00" data-name="Siqueira Campos">Siqueira Campos — R$ 8,00</option>
-                <option value="9.00" data-name="América">América — R$ 9,00</option>
-                <option value="10.00" data-name="Novo Paraíso / Capucho">Novo Paraíso / Capucho — R$ 10,00</option>
-              </optgroup>
-              <optgroup label="Zona Norte">
-                <option value="8.00" data-name="Santo Antônio">Santo Antônio — R$ 8,00</option>
+              <optgroup label="🛵 Zona Norte de Aracaju (Próximo a Socorro)">
+                <option value="8.00" data-name="Santos Dumont">Santos Dumont — R$ 8,00</option>
+                <option value="8.00" data-name="Bugio">Bugio — R$ 8,00</option>
+                <option value="8.00" data-name="Lamarão">Lamarão — R$ 8,00</option>
+                <option value="9.00" data-name="Olaria">Olaria — R$ 9,00</option>
+                <option value="9.00" data-name="Soledade">Soledade — R$ 9,00</option>
+                <option value="9.00" data-name="Cidade Nova">Cidade Nova — R$ 9,00</option>
                 <option value="9.00" data-name="Bairro Industrial">Bairro Industrial — R$ 9,00</option>
+                <option value="9.00" data-name="Santo Antônio">Santo Antônio — R$ 9,00</option>
                 <option value="9.00" data-name="Dezoito do Forte">Dezoito do Forte — R$ 9,00</option>
-                <option value="10.00" data-name="Santos Dumont">Santos Dumont — R$ 10,00</option>
-                <option value="10.00" data-name="Bugio">Bugio — R$ 10,00</option>
-                <option value="11.00" data-name="Olaria">Olaria — R$ 11,00</option>
-                <option value="12.00" data-name="Porto Dantas">Porto Dantas — R$ 12,00</option>
+                <option value="10.00" data-name="Porto Dantas">Porto Dantas — R$ 10,00</option>
               </optgroup>
-              <optgroup label="Grande Aracaju">
-                <option value="12.00" data-name="Barra dos Coqueiros">Barra dos Coqueiros — R$ 12,00</option>
-                <option value="12.00" data-name="São Cristóvão / Eduardo Gomes">São Cristóvão / Eduardo Gomes — R$ 12,00</option>
-                <option value="12.00" data-name="Nossa Senhora do Socorro">Nossa Senhora do Socorro — R$ 12,00</option>
+              <optgroup label="🏙️ Zona Centro e Oeste de Aracaju">
+                <option value="10.00" data-name="Centro">Centro — R$ 10,00</option>
+                <option value="10.00" data-name="São José">São José — R$ 10,00</option>
+                <option value="10.00" data-name="Getúlio Vargas">Getúlio Vargas — R$ 10,00</option>
+                <option value="10.00" data-name="Cirurgia">Cirurgia — R$ 10,00</option>
+                <option value="10.00" data-name="Siqueira Campos">Siqueira Campos — R$ 10,00</option>
+                <option value="10.00" data-name="América">América — R$ 10,00</option>
+                <option value="10.00" data-name="Novo Paraíso / Capucho">Novo Paraíso / Capucho — R$ 10,00</option>
+                <option value="12.00" data-name="Jabotiana">Jabotiana — R$ 12,00</option>
+                <option value="12.00" data-name="Ponto Novo">Ponto Novo — R$ 12,00</option>
+              </optgroup>
+              <optgroup label="🌴 Zona Sul & Orla de Aracaju">
+                <option value="13.00" data-name="13 de Julho">13 de Julho — R$ 13,00</option>
+                <option value="13.00" data-name="Jardins">Jardins — R$ 13,00</option>
+                <option value="13.00" data-name="Grageru">Grageru — R$ 13,00</option>
+                <option value="13.00" data-name="Garcia">Garcia — R$ 13,00</option>
+                <option value="13.00" data-name="Salgado Filho">Salgado Filho — R$ 13,00</option>
+                <option value="13.00" data-name="Luzia">Luzia — R$ 13,00</option>
+                <option value="13.00" data-name="Inácio Barbosa">Inácio Barbosa — R$ 13,00</option>
+                <option value="13.00" data-name="Suíça">Suíça — R$ 13,00</option>
+                <option value="14.00" data-name="Coroa do Meio">Coroa do Meio — R$ 14,00</option>
+                <option value="15.00" data-name="Atalaia">Atalaia — R$ 15,00</option>
+                <option value="15.00" data-name="Farolândia / Unit">Farolândia / Unit — R$ 15,00</option>
+                <option value="16.00" data-name="Aeroporto">Aeroporto — R$ 16,00</option>
+                <option value="18.00" data-name="Aruana">Aruana — R$ 18,00</option>
+                <option value="25.00" data-name="Mosqueiro">Mosqueiro — R$ 25,00</option>
+              </optgroup>
+              <optgroup label="🌉 Região Metropolitana & Litoral">
+                <option value="14.00" data-name="Barra dos Coqueiros">Barra dos Coqueiros — R$ 14,00</option>
+                <option value="14.00" data-name="São Cristóvão / Eduardo Gomes">São Cristóvão / Eduardo Gomes — R$ 14,00</option>
               </optgroup>
               <option value="0.00" data-name="Outro Bairro">Outro Bairro (A combinar no WhatsApp)</option>
             </select>
@@ -355,11 +367,11 @@
 
           <div>
             <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Rua, Número e Complemento (Apto/Bloco) *</label>
-            <input type="text" id="clientAddress" placeholder="Ex: Rua Campo do Brito, 450 - Apto 102" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+            <input type="text" id="clientAddress" placeholder="Ex: Rua 58, 120 - Casa" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
           </div>
           <div>
             <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Ponto de Referência (Opcional)</label>
-            <input type="text" id="clientReference" placeholder="Ex: Próximo à praça / padaria" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+            <input type="text" id="clientReference" placeholder="Ex: Próximo à Escola Manoel de Jesus / Campo Beira Rio" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
           </div>
         </div>
 
@@ -419,11 +431,35 @@
         </div>
 
         <!-- AVISO QUANDO FOR RETIRADA NO BALCÃO -->
-        <div id="pickupNoticeSection" class="hidden bg-emerald-950/30 border border-emerald-800/50 p-3.5 rounded-2xl text-xs text-emerald-300 flex items-start space-x-2.5">
-          <i data-lucide="info" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
-          <div>
-            <p class="font-bold text-white">Pagamento Presencial no Balcão</p>
-            <p class="text-[11px] text-emerald-200/80 mt-0.5">Você não precisa escolher forma de pagamento agora. Pague diretamente ao retirar o pedido (PIX ou Dinheiro).</p>
+        <div id="pickupNoticeSection" class="hidden bg-neutral-900 border border-emerald-500/40 p-4 rounded-2xl text-xs text-neutral-300 space-y-3 shadow-lg shadow-black/40">
+          <div class="flex items-start space-x-3">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 text-emerald-400">
+              <i data-lucide="store" class="w-4 h-4"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <p class="font-bold text-white text-sm">Retirada no Balcão da Loja</p>
+                <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-full border border-emerald-500/30">Sem Taxa</span>
+              </div>
+              <p class="text-[11px] text-neutral-300 mt-1 leading-snug">
+                📍 <strong class="text-white">Rua 58, Parque dos Faróis</strong><br>
+                Nossa Senhora do Socorro - SE
+              </p>
+              <a 
+                href="https://www.google.com/maps?q=-10.918189,-37.130500" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow transition"
+              >
+                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                <span>Ver no Google Maps / Traçar Rota</span>
+                <i data-lucide="external-link" class="w-3 h-3 opacity-70"></i>
+              </a>
+            </div>
+          </div>
+          <div class="pt-2.5 border-t border-neutral-800 flex items-center space-x-2 text-[11px] text-emerald-300/90">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>
+            <span>Pagamento direto no balcão ao retirar (PIX ou Dinheiro).</span>
           </div>
         </div>
 
@@ -434,8 +470,8 @@
             <span id="summarySubtotal">R$ 0,00</span>
           </div>
           <div class="flex justify-between text-neutral-400">
-            <span>Taxa de entrega (Aracaju)</span>
-            <span id="summaryDelivery">R$ 6,00</span>
+            <span>Taxa de entrega</span>
+            <span id="summaryDelivery">R$ 4,00</span>
           </div>
           <div class="flex justify-between text-base font-black text-white pt-2 border-t border-neutral-800">
             <span>TOTAL GERAL</span>
@@ -491,11 +527,13 @@
 
   <!-- ==================== BANCO DE DADOS E SCRIPTS ==================== -->
   <script>
-    // Configurações Oficiais da Casa Oriental (Aracaju/SE)
+    // Configurações Oficiais da Casa Oriental (Nossa Senhora do Socorro / Aracaju - SE)
     // WhatsApp Oficial informado: +55 79 98172-8613
     const RESTAURANT_CONFIG = {
       name: "CASA ORIENTAL",
-      phone: "5579981728613" // WhatsApp Oficial
+      phone: "5579981728613", // WhatsApp Oficial
+      address: "Rua 58, Parque dos Faróis, Nossa Senhora do Socorro - SE",
+      mapsUrl: "https://www.google.com/maps?q=-10.918189,-37.130500"
     };
 
     // ==================== ESTADO DO CARDÁPIO (DESTAQUE, ESTOQUE & LOJA) ====================
@@ -709,8 +747,8 @@
     let currentCategory = 'all';
     let cart = [];
     let deliveryType = 'delivery';
-    let currentDeliveryFee = 6.00;
-    let selectedNeighborhoodName = "13 de Julho";
+    let currentDeliveryFee = 4.00;
+    let selectedNeighborhoodName = "Parque dos Faróis";
 
     window.addEventListener('DOMContentLoaded', () => {
       initDragScroll();
@@ -781,7 +819,7 @@
           address: document.getElementById('clientAddress')?.value || '',
           reference: document.getElementById('clientReference')?.value || '',
           orderNotes: document.getElementById('orderNotes')?.value || '',
-          neighborhoodValue: document.getElementById('aracajuNeighborhood')?.value || '6.00',
+          neighborhoodValue: document.getElementById('aracajuNeighborhood')?.value || '4.00',
           deliveryType: deliveryType,
           paymentMethod: paymentMethod,
           changeAmount: document.getElementById('changeAmount')?.value || ''
@@ -1327,7 +1365,7 @@
       }
 
       if (deliveryType === 'delivery' && !clientAddress) {
-        alert('Por favor, informe a rua e número para entrega em Aracaju!');
+        alert('Por favor, informe a rua e número para entrega!');
         document.getElementById('clientAddress').focus();
         return;
       }
@@ -1357,12 +1395,15 @@
       msg += `Data: ${dataHora}\n`;
       msg += `Cliente: ${clientName}\n`;
       if (clientPhone) msg += `Tel: ${clientPhone}\n`;
-      msg += `Tipo: ${deliveryType === 'delivery' ? 'ENTREGA (ARACAJU)' : 'RETIRADA NO BALCÃO'}\n`;
+      msg += `Tipo: ${deliveryType === 'delivery' ? 'ENTREGA EM DOMICÍLIO' : 'RETIRADA NO BALCÃO'}\n`;
       
       if (deliveryType === 'delivery') {
         msg += `Bairro: ${selectedNeighborhoodName}\n`;
         msg += `End: ${clientAddress}\n`;
         if (clientReference) msg += `Ref: ${clientReference}\n`;
+      } else {
+        msg += `Retirada: ${RESTAURANT_CONFIG.address}\n`;
+        msg += `Mapa: ${RESTAURANT_CONFIG.mapsUrl}\n`;
       }
 
       msg += `--------------------------------\n`;

@@ -213,7 +213,9 @@
                 <span>Ao Vivo (Conectado)</span>
               </span>
               <span>•</span>
-              <span id="todayDateDisplay">Aracaju, SE</span>
+              <span class="text-neutral-300 font-medium" title="Rua 58, Parque dos Faróis, Socorro/SE">📍 Parque dos Faróis</span>
+              <span>•</span>
+              <span id="todayDateDisplay"></span>
             </div>
           </div>
         </div>
@@ -777,7 +779,7 @@
           <span class="text-xs text-neutral-200">Itens esgotados no estoque hoje</span>
         </label>
         <label class="flex items-center space-x-2.5 p-2.5 rounded-xl bg-neutral-900 border border-neutral-800 cursor-pointer hover:border-neutral-700">
-          <input type="radio" name="cancelReason" value="Endereço fora do raio de entrega de Aracaju" class="text-brand-red focus:ring-0">
+          <input type="radio" name="cancelReason" value="Endereço fora do raio de entrega (Socorro / Aracaju)" class="text-brand-red focus:ring-0">
           <span class="text-xs text-neutral-200">Endereço fora do raio de entrega</span>
         </label>
         <label class="flex items-center space-x-2.5 p-2.5 rounded-xl bg-neutral-900 border border-neutral-800 cursor-pointer hover:border-neutral-700">
@@ -834,12 +836,12 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Bairro em Aracaju</label>
-            <input type="text" id="manualNeighborhood" placeholder="Ex: Jardins / 13 de Julho" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+            <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Bairro (Socorro / Aracaju)</label>
+            <input type="text" id="manualNeighborhood" placeholder="Ex: Parque dos Faróis / Marcos Freire" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
           </div>
           <div>
             <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Endereço Completo</label>
-            <input type="text" id="manualClientAddress" placeholder="Ex: Rua A, 120 - Ap 402" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+            <input type="text" id="manualClientAddress" placeholder="Ex: Rua 58, 120 - Casa" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
           </div>
         </div>
 
@@ -1691,11 +1693,21 @@
                   `⏱️ *Previsão de entrega:* ${estDelivery}\n` +
                   `Assim que o motoboy sair para entrega, te avisamos por aqui! 🛵💨`;
       } else if (newStatus === 'entrega') {
-        message = `🛵💨 *CASA ORIENTAL — SEU PEDIDO SAIU PARA ENTREGA!* 🍣\n\n` +
-                  `Oba, *${clientName}*! Seu pedido fresquinho acabou de sair para entrega com o nosso motoboy!\n\n` +
-                  (ord.clientAddress ? `📍 *Endereço de Entrega:* ${ord.clientAddress}\n\n` : '') +
-                  `🔔 *Aviso importante:* Por favor, fique atento(a) ao interfone, campainha ou portaria do seu prédio para receber o pedido fresquinho.\n\n` +
-                  `Tenha um excelente apetite! 😋🥢`;
+        const isBalcao = (ord.deliveryType === 'balcao' || ord.deliveryType === 'pickup' || ord.clientAddress === 'Retirada no Balcão');
+        if (isBalcao) {
+          message = `🍣 *CASA ORIENTAL — SEU PEDIDO ESTÁ PRONTO PARA RETIRADA!* 🥢\n\n` +
+                    `Oba, *${clientName}*! Seu pedido fresquinho (*#${orderShortId}*) já está embalado e prontinho esperando por você no balcão da loja!\n\n` +
+                    `📍 *Endereço para Retirada:*\n` +
+                    `Rua 58, Parque dos Faróis, Nossa Senhora do Socorro - SE\n` +
+                    `🗺️ *Rota Google Maps:* https://www.google.com/maps?q=-10.918189,-37.130500\n\n` +
+                    `Te aguardamos com muito carinho! Tenha um excelente apetite! 😋✨`;
+        } else {
+          message = `🛵💨 *CASA ORIENTAL — SEU PEDIDO SAIU PARA ENTREGA!* 🍣\n\n` +
+                    `Oba, *${clientName}*! Seu pedido fresquinho acabou de sair para entrega com o nosso motoboy!\n\n` +
+                    (ord.clientAddress ? `📍 *Endereço de Entrega:* ${ord.clientAddress}\n\n` : '') +
+                    `🔔 *Aviso importante:* Por favor, fique atento(a) ao interfone, campainha ou portaria do seu prédio para receber o pedido fresquinho.\n\n` +
+                    `Tenha um excelente apetite! 😋🥢`;
+        }
       } else if (newStatus === 'concluido') {
         message = `🎉 *CASA ORIENTAL — PEDIDO CONCLUÍDO!* 🥢\n\n` +
                   `Olá, *${clientName}*! Consta aqui que seu pedido (*#${orderShortId}*) foi entregue com sucesso!\n\n` +
@@ -1770,6 +1782,7 @@
       let lines = [];
       lines.push(lineDbl);
       lines.push('     CASA ORIENTAL DELIVERY     ');
+      lines.push('  Parque dos Faróis - Socorro   ');
       lines.push('       COMANDA DA COZINHA       ');
       lines.push(lineDbl);
       lines.push(`PEDIDO:  #${orderShortId}`);
@@ -1778,7 +1791,7 @@
       if (ord.clientPhone) {
         lines.push(`TEL:     ${ord.clientPhone}`);
       }
-      const isBalcao = (ord.deliveryType === 'balcao' || ord.clientAddress === 'Retirada no Balcão');
+      const isBalcao = (ord.deliveryType === 'balcao' || ord.deliveryType === 'pickup' || ord.clientAddress === 'Retirada no Balcão');
       lines.push(`TIPO:    ${isBalcao ? 'RETIRADA NO BALCÃO' : 'ENTREGA (DELIVERY)'}`);
 
       if (!isBalcao && ord.clientAddress) {
@@ -1791,6 +1804,11 @@
         if (ord.reference) {
           lines.push(`Ponto Ref: ${ord.reference}`);
         }
+      } else if (isBalcao) {
+        lines.push(lineSgl);
+        lines.push('RETIRAR NA LOJA:');
+        lines.push('Rua 58, Parque dos Faróis');
+        lines.push('Nossa Senhora do Socorro - SE');
       }
 
       lines.push(lineSgl);
@@ -1870,14 +1888,14 @@
         id: Date.now(),
         clientName: "Guilherme Santos",
         clientPhone: "(79) 98172-8613",
-        neighborhood: "13 de Julho",
-        clientAddress: "Rua das Flores, 120 - Ap 402",
-        reference: "Próximo à Praça dos Namorados",
+        neighborhood: "Parque dos Faróis",
+        clientAddress: "Rua 58, 120 - Casa",
+        reference: "Próximo ao Campo Beira Rio",
         itemsDescription: "1x Combo 25 Peças Especial - R$ 68,00\n2x Temaki Salmão Grelhado Hot - R$ 56,00\n1x Coca-Cola Lata 350ml - R$ 6,00",
         itemsCount: 4,
         subtotal: 130.00,
-        deliveryFee: 6.00,
-        total: 136.00,
+        deliveryFee: 4.00,
+        total: 134.00,
         paymentText: "PIX",
         orderNotes: "Mandar tarê extra e 2 pares de hashi por favor!",
         time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
@@ -1932,6 +1950,13 @@
 
     // ==================== PEDIDO MANUAL ====================
     function openManualOrderModal() {
+      document.getElementById('manualClientName').value = '';
+      document.getElementById('manualClientPhone').value = '';
+      document.getElementById('manualNeighborhood').value = '';
+      document.getElementById('manualClientAddress').value = '';
+      document.getElementById('manualItemsText').value = '';
+      document.getElementById('manualTotal').value = '';
+      document.getElementById('manualPayment').value = 'PIX';
       document.getElementById('manualOrderModal').classList.remove('hidden');
       document.getElementById('manualClientName').focus();
     }
@@ -1957,7 +1982,7 @@
         id: Date.now(),
         clientName: name,
         clientPhone: phone,
-        neighborhood: neighborhood || 'Aracaju',
+        neighborhood: neighborhood || 'Socorro / Aracaju',
         clientAddress: address ? `${neighborhood ? neighborhood + ' - ' : ''}${address}` : 'Retirada no Balcão',
         itemsDescription: items || 'Itens diversos',
         itemsCount: 1,
