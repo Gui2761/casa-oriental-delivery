@@ -357,50 +357,47 @@
             <p class="text-xs font-bold text-neutral-300 uppercase tracking-wider flex items-center">
               <i data-lucide="wallet" class="w-4 h-4 text-brand-red mr-1.5"></i> Forma de Pagamento
             </p>
-            <span class="text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
-              3 Opções
+            <span id="paymentOptionsBadge" class="text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+              2 Opções
             </span>
           </div>
 
-          <!-- 3 Opções de Pagamento em Cards Interativos -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <!-- 1. PIX (Pagar no Cardápio) -->
-            <label class="cursor-pointer relative block">
+          <!-- Opções de Pagamento em Cards Interativos -->
+          <div id="paymentCardsGrid" class="grid grid-cols-2 gap-2">
+            <!-- 1. PIX (Pagar no Cardápio) - Exclusivo de Entrega em Domicílio -->
+            <label id="payOptPixContainer" class="cursor-pointer relative block">
               <input type="radio" name="paymentOption" value="PIX" id="payOptPix" checked class="peer sr-only" onchange="handlePaymentMethodSelect('PIX')">
               <div class="p-3 rounded-xl border border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-950/30 peer-checked:text-white text-neutral-300 hover:border-neutral-600 transition flex flex-col justify-between h-full space-y-1">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center">
                   <span class="text-xs font-extrabold flex items-center text-emerald-400">
                     <i data-lucide="zap" class="w-3.5 h-3.5 mr-1"></i> PIX
                   </span>
-                  <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">No Cardápio</span>
                 </div>
                 <p class="text-[10px] text-neutral-400 leading-tight">Pagamento online imediato via chave PIX da loja.</p>
               </div>
             </label>
 
-            <!-- 2. Pagar na Entrega -->
-            <label class="cursor-pointer relative block">
+            <!-- 2. Pagar na Entrega - Exclusivo de Entrega em Domicílio -->
+            <label id="payOptEntregaContainer" class="cursor-pointer relative block">
               <input type="radio" name="paymentOption" value="ENTREGA" id="payOptEntrega" class="peer sr-only" onchange="handlePaymentMethodSelect('ENTREGA')">
               <div class="p-3 rounded-xl border border-neutral-700 peer-checked:border-blue-500 peer-checked:bg-blue-950/30 peer-checked:text-white text-neutral-300 hover:border-neutral-600 transition flex flex-col justify-between h-full space-y-1">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center">
                   <span class="text-xs font-extrabold flex items-center text-blue-400">
                     <i data-lucide="bike" class="w-3.5 h-3.5 mr-1"></i> Na Entrega
                   </span>
-                  <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Ao Motoboy</span>
                 </div>
                 <p class="text-[10px] text-neutral-400 leading-tight">Cartão na maquininha, Dinheiro ou PIX.</p>
               </div>
             </label>
 
-            <!-- 3. Dinheiro ou Cartão na Loja -->
-            <label class="cursor-pointer relative block">
+            <!-- 3. Dinheiro ou Cartão na Loja - Exclusivo de Retirada no Balcão -->
+            <label id="payOptLojaContainer" class="hidden cursor-pointer relative block">
               <input type="radio" name="paymentOption" value="LOJA" id="payOptLoja" class="peer sr-only" onchange="handlePaymentMethodSelect('LOJA')">
               <div class="p-3 rounded-xl border border-neutral-700 peer-checked:border-amber-500 peer-checked:bg-amber-950/30 peer-checked:text-white text-neutral-300 hover:border-neutral-600 transition flex flex-col justify-between h-full space-y-1">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center">
                   <span class="text-xs font-extrabold flex items-center text-amber-400">
                     <i data-lucide="store" class="w-3.5 h-3.5 mr-1"></i> Na Loja
                   </span>
-                  <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">No Balcão</span>
                 </div>
                 <p class="text-[10px] text-neutral-400 leading-tight">Dinheiro, Cartão ou PIX ao retirar (Sem frete).</p>
               </div>
@@ -1011,6 +1008,8 @@
 
         if (data.deliveryType) {
           setDeliveryType(data.deliveryType, false);
+        } else {
+          setDeliveryType('delivery', false);
         }
       } catch (e) {
         console.warn('Falha ao recuperar dados persistidos do cliente:', e);
@@ -1505,15 +1504,28 @@
       const deliverySection = document.getElementById('deliveryAddressSection');
       const pickupNotice = document.getElementById('pickupNoticeSection');
 
+      const pixCard = document.getElementById('payOptPixContainer');
+      const entregaCard = document.getElementById('payOptEntregaContainer');
+      const lojaCard = document.getElementById('payOptLojaContainer');
+      const grid = document.getElementById('paymentCardsGrid');
+      const badge = document.getElementById('paymentOptionsBadge');
+
       if (type === 'delivery') {
         btnDel.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red';
         btnPick.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700';
         deliverySection.classList.remove('hidden');
         pickupNotice.classList.add('hidden');
 
-        // Se estava com "Na Loja" selecionado, ajusta automaticamente para "Na Entrega"
+        // Mostra opções de Entrega (PIX e Na Entrega) e esconde Na Loja
+        if (pixCard) pixCard.classList.remove('hidden');
+        if (entregaCard) entregaCard.classList.remove('hidden');
+        if (lojaCard) lojaCard.classList.add('hidden');
+        if (grid) grid.className = 'grid grid-cols-2 gap-2';
+        if (badge) badge.innerText = '2 Opções';
+
+        // Se estava com "Na Loja" selecionado, ajusta automaticamente para "PIX"
         if (syncPayment && paymentMethodType === 'LOJA') {
-          handlePaymentMethodSelect('ENTREGA');
+          handlePaymentMethodSelect('PIX');
         }
       } else {
         btnPick.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red';
@@ -1521,8 +1533,15 @@
         deliverySection.classList.add('hidden');
         pickupNotice.classList.remove('hidden');
 
-        // Se estava com "Na Entrega" selecionado, ajusta automaticamente para "Na Loja"
-        if (syncPayment && paymentMethodType === 'ENTREGA') {
+        // Esconde opções de Entrega (PIX e Na Entrega) e mostra apenas Na Loja
+        if (pixCard) pixCard.classList.add('hidden');
+        if (entregaCard) entregaCard.classList.add('hidden');
+        if (lojaCard) lojaCard.classList.remove('hidden');
+        if (grid) grid.className = 'grid grid-cols-1 gap-2';
+        if (badge) badge.innerText = '1 Opção';
+
+        // Ajusta automaticamente para "Na Loja"
+        if (syncPayment || paymentMethodType !== 'LOJA') {
           handlePaymentMethodSelect('LOJA');
         }
       }
@@ -1554,7 +1573,7 @@
         if (deliveryType !== 'pickup') {
           setDeliveryType('pickup', false);
         }
-      } else if (method === 'ENTREGA') {
+      } else if (method === 'ENTREGA' || method === 'PIX') {
         if (deliveryType !== 'delivery') {
           setDeliveryType('delivery', false);
         }
