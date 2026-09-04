@@ -1,4 +1,4 @@
 {
-  "summary": "Implementação de persistência de dados (localStorage) para sacola e dados de entrega do cliente, botão de limpar sacola e remoção da linha de sucos do cardápio.",
-  "updatedAt": "2026-09-04T17:10:30.000000000Z"
+  "summary": "Configuração da Chave PIX oficial com botão de cópia na sacola e comanda, remoção de pagamento por cartão e Painel da Cozinha para disparo de notificações de status no WhatsApp (Preparo, Entrega, Concluído).",
+  "updatedAt": "2026-09-04T17:21:00.000000000Z"
 }
