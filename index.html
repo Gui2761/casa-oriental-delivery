@@ -102,7 +102,7 @@
         <div>
           <div class="flex items-center space-x-2">
             <h1 class="font-black text-lg tracking-tight text-white">CASA ORIENTAL</h1>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            <span id="storeStatusBadge" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 badge-pulse"></span> Aberto
             </span>
           </div>
@@ -111,7 +111,7 @@
             <span>•</span>
             <span>📍 Aracaju, SE</span>
             <span>•</span>
-            <span>⏱️ 30-50 min</span>
+            <span id="storeDeliveryTimeDisplay">⏱️ 30-50 min</span>
           </p>
         </div>
       </div>
@@ -138,6 +138,25 @@
       </div>
     </div>
   </header>
+
+  <!-- ==================== BANNER RESTAURANTE FECHADO ==================== -->
+  <div class="max-w-2xl mx-auto px-4 mt-3 hidden" id="storeClosedBanner">
+    <div class="bg-gradient-to-r from-red-950 via-neutral-900 to-red-950 border border-red-800/60 rounded-2xl p-3.5 shadow-xl flex items-center space-x-3.5">
+      <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/40 flex items-center justify-center text-red-400 flex-shrink-0">
+        <i data-lucide="clock" class="w-5 h-5"></i>
+      </div>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center space-x-2">
+          <span class="text-[9px] uppercase font-black px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/80">Expediente Pausado</span>
+          <span class="text-[11px] text-neutral-400 font-semibold">Cardápio em Modo Consulta</span>
+        </div>
+        <h3 class="text-xs sm:text-sm font-black text-white mt-1">Restaurante Fechado no Momento</h3>
+        <p id="storeClosedNoticeText" class="text-[11px] text-neutral-300 mt-0.5 leading-snug">
+          Estamos fora do horário de atendimento. Você pode navegar pelo cardápio, mas pedidos online estão pausados temporariamente.
+        </p>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================== BANNER DESTAQUE (DINÂMICO) ==================== -->
   <div class="max-w-2xl mx-auto px-4 mt-4" id="featuredHeroBanner">
@@ -426,7 +445,7 @@
       </div>
 
       <!-- Botão Enviar Pedido para o WhatsApp Oficial -->
-      <div class="p-4 border-t border-neutral-800 bg-[#121212]">
+      <div class="p-4 border-t border-neutral-800 bg-[#121212]" id="checkoutActionContainer">
         <button onclick="sendOrderToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white py-3.5 px-4 rounded-2xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-emerald-950 transition">
           <i data-lucide="send" class="w-4 h-4"></i>
           <span>ENVIAR PEDIDO PELO WHATSAPP</span>
@@ -479,13 +498,16 @@
       phone: "5579981728613" // WhatsApp Oficial
     };
 
-    // ==================== ESTADO DO CARDÁPIO (DESTAQUE & ESGOTADOS) ====================
+    // ==================== ESTADO DO CARDÁPIO (DESTAQUE, ESTOQUE & LOJA) ====================
     const MENU_SYNC_TOPIC = 'casa-oriental-cardapio-estado-2026';
     const MENU_SYNC_ENDPOINT = `https://ntfy.sh/${MENU_SYNC_TOPIC}`;
 
     let menuState = {
       featuredId: 14,
-      soldOutIds: []
+      soldOutIds: [],
+      isOpen: (typeof DEFAULT_STORE_IS_OPEN !== 'undefined' ? DEFAULT_STORE_IS_OPEN : true),
+      deliveryTime: (typeof DEFAULT_DELIVERY_TIME !== 'undefined' ? DEFAULT_DELIVERY_TIME : '30-50 min'),
+      closedNotice: ''
     };
 
     function loadMenuState() {
@@ -496,7 +518,10 @@
           if (parsed && typeof parsed === 'object') {
             menuState = {
               featuredId: parsed.featuredId || 14,
-              soldOutIds: Array.isArray(parsed.soldOutIds) ? parsed.soldOutIds : []
+              soldOutIds: Array.isArray(parsed.soldOutIds) ? parsed.soldOutIds : [],
+              isOpen: typeof parsed.isOpen !== 'undefined' ? Boolean(parsed.isOpen) : true,
+              deliveryTime: parsed.deliveryTime || '30-50 min',
+              closedNotice: parsed.closedNotice || ''
             };
           }
         }
@@ -505,6 +530,7 @@
       }
       renderFeaturedHeroBanner();
       renderProducts();
+      renderStoreStatusUI();
       initMenuCloudSync();
     }
 
@@ -521,7 +547,7 @@
               const msgObj = JSON.parse(line);
               if (msgObj.event === 'message' && msgObj.message) {
                 const parsed = JSON.parse(msgObj.message);
-                if (parsed && (parsed.featuredId || Array.isArray(parsed.soldOutIds))) {
+                if (parsed && (parsed.featuredId || Array.isArray(parsed.soldOutIds) || typeof parsed.isOpen !== 'undefined')) {
                   latestState = parsed;
                 }
               }
@@ -541,7 +567,7 @@
             const data = JSON.parse(event.data);
             if (data && data.message) {
               const newState = JSON.parse(data.message);
-              if (newState && (newState.featuredId || Array.isArray(newState.soldOutIds))) {
+              if (newState && (newState.featuredId || Array.isArray(newState.soldOutIds) || typeof newState.isOpen !== 'undefined')) {
                 applyRemoteMenuState(newState);
               }
             }
@@ -553,13 +579,82 @@
     function applyRemoteMenuState(newState) {
       menuState = {
         featuredId: newState.featuredId || menuState.featuredId || 14,
-        soldOutIds: Array.isArray(newState.soldOutIds) ? newState.soldOutIds : []
+        soldOutIds: Array.isArray(newState.soldOutIds) ? newState.soldOutIds : [],
+        isOpen: typeof newState.isOpen !== 'undefined' ? Boolean(newState.isOpen) : menuState.isOpen,
+        deliveryTime: newState.deliveryTime || menuState.deliveryTime || '30-50 min',
+        closedNotice: typeof newState.closedNotice !== 'undefined' ? newState.closedNotice : (menuState.closedNotice || '')
       };
       try {
         localStorage.setItem('casa_oriental_menu_state', JSON.stringify(menuState));
       } catch (e) {}
       renderFeaturedHeroBanner();
       renderProducts(document.getElementById('searchInput')?.value || '');
+      renderStoreStatusUI();
+    }
+
+    function renderStoreStatusUI() {
+      // 1. Badge de Status no Cabeçalho
+      const badge = document.getElementById('storeStatusBadge');
+      if (badge) {
+        if (menuState.isOpen !== false) {
+          badge.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+          badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 badge-pulse"></span> Aberto`;
+        } else {
+          badge.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/40';
+          badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span> Fechado`;
+        }
+      }
+
+      // 2. Tempo de Entrega Estimado no Cabeçalho
+      const timeDisplay = document.getElementById('storeDeliveryTimeDisplay');
+      if (timeDisplay) {
+        const timeVal = menuState.deliveryTime || '30-50 min';
+        timeDisplay.innerText = `⏱️ ${timeVal}`;
+      }
+
+      // 3. Banner de Restaurante Fechado no Topo do Cardápio
+      const closedBanner = document.getElementById('storeClosedBanner');
+      const noticeText = document.getElementById('storeClosedNoticeText');
+      if (closedBanner) {
+        if (menuState.isOpen === false) {
+          closedBanner.classList.remove('hidden');
+          if (noticeText) {
+            noticeText.innerText = menuState.closedNotice || 'Estamos fora do horário de atendimento. Você pode navegar pelo cardápio, mas novos pedidos estão pausados temporariamente pela cozinha.';
+          }
+        } else {
+          closedBanner.classList.add('hidden');
+        }
+      }
+
+      // 4. Botão de Finalizar Pedido no Modal de Checkout
+      const checkoutContainer = document.getElementById('checkoutActionContainer');
+      if (checkoutContainer) {
+        if (menuState.isOpen === false) {
+          checkoutContainer.innerHTML = `
+            <div class="space-y-2 text-center">
+              <div class="p-2.5 rounded-xl bg-red-950/50 border border-red-800/60 text-xs text-red-300 font-bold flex items-center justify-center space-x-1.5">
+                <i data-lucide="clock" class="w-4 h-4 text-red-400"></i>
+                <span>Restaurante Fechado no Momento</span>
+              </div>
+              <button disabled class="w-full bg-neutral-800 text-neutral-500 py-3.5 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center space-x-2 cursor-not-allowed border border-neutral-700">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                <span>PEDIDOS ONLINE PAUSADOS</span>
+              </button>
+              <p class="text-[10px] text-neutral-400 leading-snug">${menuState.closedNotice || 'O atendimento da cozinha está temporariamente encerrado.'}</p>
+            </div>
+          `;
+        } else {
+          checkoutContainer.innerHTML = `
+            <button onclick="sendOrderToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white py-3.5 px-4 rounded-2xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-emerald-950 transition">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>ENVIAR PEDIDO PELO WHATSAPP</span>
+            </button>
+            <p class="text-[10px] text-center text-neutral-500 mt-2">Comanda formatada com 32 colunas para mini impressora 58mm</p>
+          `;
+        }
+      }
+
+      lucide.createIcons();
     }
 
     function renderFeaturedHeroBanner() {
@@ -1209,6 +1304,11 @@
 
     // ==================== DISPARO DO PEDIDO FORMATADO PARA 58MM ====================
     function sendOrderToWhatsApp() {
+      if (menuState.isOpen === false) {
+        alert('Atenção: A Casa Oriental está fechada no momento e novos pedidos estão pausados temporariamente pela cozinha!');
+        return;
+      }
+
       if (cart.length === 0) {
         alert('Sua sacola está vazia!');
         return;

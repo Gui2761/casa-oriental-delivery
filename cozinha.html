@@ -231,7 +231,9 @@
 
     <!-- NAVEGAÇÃO PRINCIPAL ENTRE ABAS: PEDIDOS / CARDÁPIO & ESTOQUE -->
     <div class="bg-neutral-900/90 border-b border-neutral-800 px-4 py-2 sticky top-[57px] z-30 backdrop-blur-md">
-      <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 flex-wrap">
+        
+        <!-- Abas Principais -->
         <div class="flex items-center space-x-2">
           <button 
             id="viewBtnOrders" 
@@ -248,15 +250,54 @@
             class="px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/80 hover:border-neutral-600"
           >
             <i data-lucide="utensils" class="w-4 h-4 text-amber-400"></i>
-            <span>Cardápio, Destaque & Estoque</span>
+            <span class="hidden sm:inline">Cardápio & Estoque</span>
+            <span class="sm:hidden">Cardápio</span>
             <span id="tabSoldOutBadge" class="px-1.5 py-0.5 rounded-full bg-neutral-700 text-[10px] text-neutral-300 font-bold hidden">0 esgotados</span>
           </button>
         </div>
 
-        <div class="text-[11px] text-neutral-400 hidden sm:flex items-center space-x-1.5 bg-neutral-950/60 px-2.5 py-1 rounded-lg border border-neutral-800">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Nuvem em Tempo Real</span>
+        <!-- Controles Operacionais da Loja: Abrir/Fechar & Tempo de Entrega -->
+        <div class="flex items-center space-x-2">
+          
+          <!-- Botão Status Loja Aberta/Fechada -->
+          <button 
+            id="btnStoreStatusToggle" 
+            onclick="toggleStoreStatusQuick()" 
+            class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center space-x-1.5 border bg-emerald-600/20 text-emerald-400 border-emerald-500/40 hover:bg-emerald-600/30 active:scale-95"
+            title="Clique para abrir ou fechar a loja e pausar pedidos"
+          >
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="btnStoreStatusDot"></span>
+            <span id="btnStoreStatusText">Loja Aberta</span>
+          </button>
+
+          <!-- Seletor Rápido de Tempo de Entrega -->
+          <div class="flex items-center space-x-1 bg-neutral-950/90 px-2.5 py-1 rounded-xl border border-neutral-800">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
+            <select 
+              id="kitchenDeliveryTimeSelect" 
+              onchange="changeKitchenDeliveryTime(this.value)" 
+              class="bg-transparent text-xs font-bold text-neutral-200 focus:outline-none cursor-pointer py-0.5"
+              title="Tempo de entrega estimado informado aos clientes e no WhatsApp"
+            >
+              <option value="30-50 min" class="bg-neutral-900 text-white">⏱️ 30-50 min (Padrão)</option>
+              <option value="40-60 min" class="bg-neutral-900 text-white">⏱️ 40-60 min</option>
+              <option value="50-70 min" class="bg-neutral-900 text-white">⏱️ 50-70 min</option>
+              <option value="60-80 min" class="bg-neutral-900 text-white">⏱️ 60-80 min (Pico/Chuva)</option>
+              <option value="custom" class="bg-neutral-900 text-white">✏️ Outro tempo...</option>
+            </select>
+          </div>
+
+          <!-- Botão de Configurações Avançadas de Funcionamento -->
+          <button 
+            onclick="openStoreControlModal()" 
+            class="p-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white border border-neutral-700 transition"
+            title="Configurar aviso de fechamento e horários"
+          >
+            <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
+          </button>
+
         </div>
+
       </div>
     </div>
 
@@ -420,6 +461,65 @@
         </div>
       </div>
 
+      <!-- Painel Operacional: Fechamento da Loja & Tempo de Entrega -->
+      <div class="bg-[#141414] border border-neutral-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-amber-400 flex-shrink-0">
+              <i data-lucide="power" class="w-5 h-5" id="storeSectionIcon"></i>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-black text-white">Status da Loja & Previsão de Entrega</h3>
+              <p class="text-xs text-neutral-400">Controle se a Casa Oriental está recebendo pedidos e o tempo estimado exibido aos clientes.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button 
+              id="menuStoreToggleBtn" 
+              onclick="toggleStoreStatusQuick()" 
+              class="px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 border bg-emerald-600/20 text-emerald-400 border-emerald-500/40 hover:bg-emerald-600/30 active:scale-95"
+            >
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="menuStoreToggleDot"></span>
+              <span id="menuStoreToggleText">Loja Aberta</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-neutral-800/80 grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <!-- Tempo de Entrega Rápido -->
+          <div class="space-y-1.5">
+            <label class="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+              ⏱️ Tempo de Entrega Estimado:
+            </label>
+            <div class="flex flex-wrap gap-1.5" id="deliveryTimePillsContainer">
+              <!-- Injetado dinamicamente -->
+            </div>
+          </div>
+
+          <!-- Mensagem Personalizada Quando Fechado -->
+          <div class="space-y-1.5">
+            <label class="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+              📢 Aviso de Fechamento ao Cliente:
+            </label>
+            <div class="flex items-center space-x-2">
+              <input 
+                type="text" 
+                id="kitchenClosedNoticeInput" 
+                placeholder="Ex: Voltamos às 18:00 com sushis fresquinhos!" 
+                class="flex-1 px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red font-medium"
+              >
+              <button 
+                onclick="saveKitchenClosedNotice()" 
+                class="px-3.5 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-xl text-xs font-bold transition border border-neutral-700"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Card Destaque Atual em Evidência -->
       <div id="currentFeaturedCardContainer" class="bg-neutral-900/90 border border-amber-500/40 rounded-3xl p-4 sm:p-5 shadow-2xl">
         <!-- Renderizado dinamicamente via JavaScript -->
@@ -499,6 +599,98 @@
 
     </div>
 
+  <!-- ==================== MODAL DE CONTROLE DE LOJA E HORÁRIOS ==================== -->
+  <div id="storeControlModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-[#161616] border border-neutral-800 rounded-3xl p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-neutral-800 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+            <i data-lucide="power" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-base text-white">Status da Loja & Entrega</h3>
+            <p class="text-xs text-neutral-400">Controle operacional em tempo real</p>
+          </div>
+        </div>
+        <button onclick="closeStoreControlModal()" class="p-2 text-neutral-400 hover:text-white rounded-full hover:bg-neutral-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Status Aberto / Fechado -->
+        <div class="p-3.5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-2">
+          <label class="text-xs font-bold text-white flex items-center justify-between">
+            <span>Recebimento de Pedidos:</span>
+            <span id="modalStoreStatusLabel" class="text-xs font-black text-emerald-400">Loja Aberta</span>
+          </label>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button 
+              type="button" 
+              onclick="setModalStoreOpen(true)" 
+              id="btnModalStoreOpen" 
+              class="py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 bg-emerald-600 text-white shadow-md shadow-emerald-950/50"
+            >
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>ABERTA</span>
+            </button>
+            <button 
+              type="button" 
+              onclick="setModalStoreOpen(false)" 
+              id="btnModalStoreClose" 
+              class="py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 bg-neutral-800 text-neutral-400 hover:text-white"
+            >
+              <i data-lucide="x-circle" class="w-4 h-4"></i>
+              <span>FECHADA</span>
+            </button>
+          </div>
+          <p class="text-[10px] text-neutral-500">Ao fechar, o botão de fechar pedido no WhatsApp é desativado para os clientes.</p>
+        </div>
+
+        <!-- Tempo de Entrega Estimado -->
+        <div class="p-3.5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-2">
+          <label class="text-xs font-bold text-white flex items-center justify-between">
+            <span>Previsão de Entrega Atual:</span>
+            <span id="modalCurrentDeliveryTimeLabel" class="text-xs font-mono font-bold text-amber-400">30-50 min</span>
+          </label>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="setModalDeliveryTime('30-50 min')" class="btn-modal-time py-2 px-2 rounded-xl text-xs font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition">30-50 min (Padrão)</button>
+            <button type="button" onclick="setModalDeliveryTime('40-60 min')" class="btn-modal-time py-2 px-2 rounded-xl text-xs font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition">40-60 min</button>
+            <button type="button" onclick="setModalDeliveryTime('50-70 min')" class="btn-modal-time py-2 px-2 rounded-xl text-xs font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition">50-70 min</button>
+            <button type="button" onclick="setModalDeliveryTime('60-80 min')" class="btn-modal-time py-2 px-2 rounded-xl text-xs font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition">60-80 min (Pico)</button>
+          </div>
+          <div class="pt-1">
+            <input 
+              type="text" 
+              id="modalCustomDeliveryTimeInput" 
+              placeholder="Ou digite tempo personalizado (ex: 45-55 min)" 
+              class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red font-medium"
+            >
+          </div>
+          <p class="text-[10px] text-neutral-500">Atualiza o cabeçalho do cliente e o texto da mensagem automática de preparo no WhatsApp.</p>
+        </div>
+
+        <!-- Mensagem de Aviso Quando Fechado -->
+        <div class="p-3.5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-2">
+          <label class="text-xs font-bold text-white block">
+            Mensagem de Aviso aos Clientes (Quando Fechado):
+          </label>
+          <textarea 
+            id="modalClosedNoticeTextarea" 
+            rows="2" 
+            placeholder="Ex: Estamos fechados agora. Atendimento de terça a domingo das 18h às 23h30!"
+            class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="saveStoreControlModalSettings()" class="w-full py-3.5 bg-brand-red hover:bg-brand-redHover text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>SALVAR & SINCRONIZAR EM NUVEM</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== MODAL DE CANCELAMENTO COM MOTIVO ==================== -->
@@ -702,8 +894,13 @@
 
     let kitchenMenuState = {
       featuredId: (typeof DEFAULT_FEATURED_ID !== 'undefined' ? DEFAULT_FEATURED_ID : 14),
-      soldOutIds: []
+      soldOutIds: [],
+      isOpen: (typeof DEFAULT_STORE_IS_OPEN !== 'undefined' ? DEFAULT_STORE_IS_OPEN : true),
+      deliveryTime: (typeof DEFAULT_DELIVERY_TIME !== 'undefined' ? DEFAULT_DELIVERY_TIME : '30-50 min'),
+      closedNotice: (typeof DEFAULT_CLOSED_NOTICE !== 'undefined' ? DEFAULT_CLOSED_NOTICE : '')
     };
+    let tempModalStoreOpen = true;
+    let tempModalDeliveryTime = '30-50 min';
     let menuCategoryFilter = 'all';
     let menuAvailabilityFilter = 'all';
     let menuSearchQuery = '';
@@ -1203,10 +1400,11 @@
                   `👤 *Favorecido:* Casa Oriental Sushi Bar\n\n` +
                   `Por favor, envie o comprovante por aqui assim que efetuar o pagamento! 🙏🥢`;
       } else if (newStatus === 'preparo') {
+        const estDelivery = kitchenMenuState.deliveryTime || '30 a 50 minutos';
         message = `🍣 *CASA ORIENTAL — PAGAMENTO CONFIRMADO & EM PREPARO!* 🍣\n\n` +
                   `Olá, *${clientName}*! Confirmamos o seu pagamento com sucesso! ✅\n\n` +
                   `Nossos sushimans já estão preparando seu pedido (*#${orderShortId}*) com todo o capricho, peixes frescos e a qualidade da Casa Oriental! 🥢✨\n\n` +
-                  `⏱️ *Previsão de entrega:* 30 a 50 minutos.\n` +
+                  `⏱️ *Previsão de entrega:* ${estDelivery}\n` +
                   `Assim que o motoboy sair para entrega, te avisamos por aqui! 🛵💨`;
       } else if (newStatus === 'entrega') {
         message = `🛵💨 *CASA ORIENTAL — SEU PEDIDO SAIU PARA ENTREGA!* 🍣\n\n` +
@@ -1424,7 +1622,10 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
           if (parsed && typeof parsed === 'object') {
             kitchenMenuState = {
               featuredId: parsed.featuredId || 14,
-              soldOutIds: Array.isArray(parsed.soldOutIds) ? parsed.soldOutIds : []
+              soldOutIds: Array.isArray(parsed.soldOutIds) ? parsed.soldOutIds : [],
+              isOpen: typeof parsed.isOpen === 'boolean' ? parsed.isOpen : (typeof DEFAULT_STORE_IS_OPEN !== 'undefined' ? DEFAULT_STORE_IS_OPEN : true),
+              deliveryTime: parsed.deliveryTime || (typeof DEFAULT_DELIVERY_TIME !== 'undefined' ? DEFAULT_DELIVERY_TIME : '30-50 min'),
+              closedNotice: parsed.closedNotice || ''
             };
           }
         }
@@ -1432,8 +1633,178 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
         console.warn('Erro ao carregar menuState:', e);
       }
       updateSoldOutBadges();
+      renderKitchenStoreStatusUI();
       connectMenuCloudSync();
       reloadMenuFromCloud(false);
+    }
+
+    function renderKitchenStoreStatusUI() {
+      const btnToggle = document.getElementById('btnStoreStatusToggle');
+      const dot = document.getElementById('btnStoreStatusDot');
+      const text = document.getElementById('btnStoreStatusText');
+      const timeSelect = document.getElementById('kitchenDeliveryTimeSelect');
+      const closedInput = document.getElementById('kitchenClosedNoticeInput');
+
+      const isOpen = kitchenMenuState.isOpen !== false;
+      const deliveryTime = kitchenMenuState.deliveryTime || '30-50 min';
+
+      if (btnToggle && text && dot) {
+        if (isOpen) {
+          btnToggle.className = 'px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center space-x-1.5 border bg-emerald-600/20 text-emerald-400 border-emerald-500/40 hover:bg-emerald-600/30 active:scale-95';
+          dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+          text.innerText = 'Loja Aberta';
+        } else {
+          btnToggle.className = 'px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center space-x-1.5 border bg-red-600/20 text-red-400 border-red-500/40 hover:bg-red-600/30 active:scale-95';
+          dot.className = 'w-2 h-2 rounded-full bg-red-500';
+          text.innerText = 'Loja Fechada';
+        }
+      }
+
+      if (timeSelect) {
+        let found = false;
+        for (let i = 0; i < timeSelect.options.length; i++) {
+          if (timeSelect.options[i].value === deliveryTime) {
+            timeSelect.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          const customOpt = timeSelect.querySelector('option[value="custom"]');
+          if (customOpt) {
+            customOpt.text = `⏱️ ${deliveryTime} (Personalizado)`;
+            customOpt.value = deliveryTime;
+            timeSelect.value = deliveryTime;
+          }
+        }
+      }
+
+      if (closedInput && document.activeElement !== closedInput) {
+        closedInput.value = kitchenMenuState.closedNotice || '';
+      }
+    }
+
+    function toggleStoreStatusQuick() {
+      kitchenMenuState.isOpen = !(kitchenMenuState.isOpen !== false);
+      const actionMsg = kitchenMenuState.isOpen 
+        ? '🟢 Loja ABERTA! Clientes podem fechar pedidos no cardápio.' 
+        : '🔴 Loja FECHADA! Recebimento de pedidos pausado.';
+      syncMenuChangeToCloud(actionMsg);
+      renderKitchenStoreStatusUI();
+    }
+
+    function changeKitchenDeliveryTime(val) {
+      if (val === 'custom') {
+        const customTime = prompt('Digite o tempo estimado de entrega (ex: 45-55 min):', kitchenMenuState.deliveryTime || '30-50 min');
+        if (customTime && customTime.trim()) {
+          kitchenMenuState.deliveryTime = customTime.trim();
+          syncMenuChangeToCloud(`⏱️ Previsão de entrega alterada para ${kitchenMenuState.deliveryTime}`);
+          renderKitchenStoreStatusUI();
+        } else {
+          renderKitchenStoreStatusUI();
+        }
+        return;
+      }
+      kitchenMenuState.deliveryTime = val;
+      syncMenuChangeToCloud(`⏱️ Previsão de entrega alterada para ${val}`);
+      renderKitchenStoreStatusUI();
+    }
+
+    function saveKitchenClosedNotice() {
+      const input = document.getElementById('kitchenClosedNoticeInput');
+      if (!input) return;
+      kitchenMenuState.closedNotice = input.value.trim();
+      syncMenuChangeToCloud('📢 Aviso de fechamento atualizado com sucesso!');
+      renderKitchenStoreStatusUI();
+    }
+
+    // Modal Operacional Avançado
+    function openStoreControlModal() {
+      tempModalStoreOpen = (kitchenMenuState.isOpen !== false);
+      tempModalDeliveryTime = kitchenMenuState.deliveryTime || '30-50 min';
+
+      updateModalStoreControlsUI();
+      
+      const customInput = document.getElementById('modalCustomDeliveryTimeInput');
+      if (customInput) {
+        customInput.value = ['30-50 min', '40-60 min', '50-70 min', '60-80 min'].includes(tempModalDeliveryTime) ? '' : tempModalDeliveryTime;
+      }
+
+      const noticeArea = document.getElementById('modalClosedNoticeTextarea');
+      if (noticeArea) {
+        noticeArea.value = kitchenMenuState.closedNotice || '';
+      }
+
+      document.getElementById('storeControlModal')?.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeStoreControlModal() {
+      document.getElementById('storeControlModal')?.classList.add('hidden');
+    }
+
+    function setModalStoreOpen(state) {
+      tempModalStoreOpen = !!state;
+      updateModalStoreControlsUI();
+    }
+
+    function setModalDeliveryTime(val) {
+      tempModalDeliveryTime = val;
+      const customInput = document.getElementById('modalCustomDeliveryTimeInput');
+      if (customInput) customInput.value = '';
+      updateModalStoreControlsUI();
+    }
+
+    function updateModalStoreControlsUI() {
+      const label = document.getElementById('modalStoreStatusLabel');
+      const btnOpen = document.getElementById('btnModalStoreOpen');
+      const btnClose = document.getElementById('btnModalStoreClose');
+      const lblDelivery = document.getElementById('modalCurrentDeliveryTimeLabel');
+
+      if (label) {
+        label.innerText = tempModalStoreOpen ? 'Loja Aberta' : 'Loja Fechada';
+        label.className = tempModalStoreOpen ? 'text-xs font-black text-emerald-400' : 'text-xs font-black text-red-400';
+      }
+
+      if (btnOpen && btnClose) {
+        if (tempModalStoreOpen) {
+          btnOpen.className = 'py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 bg-emerald-600 text-white shadow-md shadow-emerald-950/50';
+          btnClose.className = 'py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 bg-neutral-800 text-neutral-400 hover:text-white';
+        } else {
+          btnOpen.className = 'py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 bg-neutral-800 text-neutral-400 hover:text-white';
+          btnClose.className = 'py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 bg-red-600 text-white shadow-md shadow-red-950/50';
+        }
+      }
+
+      if (lblDelivery) {
+        lblDelivery.innerText = tempModalDeliveryTime;
+      }
+
+      document.querySelectorAll('.btn-modal-time').forEach(b => {
+        if (b.innerText.startsWith(tempModalDeliveryTime)) {
+          b.className = 'btn-modal-time py-2 px-2 rounded-xl text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/50 transition';
+        } else {
+          b.className = 'btn-modal-time py-2 px-2 rounded-xl text-xs font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition';
+        }
+      });
+    }
+
+    function saveStoreControlModalSettings() {
+      const customInput = document.getElementById('modalCustomDeliveryTimeInput');
+      if (customInput && customInput.value.trim()) {
+        tempModalDeliveryTime = customInput.value.trim();
+      }
+
+      const noticeArea = document.getElementById('modalClosedNoticeTextarea');
+      const closedNoticeVal = noticeArea ? noticeArea.value.trim() : '';
+
+      kitchenMenuState.isOpen = tempModalStoreOpen;
+      kitchenMenuState.deliveryTime = tempModalDeliveryTime;
+      kitchenMenuState.closedNotice = closedNoticeVal;
+
+      syncMenuChangeToCloud(`⚙️ Configurações da loja sincronizadas! Status: ${kitchenMenuState.isOpen ? 'Aberta' : 'Fechada'} | Entrega: ${kitchenMenuState.deliveryTime}`);
+      renderKitchenStoreStatusUI();
+      closeStoreControlModal();
     }
 
     function updateSoldOutBadges() {
@@ -1459,7 +1830,7 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
             const data = JSON.parse(event.data);
             if (data && data.message) {
               const incoming = JSON.parse(data.message);
-              if (incoming && (incoming.featuredId || Array.isArray(incoming.soldOutIds))) {
+              if (incoming && (incoming.featuredId !== undefined || Array.isArray(incoming.soldOutIds) || incoming.isOpen !== undefined || incoming.deliveryTime !== undefined)) {
                 applyRemoteKitchenMenuState(incoming);
               }
             }
@@ -1482,7 +1853,7 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
               const msgObj = JSON.parse(line);
               if (msgObj.event === 'message' && msgObj.message) {
                 const parsed = JSON.parse(msgObj.message);
-                if (parsed && (parsed.featuredId || Array.isArray(parsed.soldOutIds))) {
+                if (parsed && (parsed.featuredId !== undefined || Array.isArray(parsed.soldOutIds) || parsed.isOpen !== undefined || parsed.deliveryTime !== undefined)) {
                   latest = parsed;
                 }
               }
@@ -1503,12 +1874,16 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
     function applyRemoteKitchenMenuState(incoming) {
       kitchenMenuState = {
         featuredId: incoming.featuredId || kitchenMenuState.featuredId || 14,
-        soldOutIds: Array.isArray(incoming.soldOutIds) ? incoming.soldOutIds : []
+        soldOutIds: Array.isArray(incoming.soldOutIds) ? incoming.soldOutIds : (kitchenMenuState.soldOutIds || []),
+        isOpen: typeof incoming.isOpen === 'boolean' ? incoming.isOpen : (typeof kitchenMenuState.isOpen === 'boolean' ? kitchenMenuState.isOpen : true),
+        deliveryTime: incoming.deliveryTime || kitchenMenuState.deliveryTime || '30-50 min',
+        closedNotice: incoming.closedNotice !== undefined ? incoming.closedNotice : (kitchenMenuState.closedNotice || '')
       };
       try {
         localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(kitchenMenuState));
       } catch (e) {}
       updateSoldOutBadges();
+      renderKitchenStoreStatusUI();
       if (currentKitchenView === 'menu') {
         renderKitchenMenu();
       }
@@ -1520,6 +1895,7 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
       } catch (e) {}
 
       updateSoldOutBadges();
+      renderKitchenStoreStatusUI();
       if (currentKitchenView === 'menu') {
         renderKitchenMenu();
       }

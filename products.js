@@ -128,3 +128,6 @@ const CATEGORIES = {
 };
 
 const DEFAULT_FEATURED_ID = 14; // Combo 25 Peças
+const DEFAULT_STORE_IS_OPEN = true; // Loja aberta por padrão
+const DEFAULT_DELIVERY_TIME = '30-50 min'; // Tempo estimado padrão
+const DEFAULT_CLOSED_NOTICE = 'Restaurante fechado no momento. Atendimento de terça a domingo das 18h às 23h30.';
