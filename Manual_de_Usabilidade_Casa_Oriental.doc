@@ -1,0 +1,1060 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+      <w:DoNotOptimizeForBrowser/>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
+  <style>
+    @page {
+      size: A4;
+      margin: 2.5cm 2cm 2cm 2.5cm;
+    }
+    body {
+      font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+      font-size: 11pt;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    /* ---- Capa ---- */
+    .capa {
+      text-align: center;
+      page-break-after: always;
+      padding-top: 120px;
+    }
+    .capa h1 {
+      font-size: 32pt;
+      color: #E53935;
+      margin-bottom: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .capa h2 {
+      font-size: 20pt;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+    .capa .subtitle {
+      font-size: 14pt;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    .capa .version {
+      font-size: 11pt;
+      color: #999;
+      margin-top: 60px;
+    }
+    /* ---- Headings ---- */
+    h1 {
+      font-size: 22pt;
+      color: #E53935;
+      border-bottom: 3px solid #E53935;
+      padding-bottom: 8px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-weight: 700;
+      page-break-after: avoid;
+    }
+    h2 {
+      font-size: 16pt;
+      color: #C62828;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 13pt;
+      color: #D32F2F;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      page-break-after: avoid;
+    }
+    h4 {
+      font-size: 11pt;
+      color: #E53935;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    /* ---- Conteúdo ---- */
+    p {
+      margin: 6px 0 10px 0;
+      text-align: justify;
+    }
+    ul, ol {
+      margin: 8px 0 12px 25px;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+    .tip-box {
+      background-color: #E8F5E9;
+      border-left: 4px solid #4CAF50;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 4px;
+    }
+    .tip-box strong {
+      color: #2E7D32;
+    }
+    .warning-box {
+      background-color: #FFF3E0;
+      border-left: 4px solid #FF9800;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 4px;
+    }
+    .warning-box strong {
+      color: #E65100;
+    }
+    .danger-box {
+      background-color: #FFEBEE;
+      border-left: 4px solid #E53935;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 4px;
+    }
+    .danger-box strong {
+      color: #C62828;
+    }
+    .info-box {
+      background-color: #E3F2FD;
+      border-left: 4px solid #1976D2;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 4px;
+    }
+    .info-box strong {
+      color: #0D47A1;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0 18px 0;
+    }
+    th {
+      background-color: #E53935;
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 10pt;
+    }
+    td {
+      border: 1px solid #ddd;
+      padding: 8px 14px;
+      font-size: 10pt;
+    }
+    tr:nth-child(even) td {
+      background-color: #f9f9f9;
+    }
+    .step-number {
+      display: inline-block;
+      background-color: #E53935;
+      color: white;
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      line-height: 28px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 10pt;
+      margin-right: 8px;
+    }
+    .emoji {
+      font-size: 14pt;
+    }
+    .toc a {
+      text-decoration: none;
+      color: #E53935;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+    .toc ul {
+      list-style: none;
+      margin-left: 0;
+      padding-left: 0;
+    }
+    .toc li {
+      margin-bottom: 6px;
+      padding-left: 0;
+    }
+    .toc .toc-h2 {
+      padding-left: 20px;
+    }
+    .toc .toc-h3 {
+      padding-left: 40px;
+      font-size: 10pt;
+    }
+    .keyboard-key {
+      display: inline-block;
+      background: #eee;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: monospace;
+      font-size: 10pt;
+    }
+    .section-break {
+      page-break-before: always;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 20px 0;
+    }
+  </style>
+  <title>Manual de Usabilidade — Casa Oriental Delivery</title>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<!--                        CAPA                                      -->
+<!-- ================================================================ -->
+<div class="capa">
+  <br><br><br>
+  <p style="font-size: 72pt; margin: 0; color: #E53935;">&#x1F363;</p>
+  <h1>CASA ORIENTAL</h1>
+  <h2>Sushi Bar &amp; Delivery</h2>
+  <br>
+  <p class="subtitle"><strong>Manual de Usabilidade</strong></p>
+  <p class="subtitle">Sistema de Cardápio Digital &amp; Painel da Cozinha</p>
+  <br><br>
+  <p class="version">Versão 1.0 — Setembro 2026</p>
+  <p class="version">Rua 58, Parque dos Faróis — Nossa Sra. do Socorro / SE</p>
+</div>
+
+<!-- ================================================================ -->
+<!--                    SUMÁRIO                                       -->
+<!-- ================================================================ -->
+<div class="section-break">
+<h1>Sumário</h1>
+<div class="toc">
+<ul>
+  <li><strong>PARTE 1 — VISÃO GERAL DO SISTEMA</strong></li>
+  <li class="toc-h2"><a href="#visao">1.1 O que é o Sistema Casa Oriental Delivery</a></li>
+  <li class="toc-h2"><a href="#componentes">1.2 Componentes do Sistema</a></li>
+  <li class="toc-h2"><a href="#requisitos">1.3 Requisitos Mínimos</a></li>
+
+  <br>
+  <li><strong>PARTE 2 — CARDÁPIO DIGITAL (Visão do Cliente)</strong></li>
+  <li class="toc-h2"><a href="#card-acesso">2.1 Como o Cliente Acessa</a></li>
+  <li class="toc-h2"><a href="#card-navegar">2.2 Navegando pelo Cardápio</a></li>
+  <li class="toc-h2"><a href="#card-carrinho">2.3 Adicionando Itens ao Carrinho</a></li>
+  <li class="toc-h2"><a href="#card-sacola">2.4 Sacola de Compras</a></li>
+  <li class="toc-h2"><a href="#card-entrega">2.5 Entrega vs. Retirada</a></li>
+  <li class="toc-h2"><a href="#card-gps">2.6 Localização por GPS e Cálculo de Frete</a></li>
+  <li class="toc-h2"><a href="#card-pagamento">2.7 Formas de Pagamento</a></li>
+  <li class="toc-h3"><a href="#pag-pix">2.7.1 PIX (No Cardápio)</a></li>
+  <li class="toc-h3"><a href="#pag-entrega">2.7.2 Pagar na Entrega</a></li>
+  <li class="toc-h3"><a href="#pag-loja">2.7.3 Pagar na Loja</a></li>
+  <li class="toc-h2"><a href="#card-whatsapp">2.8 Envio do Pedido pelo WhatsApp</a></li>
+
+  <br>
+  <li><strong>PARTE 3 — PAINEL DA COZINHA (Gestão de Pedidos)</strong></li>
+  <li class="toc-h2"><a href="#coz-acesso">3.1 Acessando o Painel</a></li>
+  <li class="toc-h2"><a href="#coz-interface">3.2 Visão Geral da Interface</a></li>
+  <li class="toc-h2"><a href="#coz-loja">3.3 Abrir e Fechar a Loja</a></li>
+  <li class="toc-h2"><a href="#coz-tempo">3.4 Configurar Tempo de Entrega</a></li>
+  <li class="toc-h2"><a href="#coz-pedidos">3.5 Recebendo Pedidos</a></li>
+  <li class="toc-h2"><a href="#coz-status">3.6 Fluxo de Status dos Pedidos</a></li>
+  <li class="toc-h3"><a href="#status-pix">3.6.1 Pedidos PIX (Aguardando Pagamento)</a></li>
+  <li class="toc-h3"><a href="#status-preparo">3.6.2 Em Preparo</a></li>
+  <li class="toc-h3"><a href="#status-entrega">3.6.3 Saiu para Entrega / Pronto para Retirada</a></li>
+  <li class="toc-h3"><a href="#status-concluido">3.6.4 Pedido Concluído</a></li>
+  <li class="toc-h2"><a href="#coz-whatsapp">3.7 Notificações pelo WhatsApp</a></li>
+  <li class="toc-h2"><a href="#coz-impressao">3.8 Impressão de Comanda (58mm)</a></li>
+  <li class="toc-h2"><a href="#coz-manual">3.9 Pedido Manual</a></li>
+  <li class="toc-h2"><a href="#coz-cancelar">3.10 Cancelar Pedido</a></li>
+  <li class="toc-h2"><a href="#coz-pix-config">3.11 Configuração da Chave PIX</a></li>
+  <li class="toc-h2"><a href="#coz-historico">3.12 Histórico de Pedidos</a></li>
+
+  <br>
+  <li><strong>PARTE 4 — INFORMAÇÕES TÉCNICAS</strong></li>
+  <li class="toc-h2"><a href="#tec-dados">4.1 Armazenamento de Dados</a></li>
+  <li class="toc-h2"><a href="#tec-sync">4.2 Sincronização entre Abas</a></li>
+  <li class="toc-h2"><a href="#tec-problemas">4.3 Problemas Comuns e Soluções</a></li>
+
+  <br>
+  <li><strong>PARTE 5 — REFERÊNCIA RÁPIDA</strong></li>
+  <li class="toc-h2"><a href="#ref-pagamentos">5.1 Tabela de Pagamentos</a></li>
+  <li class="toc-h2"><a href="#ref-status">5.2 Tabela de Status</a></li>
+  <li class="toc-h2"><a href="#ref-frete">5.3 Tabela de Frete</a></li>
+</ul>
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!--           PARTE 1 — VISÃO GERAL DO SISTEMA                      -->
+<!-- ================================================================ -->
+<div class="section-break">
+<h1 id="visao">PARTE 1 — Visão Geral do Sistema</h1>
+
+<h2>1.1 O que é o Sistema Casa Oriental Delivery</h2>
+<p>
+  O <strong>Sistema Casa Oriental Delivery</strong> é uma solução completa de cardápio digital e gestão de pedidos
+  desenvolvida especialmente para o restaurante <strong>Casa Oriental Sushi Bar</strong>.
+</p>
+<p>O sistema é composto por duas telas principais:</p>
+<ul>
+  <li><strong>Cardápio Digital</strong> — a página que seus clientes acessam para ver o menu, montar o pedido e enviar via WhatsApp.</li>
+  <li><strong>Painel da Cozinha</strong> — a tela de gestão interna onde você controla os pedidos, muda os status, imprime comandas e envia notificações ao cliente.</li>
+</ul>
+
+<div class="tip-box">
+  <strong>&#x2705; Vantagem:</strong> O sistema funciona 100% no navegador do celular ou computador, sem necessidade de instalar aplicativos.
+</div>
+
+<h2 id="componentes">1.2 Componentes do Sistema</h2>
+<table>
+  <tr>
+    <th>Componente</th>
+    <th>Arquivo</th>
+    <th>Para quem?</th>
+    <th>Função</th>
+  </tr>
+  <tr>
+    <td>Cardápio Digital</td>
+    <td>index.html</td>
+    <td>Clientes</td>
+    <td>Exibir o menu, montar pedidos, calcular frete, escolher pagamento e enviar pelo WhatsApp</td>
+  </tr>
+  <tr>
+    <td>Painel da Cozinha</td>
+    <td>cozinha.html</td>
+    <td>Restaurante (você)</td>
+    <td>Gerenciar pedidos recebidos, alterar status, imprimir, notificar clientes</td>
+  </tr>
+  <tr>
+    <td>Catálogo de Produtos</td>
+    <td>products.js</td>
+    <td>Sistema</td>
+    <td>Lista de todos os produtos, preços e categorias do cardápio</td>
+  </tr>
+</table>
+
+<h2 id="requisitos">1.3 Requisitos Mínimos</h2>
+<ul>
+  <li><strong>Navegador atualizado:</strong> Google Chrome, Safari, Firefox ou Edge (versões recentes)</li>
+  <li><strong>Conexão com a internet:</strong> necessária para carregar o cardápio e enviar pedidos</li>
+  <li><strong>WhatsApp:</strong> instalado no celular do restaurante para receber pedidos</li>
+  <li><strong>Impressora térmica 58mm</strong> (opcional): para imprimir comandas na cozinha</li>
+</ul>
+
+<div class="info-box">
+  <strong>&#x2139;&#xFE0F; Nota:</strong> O sistema funciona tanto em celulares quanto em computadores e tablets. Para o <strong>Painel da Cozinha</strong>, recomendamos o uso em tablet ou computador para melhor visualização.
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!--           PARTE 2 — CARDÁPIO DIGITAL                            -->
+<!-- ================================================================ -->
+<div class="section-break">
+<h1>PARTE 2 — Cardápio Digital (Visão do Cliente)</h1>
+<p>Esta seção descreve a experiência do cliente ao acessar o cardápio e fazer um pedido.</p>
+
+<h2 id="card-acesso">2.1 Como o Cliente Acessa</h2>
+<p>O cliente acessa o cardápio digital pelo link do seu site ou por um QR Code que você pode disponibilizar na loja ou nas redes sociais. Ao abrir o link, ele verá imediatamente o cardápio com todas as categorias e produtos disponíveis.</p>
+
+<div class="tip-box">
+  <strong>&#x1F4A1; Dica:</strong> Você pode gerar um QR Code gratuito com o link do seu cardápio e colocar em flyers, cartões de visita, mesas da loja ou no Instagram.
+</div>
+
+<h2 id="card-navegar">2.2 Navegando pelo Cardápio</h2>
+<p>A tela principal do cardápio mostra:</p>
+<ul>
+  <li><strong>Cabeçalho:</strong> logo, nome do restaurante e status (Aberto/Fechado)</li>
+  <li><strong>Categorias:</strong> abas horizontais deslizáveis no topo (ex: Combos, Sushis, Temakis, Bebidas, etc.)</li>
+  <li><strong>Produtos:</strong> cards com foto, nome, descrição e preço de cada item</li>
+  <li><strong>Botão da Sacola:</strong> ícone flutuante no rodapé mostrando a quantidade de itens</li>
+</ul>
+<p>O cliente navega pelas categorias tocando nas abas e rola a tela para ver todos os produtos daquela categoria.</p>
+
+<div class="warning-box">
+  <strong>&#x26A0;&#xFE0F; Atenção:</strong> Se a loja estiver <strong>fechada</strong> no Painel da Cozinha, o cliente verá um aviso de que o restaurante está fora do horário de funcionamento e <strong>não conseguirá fazer pedidos</strong>.
+</div>
+
+<h2 id="card-carrinho">2.3 Adicionando Itens ao Carrinho</h2>
+<p>Para adicionar um item ao carrinho:</p>
+<ol>
+  <li><span class="step-number">1</span> O cliente toca no card do produto desejado</li>
+  <li><span class="step-number">2</span> Um modal aparece com detalhes do produto, campo de observações e controle de quantidade (+/-)</li>
+  <li><span class="step-number">3</span> O cliente pode escrever observações (ex: "sem gengibre", "sem wasabi")</li>
+  <li><span class="step-number">4</span> Toca no botão <strong>"Adicionar à Sacola"</strong></li>
+</ol>
+<p>O ícone da sacola no rodapé atualiza automaticamente mostrando o total de itens.</p>
+
+<h2 id="card-sacola">2.4 Sacola de Compras</h2>
+<p>Ao tocar no botão da sacola, abre a tela de finalização do pedido. Nela, o cliente vê:</p>
+<ul>
+  <li><strong>Lista dos itens:</strong> com nome, quantidade, preço unitário e subtotal</li>
+  <li><strong>Botões +/-:</strong> para ajustar a quantidade de cada item</li>
+  <li><strong>Botão lixeira:</strong> para remover um item do carrinho</li>
+  <li><strong>Subtotal e Taxa de entrega:</strong> valores discriminados</li>
+  <li><strong>Total geral:</strong> subtotal + taxa de entrega</li>
+</ul>
+
+<h2 id="card-entrega">2.5 Entrega vs. Retirada</h2>
+<p>O cliente deve escolher entre duas opções de recebimento:</p>
+
+<table>
+  <tr>
+    <th>Opção</th>
+    <th>Descrição</th>
+    <th>Frete</th>
+    <th>Pagamentos Disponíveis</th>
+  </tr>
+  <tr>
+    <td><strong>&#x1F6F5; Entrega em Domicílio</strong></td>
+    <td>O motoboy leva o pedido até o endereço do cliente</td>
+    <td>Calculado pela distância (GPS)</td>
+    <td>PIX (No Cardápio) e Pagar na Entrega</td>
+  </tr>
+  <tr>
+    <td><strong>&#x1F3EA; Retirada na Loja</strong></td>
+    <td>O cliente vai buscar o pedido no restaurante</td>
+    <td>Grátis (R$ 0,00)</td>
+    <td>Pagar na Loja</td>
+  </tr>
+</table>
+
+<div class="info-box">
+  <strong>&#x2139;&#xFE0F; Importante:</strong> As opções de pagamento mudam automaticamente conforme a modalidade escolhida. 
+  Se for <strong>Entrega</strong>, aparecem PIX e Na Entrega. Se for <strong>Retirada</strong>, aparece apenas Na Loja.
+</div>
+
+<h2 id="card-gps">2.6 Localização por GPS e Cálculo de Frete</h2>
+<p>Quando o cliente escolhe <strong>Entrega em Domicílio</strong>, ele precisa informar o endereço. O sistema oferece duas formas:</p>
+
+<h3>Opção 1: Usar GPS (Recomendado)</h3>
+<ol>
+  <li><span class="step-number">1</span> O cliente toca no botão <strong>"&#x1F4CD; Usar minha localização"</strong></li>
+  <li><span class="step-number">2</span> O navegador solicita permissão de localização</li>
+  <li><span class="step-number">3</span> Ao permitir, o sistema detecta automaticamente:
+    <ul>
+      <li>O <strong>endereço</strong> (rua e número) — preenchido no campo "Endereço"</li>
+      <li>O <strong>bairro</strong> — preenchido no campo "Bairro"</li>
+      <li>A <strong>distância</strong> até o restaurante — usada para calcular o frete</li>
+    </ul>
+  </li>
+  <li><span class="step-number">4</span> A <strong>taxa de entrega</strong> é calculada automaticamente com base na distância real</li>
+</ol>
+
+<h3>Opção 2: Digitar manualmente</h3>
+<p>O cliente pode digitar o endereço e bairro nos campos correspondentes. Nesse caso, o sistema usará uma taxa de entrega padrão.</p>
+
+<div class="tip-box">
+  <strong>&#x1F4A1; Como funciona o cálculo do frete:</strong><br>
+  O sistema calcula a distância em linha reta do restaurante (Rua 58, Parque dos Faróis) até o endereço do cliente, 
+  aplica um fator de 1.3× (para compensar o trajeto real pelas ruas), e multiplica pelo valor por km configurado. 
+  Mesmo para endereços muito próximos, sempre é cobrada uma <strong>taxa mínima</strong>.
+</div>
+
+<h2 id="card-pagamento">2.7 Formas de Pagamento</h2>
+<p>O sistema possui <strong>três formas de pagamento</strong>, que aparecem dinamicamente conforme o tipo de entrega:</p>
+
+<h3 id="pag-pix">2.7.1 PIX (No Cardápio) — Apenas para Entrega</h3>
+<p>O cliente paga <strong>antes</strong> da entrega via PIX. Ao selecionar esta opção:</p>
+<ul>
+  <li>Aparece um aviso de que a chave PIX será enviada na mensagem do WhatsApp</li>
+  <li>Ao enviar o pedido, a mensagem conterá a <strong>chave PIX completa</strong> e o <strong>valor total</strong></li>
+  <li>O cliente faz o PIX e envia o comprovante pelo próprio WhatsApp</li>
+  <li>No painel da cozinha, o pedido fica com status <strong>"Aguardando PIX"</strong> até o comprovante ser confirmado</li>
+</ul>
+
+<div class="info-box">
+  <strong>&#x1F4B0; Chave PIX configurada:</strong><br>
+  A chave PIX da loja é enviada automaticamente na mensagem do WhatsApp. Ela não aparece na tela do cardápio — o cliente a recebe na conversa do WhatsApp para copiar e pagar.
+</div>
+
+<h3 id="pag-entrega">2.7.2 Pagar na Entrega — Apenas para Entrega</h3>
+<p>O cliente paga ao motoboy quando receber o pedido. Ao selecionar esta opção, aparecem <strong>3 sub-opções</strong>:</p>
+
+<table>
+  <tr>
+    <th>Sub-opção</th>
+    <th>Descrição</th>
+    <th>Observação</th>
+  </tr>
+  <tr>
+    <td><strong>&#x1F4B3; Cartão</strong></td>
+    <td>Paga com cartão de crédito/débito ao motoboy</td>
+    <td>O motoboy deve levar a maquininha</td>
+  </tr>
+  <tr>
+    <td><strong>&#x1F4B5; Dinheiro</strong></td>
+    <td>Paga em dinheiro ao motoboy</td>
+    <td>Aparece campo para informar "Troco para quanto?"</td>
+  </tr>
+  <tr>
+    <td><strong>&#x26A1; PIX</strong></td>
+    <td>Faz PIX diretamente ao motoboy na hora da entrega</td>
+    <td>Pagamento na hora, sem comprovante prévio</td>
+  </tr>
+</table>
+
+<div class="warning-box">
+  <strong>&#x26A0;&#xFE0F; Diferença importante:</strong><br>
+  <strong>PIX (No Cardápio)</strong> = paga antes, envia comprovante, pedido fica aguardando confirmação.<br>
+  <strong>PIX (Na Entrega)</strong> = paga na hora ao motoboy, pedido vai direto para preparo.
+</div>
+
+<h3 id="pag-loja">2.7.3 Pagar na Loja — Apenas para Retirada</h3>
+<p>Quando o cliente escolhe <strong>Retirada na Loja</strong>, a única opção de pagamento disponível é <strong>"Pagar na Loja"</strong>. O pagamento é feito no balcão do restaurante com as seguintes opções:</p>
+<ul>
+  <li><strong>Dinheiro</strong></li>
+  <li><strong>Cartão</strong> (crédito ou débito)</li>
+  <li><strong>PIX</strong></li>
+</ul>
+<p>O pedido vai direto para o status <strong>"Em Preparo"</strong> na cozinha.</p>
+
+<h2 id="card-whatsapp">2.8 Envio do Pedido pelo WhatsApp</h2>
+<p>Após preencher todos os dados (endereço, pagamento, nome e telefone), o cliente toca em <strong>"Enviar Pedido pelo WhatsApp"</strong>. O sistema:</p>
+<ol>
+  <li>Monta uma mensagem formatada com todos os detalhes do pedido</li>
+  <li>Abre o WhatsApp automaticamente com a mensagem pronta</li>
+  <li>A mensagem inclui:
+    <ul>
+      <li>Lista de itens com quantidades e preços</li>
+      <li>Endereço de entrega (ou indicação de retirada)</li>
+      <li>Taxa de entrega e total geral</li>
+      <li>Forma de pagamento escolhida</li>
+      <li>Chave PIX (quando aplicável)</li>
+      <li>Observações (se houver)</li>
+    </ul>
+  </li>
+  <li>O pedido também é salvo automaticamente no <strong>Painel da Cozinha</strong></li>
+</ol>
+</div>
+
+<!-- ================================================================ -->
+<!--           PARTE 3 — PAINEL DA COZINHA                           -->
+<!-- ================================================================ -->
+<div class="section-break">
+<h1>PARTE 3 — Painel da Cozinha (Gestão de Pedidos)</h1>
+<p>Esta é a parte mais importante para o dia a dia do restaurante. O Painel da Cozinha é onde você gerencia todos os pedidos recebidos.</p>
+
+<h2 id="coz-acesso">3.1 Acessando o Painel</h2>
+<p>O Painel da Cozinha é acessado pelo arquivo <strong>cozinha.html</strong>. Este link é apenas para uso interno do restaurante — <strong>não compartilhe com clientes</strong>.</p>
+
+<div class="danger-box">
+  <strong>&#x1F6A8; Segurança:</strong> O link do Painel da Cozinha é de uso exclusivo da equipe do restaurante. Nunca compartilhe esse link com clientes, pois ele dá acesso ao controle dos pedidos.
+</div>
+
+<h2 id="coz-interface">3.2 Visão Geral da Interface</h2>
+<p>O painel é organizado da seguinte forma:</p>
+
+<h3>Barra Superior</h3>
+<ul>
+  <li><strong>Logo e nome</strong> do restaurante</li>
+  <li><strong>Botão Abrir/Fechar Loja</strong> — controla se o cardápio aceita pedidos</li>
+  <li><strong>Indicador de status</strong> — ponto verde (aberto) ou vermelho (fechado)</li>
+  <li><strong>Tempo de entrega</strong> — exibido em minutos</li>
+</ul>
+
+<h3>Área de Pedidos</h3>
+<ul>
+  <li><strong>Abas de filtro:</strong> Todos, Aguardando PIX, Em Preparo, Saiu p/ Entrega, Concluídos</li>
+  <li><strong>Cards de pedidos:</strong> cada pedido é um card com informações do cliente, itens, valor e botões de ação</li>
+</ul>
+
+<h3>Rodapé / Ações</h3>
+<ul>
+  <li><strong>Botão + Pedido Manual</strong> — para registrar pedidos feitos por telefone/balcão</li>
+  <li><strong>Configurações</strong> — tempo de entrega, chave PIX</li>
+</ul>
+
+<h2 id="coz-loja">3.3 Abrir e Fechar a Loja</h2>
+<p>Use o botão <strong>"Abrir Loja" / "Fechar Loja"</strong> na barra superior para controlar o funcionamento:</p>
+
+<table>
+  <tr>
+    <th>Estado</th>
+    <th>Efeito no Cardápio</th>
+    <th>Efeito no Painel</th>
+  </tr>
+  <tr>
+    <td><strong>&#x1F7E2; Loja Aberta</strong></td>
+    <td>Clientes podem ver o cardápio e fazer pedidos normalmente</td>
+    <td>Indicador verde, pedidos são recebidos</td>
+  </tr>
+  <tr>
+    <td><strong>&#x1F534; Loja Fechada</strong></td>
+    <td>Clientes veem aviso de "Fora do horário" e não podem fazer pedidos</td>
+    <td>Indicador vermelho, nenhum pedido novo entra</td>
+  </tr>
+</table>
+
+<div class="tip-box">
+  <strong>&#x1F4A1; Dica:</strong> Lembre-se de <strong>abrir a loja</strong> antes do horário de funcionamento e <strong>fechar</strong> quando encerrar o expediente. Se esquecer de fechar, clientes poderão enviar pedidos fora do horário.
+</div>
+
+<h2 id="coz-tempo">3.4 Configurar Tempo de Entrega</h2>
+<p>Você pode configurar o tempo estimado de entrega que aparece para os clientes:</p>
+<ol>
+  <li><span class="step-number">1</span> No painel, localize o campo de <strong>tempo de entrega</strong></li>
+  <li><span class="step-number">2</span> Ajuste o tempo em minutos (ex: 30, 45, 60)</li>
+  <li><span class="step-number">3</span> O novo tempo é salvo automaticamente e mostrado aos clientes no cardápio</li>
+</ol>
+
+<div class="info-box">
+  <strong>&#x2139;&#xFE0F; Quando ajustar:</strong> Em dias de muito movimento, aumente o tempo estimado para não frustrar o cliente. Em dias calmos, pode reduzir para atrair mais pedidos.
+</div>
+
+<h2 id="coz-pedidos">3.5 Recebendo Pedidos</h2>
+<p>Quando um cliente faz um pedido pelo cardápio, o seguinte acontece:</p>
+<ol>
+  <li><span class="step-number">1</span> Um <strong>alerta sonoro alto</strong> toca no Painel da Cozinha avisando que chegou pedido novo</li>
+  <li><span class="step-number">2</span> O card do novo pedido aparece automaticamente na tela</li>
+  <li><span class="step-number">3</span> O card mostra:
+    <ul>
+      <li>Nome e telefone do cliente</li>
+      <li>Endereço de entrega (ou "Retirada na Loja")</li>
+      <li>Lista de itens pedidos com quantidades</li>
+      <li>Forma de pagamento (com badge colorido)</li>
+      <li>Valor total do pedido</li>
+      <li>Horário em que o pedido foi feito</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="warning-box">
+  <strong>&#x1F50A; Som de alerta:</strong> O som de novo pedido é proposital alto para que você ouça mesmo estando longe do computador/celular. 
+  Mantenha o volume do dispositivo ligado durante o horário de funcionamento!
+</div>
+
+<h2 id="coz-status">3.6 Fluxo de Status dos Pedidos</h2>
+<p>Todo pedido passa por uma sequência de status. Veja o fluxo completo:</p>
+
+<h3 id="status-pix">3.6.1 Aguardando PIX (apenas para pagamento PIX no cardápio)</h3>
+<p>Quando o cliente escolhe <strong>PIX (No Cardápio)</strong>, o pedido entra com status <strong>"Aguardando PIX"</strong>.</p>
+<ul>
+  <li>O pedido fica com uma <strong>badge roxa/amarela</strong> indicando "Aguardando PIX"</li>
+  <li>Você deve aguardar o cliente enviar o comprovante no WhatsApp</li>
+  <li>Após confirmar o comprovante, toque no botão <strong>"Confirmar PIX &#x2192; Preparo"</strong></li>
+  <li>O pedido muda para o status <strong>"Em Preparo"</strong></li>
+</ul>
+
+<div class="danger-box">
+  <strong>&#x1F6A8; Cuidado:</strong> Nunca comece a preparar um pedido PIX sem antes confirmar o comprovante de pagamento no WhatsApp!
+</div>
+
+<h3 id="status-preparo">3.6.2 Em Preparo</h3>
+<p>Este é o status padrão para pedidos com pagamento <strong>Na Entrega</strong>, <strong>Na Loja</strong> ou após confirmar o PIX.</p>
+<ul>
+  <li>O card aparece com badge <strong>laranja</strong> "Em Preparo"</li>
+  <li>É aqui que a cozinha deve preparar o pedido</li>
+  <li>Quando o pedido estiver pronto, toque no botão de <strong>avançar status</strong>:
+    <ul>
+      <li>Se for <strong>entrega</strong>: muda para <strong>"Saiu para Entrega"</strong></li>
+      <li>Se for <strong>retirada</strong>: muda para <strong>"Pronto para Retirada"</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="status-entrega">3.6.3 Saiu para Entrega / Pronto para Retirada</h3>
+<ul>
+  <li><strong>Saiu para Entrega:</strong> o pedido está a caminho do cliente. Badge <strong>azul</strong>.</li>
+  <li><strong>Pronto para Retirada:</strong> o pedido está esperando o cliente buscar na loja. Badge <strong>verde</strong>.</li>
+  <li>Quando o pedido for entregue ou retirado, toque no botão <strong>"Concluir"</strong></li>
+</ul>
+
+<h3 id="status-concluido">3.6.4 Pedido Concluído</h3>
+<ul>
+  <li>O pedido é movido para a aba <strong>"Concluídos"</strong></li>
+  <li>Ele fica registrado no histórico para consulta futura</li>
+</ul>
+
+<h3>Resumo do Fluxo:</h3>
+<table>
+  <tr>
+    <th>Pagamento</th>
+    <th>Fluxo de Status</th>
+  </tr>
+  <tr>
+    <td>PIX (No Cardápio) + Entrega</td>
+    <td>Aguardando PIX &#x2192; Em Preparo &#x2192; Saiu p/ Entrega &#x2192; Concluído</td>
+  </tr>
+  <tr>
+    <td>Na Entrega (Cartão/Dinheiro/PIX)</td>
+    <td>Em Preparo &#x2192; Saiu p/ Entrega &#x2192; Concluído</td>
+  </tr>
+  <tr>
+    <td>Na Loja (Retirada)</td>
+    <td>Em Preparo &#x2192; Pronto p/ Retirada &#x2192; Concluído</td>
+  </tr>
+</table>
+
+<h2 id="coz-whatsapp">3.7 Notificações pelo WhatsApp</h2>
+<p>A cada mudança de status, o sistema oferece a opção de <strong>enviar uma notificação ao cliente pelo WhatsApp</strong>. As mensagens são pré-formatadas:</p>
+
+<table>
+  <tr>
+    <th>Mudança de Status</th>
+    <th>Mensagem Enviada ao Cliente</th>
+  </tr>
+  <tr>
+    <td>Confirmar PIX &#x2192; Preparo</td>
+    <td>"&#x2705; PIX confirmado! Seu pedido #XXX está sendo preparado..."</td>
+  </tr>
+  <tr>
+    <td>Preparo &#x2192; Saiu p/ Entrega</td>
+    <td>"&#x1F6F5; Seu pedido #XXX saiu para entrega! Previsão: XX minutos..."</td>
+  </tr>
+  <tr>
+    <td>Preparo &#x2192; Pronto p/ Retirada</td>
+    <td>"&#x1F3EA; Seu pedido #XXX está pronto para retirada!"</td>
+  </tr>
+  <tr>
+    <td>Pedido Cancelado</td>
+    <td>"&#x274C; Seu pedido #XXX foi cancelado..."</td>
+  </tr>
+</table>
+
+<div class="tip-box">
+  <strong>&#x1F4A1; Dica:</strong> Enviar notificações pelo WhatsApp melhora muito a experiência do cliente! Ele fica informado sobre cada etapa do pedido sem precisar ligar para perguntar.
+</div>
+
+<h2 id="coz-impressao">3.8 Impressão de Comanda (58mm)</h2>
+<p>Cada card de pedido tem um botão de <strong>impressão</strong> (ícone de impressora). Ao tocar:</p>
+<ol>
+  <li><span class="step-number">1</span> O sistema gera uma comanda formatada para <strong>impressora térmica de 58mm</strong></li>
+  <li><span class="step-number">2</span> A janela de impressão do navegador é aberta automaticamente</li>
+  <li><span class="step-number">3</span> Selecione sua impressora térmica e confirme a impressão</li>
+</ol>
+
+<p>A comanda inclui:</p>
+<ul>
+  <li>Número do pedido e horário</li>
+  <li>Nome do cliente</li>
+  <li>Endereço de entrega ou "RETIRADA NA LOJA"</li>
+  <li>Lista de itens com quantidades</li>
+  <li>Forma de pagamento</li>
+  <li>Valor total</li>
+  <li>Observações do cliente (se houver)</li>
+</ul>
+
+<div class="info-box">
+  <strong>&#x1F5A8;&#xFE0F; Configuração da impressora:</strong> Para funcionar corretamente, a impressora térmica de 58mm deve estar configurada no sistema operacional. 
+  Nas configurações de impressão do navegador, selecione a largura do papel como 58mm ou 80mm conforme o modelo da sua impressora.
+</div>
+
+<h2 id="coz-manual">3.9 Pedido Manual</h2>
+<p>Para registrar pedidos feitos por telefone, WhatsApp direto ou balcão presencial:</p>
+<ol>
+  <li><span class="step-number">1</span> Toque no botão <strong>"+ Pedido Manual"</strong> no painel</li>
+  <li><span class="step-number">2</span> Preencha os dados do pedido:
+    <ul>
+      <li>Nome do cliente</li>
+      <li>Telefone</li>
+      <li>Tipo: Entrega ou Retirada</li>
+      <li>Endereço (se for entrega)</li>
+      <li>Forma de pagamento</li>
+      <li>Itens do pedido (selecione do catálogo)</li>
+    </ul>
+  </li>
+  <li><span class="step-number">3</span> Toque em <strong>"Criar Pedido"</strong></li>
+  <li><span class="step-number">4</span> O pedido entra na fila normalmente com som de alerta</li>
+</ol>
+
+<div class="tip-box">
+  <strong>&#x1F4A1; Quando usar:</strong> Use o Pedido Manual sempre que receber um pedido por um canal diferente do cardápio digital (ligação, mensagem direta no WhatsApp, cliente presencial que quer pedir pelo sistema).
+</div>
+
+<h2 id="coz-cancelar">3.10 Cancelar Pedido</h2>
+<p>Para cancelar um pedido em andamento:</p>
+<ol>
+  <li><span class="step-number">1</span> Localize o card do pedido que deseja cancelar</li>
+  <li><span class="step-number">2</span> Toque no botão de <strong>cancelamento</strong> (ícone &#x274C; ou botão vermelho)</li>
+  <li><span class="step-number">3</span> Confirme o cancelamento na janela de confirmação</li>
+  <li><span class="step-number">4</span> O sistema oferecerá enviar uma <strong>mensagem de cancelamento</strong> ao cliente pelo WhatsApp</li>
+</ol>
+
+<div class="danger-box">
+  <strong>&#x1F6A8; Atenção:</strong> Cancelamentos não podem ser desfeitos. Após cancelar, o pedido é removido da fila ativa.
+  Se o pedido foi pago via PIX, lembre-se de <strong>devolver o valor</strong> ao cliente.
+</div>
+
+<h2 id="coz-pix-config">3.11 Configuração da Chave PIX</h2>
+<p>A chave PIX usada nos pedidos pode ser configurada no painel:</p>
+<ol>
+  <li><span class="step-number">1</span> Acesse as <strong>configurações</strong> do painel</li>
+  <li><span class="step-number">2</span> Localize o campo <strong>"Chave PIX"</strong></li>
+  <li><span class="step-number">3</span> Insira ou atualize a chave PIX da loja</li>
+  <li><span class="step-number">4</span> A chave é salva automaticamente</li>
+</ol>
+
+<div class="info-box">
+  <strong>&#x2139;&#xFE0F; Chave PIX atual:</strong><br>
+  <code>d883ab34-450e-44d3-9a9b-d0586121b6d6</code><br>
+  Esta chave é enviada automaticamente nas mensagens de WhatsApp quando o cliente escolhe pagamento via PIX no cardápio.
+</div>
+
+<h2 id="coz-historico">3.12 Histórico de Pedidos</h2>
+<p>Todos os pedidos concluídos e cancelados ficam salvos no histórico. Para consultá-los:</p>
+<ul>
+  <li>Clique na aba <strong>"Concluídos"</strong> para ver os pedidos finalizados</li>
+  <li>Cada pedido mantém todos os dados originais (itens, cliente, valor, horário)</li>
+  <li>Os dados ficam salvos no navegador (localStorage)</li>
+</ul>
+
+<div class="warning-box">
+  <strong>&#x26A0;&#xFE0F; Importante sobre os dados:</strong> Os pedidos são salvos no armazenamento local do navegador. 
+  Se você <strong>limpar os dados do navegador</strong> (cache/cookies), o histórico será perdido. 
+  Evite limpar os dados do navegador usado no painel da cozinha.
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!--           PARTE 4 — INFORMAÇÕES TÉCNICAS                       -->
+<!-- ================================================================ -->
+<div class="section-break">
+<h1>PARTE 4 — Informações Técnicas</h1>
+
+<h2 id="tec-dados">4.1 Armazenamento de Dados</h2>
+<p>O sistema utiliza o <strong>localStorage</strong> do navegador para armazenar os dados. Isso significa que:</p>
+<ul>
+  <li>Os dados ficam salvos <strong>no navegador específico</strong> que você usa</li>
+  <li>Se trocar de navegador (ex: Chrome para Firefox), os pedidos antigos não aparecerão</li>
+  <li>Se trocar de dispositivo, precisará começar do zero</li>
+  <li>Os dados <strong>não são perdidos</strong> ao fechar o navegador ou desligar o dispositivo</li>
+  <li>Os dados <strong>são perdidos</strong> se limpar cache/cookies do navegador</li>
+</ul>
+
+<div class="tip-box">
+  <strong>&#x1F4A1; Recomendação:</strong> Use sempre o <strong>mesmo navegador e dispositivo</strong> para o Painel da Cozinha. 
+  Recomendamos o <strong>Google Chrome</strong> em um tablet ou computador dedicado para a cozinha.
+</div>
+
+<h2 id="tec-sync">4.2 Sincronização entre Abas</h2>
+<p>O sistema utiliza <strong>BroadcastChannel</strong> para sincronizar dados entre abas abertas no mesmo navegador:</p>
+<ul>
+  <li>Se o cardápio (index.html) e o painel (cozinha.html) estiverem abertos no mesmo navegador, eles se comunicam automaticamente</li>
+  <li>Mudanças no status da loja (aberto/fechado) refletem instantaneamente no cardápio</li>
+  <li>Novos pedidos feitos no cardápio aparecem automaticamente no painel</li>
+</ul>
+
+<h2 id="tec-problemas">4.3 Problemas Comuns e Soluções</h2>
+
+<table>
+  <tr>
+    <th style="width: 35%;">Problema</th>
+    <th>Causa Provável</th>
+    <th>Solução</th>
+  </tr>
+  <tr>
+    <td>O som de alerta não toca</td>
+    <td>Volume do dispositivo baixo ou navegador bloqueou o áudio</td>
+    <td>Aumente o volume. Interaja uma vez com a página (toque em qualquer lugar) para desbloquear o áudio</td>
+  </tr>
+  <tr>
+    <td>GPS não funciona</td>
+    <td>Cliente negou permissão ou está em modo anônimo</td>
+    <td>O cliente deve permitir acesso à localização nas configurações do navegador e recarregar a página</td>
+  </tr>
+  <tr>
+    <td>Pedido não aparece no painel</td>
+    <td>Painel em navegador/dispositivo diferente do cardápio</td>
+    <td>Use o mesmo navegador ou verifique se o pedido foi salvo via localStorage</td>
+  </tr>
+  <tr>
+    <td>Cardápio mostra "Loja Fechada"</td>
+    <td>A loja está com status fechado no painel</td>
+    <td>Acesse o Painel da Cozinha e toque em "Abrir Loja"</td>
+  </tr>
+  <tr>
+    <td>Impressora não imprime</td>
+    <td>Impressora não configurada no sistema</td>
+    <td>Verifique se a impressora térmica está instalada e selecionada como padrão</td>
+  </tr>
+  <tr>
+    <td>Frete calculado incorretamente</td>
+    <td>GPS com baixa precisão ou cliente em local fechado</td>
+    <td>Peça ao cliente para tentar novamente em local aberto ou digite o endereço manualmente</td>
+  </tr>
+  <tr>
+    <td>WhatsApp não abre</td>
+    <td>WhatsApp não instalado no dispositivo</td>
+    <td>O cliente precisa ter o WhatsApp instalado. Em desktop, o WhatsApp Web deve estar logado</td>
+  </tr>
+  <tr>
+    <td>Histórico de pedidos sumiu</td>
+    <td>Cache do navegador foi limpo</td>
+    <td>Infelizmente os dados não podem ser recuperados. Evite limpar o cache do navegador da cozinha</td>
+  </tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!--           PARTE 5 — REFERÊNCIA RÁPIDA                           -->
+<!-- ================================================================ -->
+<div class="section-break">
+<h1>PARTE 5 — Referência Rápida</h1>
+
+<h2 id="ref-pagamentos">5.1 Tabela de Pagamentos</h2>
+<table>
+  <tr>
+    <th>Forma</th>
+    <th>Disponível em</th>
+    <th>Como funciona</th>
+    <th>Status inicial na cozinha</th>
+  </tr>
+  <tr>
+    <td><strong>PIX (No Cardápio)</strong></td>
+    <td>Entrega em Domicílio</td>
+    <td>Chave PIX enviada no WhatsApp. Cliente paga e envia comprovante.</td>
+    <td>Aguardando PIX</td>
+  </tr>
+  <tr>
+    <td><strong>Na Entrega — Cartão</strong></td>
+    <td>Entrega em Domicílio</td>
+    <td>Paga com cartão ao motoboy na entrega.</td>
+    <td>Em Preparo</td>
+  </tr>
+  <tr>
+    <td><strong>Na Entrega — Dinheiro</strong></td>
+    <td>Entrega em Domicílio</td>
+    <td>Paga em dinheiro ao motoboy. Cliente informa troco.</td>
+    <td>Em Preparo</td>
+  </tr>
+  <tr>
+    <td><strong>Na Entrega — PIX</strong></td>
+    <td>Entrega em Domicílio</td>
+    <td>Faz PIX ao motoboy na hora da entrega.</td>
+    <td>Em Preparo</td>
+  </tr>
+  <tr>
+    <td><strong>Na Loja</strong></td>
+    <td>Retirada na Loja</td>
+    <td>Paga no balcão (dinheiro, cartão ou PIX).</td>
+    <td>Em Preparo</td>
+  </tr>
+</table>
+
+<h2 id="ref-status">5.2 Tabela de Status</h2>
+<table>
+  <tr>
+    <th>Status</th>
+    <th>Cor</th>
+    <th>Significado</th>
+    <th>Próximo passo</th>
+  </tr>
+  <tr>
+    <td><strong>Aguardando PIX</strong></td>
+    <td style="background-color: #9C27B0; color: white; text-align: center;">Roxo</td>
+    <td>Esperando o comprovante PIX do cliente</td>
+    <td>Confirmar PIX &#x2192; Em Preparo</td>
+  </tr>
+  <tr>
+    <td><strong>Em Preparo</strong></td>
+    <td style="background-color: #FF9800; color: white; text-align: center;">Laranja</td>
+    <td>A cozinha está preparando o pedido</td>
+    <td>Saiu p/ Entrega ou Pronto p/ Retirada</td>
+  </tr>
+  <tr>
+    <td><strong>Saiu p/ Entrega</strong></td>
+    <td style="background-color: #1976D2; color: white; text-align: center;">Azul</td>
+    <td>O motoboy está a caminho do cliente</td>
+    <td>Concluir pedido</td>
+  </tr>
+  <tr>
+    <td><strong>Pronto p/ Retirada</strong></td>
+    <td style="background-color: #4CAF50; color: white; text-align: center;">Verde</td>
+    <td>Pedido pronto, aguardando cliente buscar</td>
+    <td>Concluir pedido</td>
+  </tr>
+  <tr>
+    <td><strong>Concluído</strong></td>
+    <td style="background-color: #607D8B; color: white; text-align: center;">Cinza</td>
+    <td>Pedido entregue/retirado com sucesso</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><strong>Cancelado</strong></td>
+    <td style="background-color: #E53935; color: white; text-align: center;">Vermelho</td>
+    <td>Pedido foi cancelado</td>
+    <td>—</td>
+  </tr>
+</table>
+
+<h2 id="ref-frete">5.3 Tabela de Frete</h2>
+<table>
+  <tr>
+    <th>Distância estimada</th>
+    <th>Taxa aproximada</th>
+  </tr>
+  <tr>
+    <td>Até 1 km</td>
+    <td>Taxa mínima (valor base)</td>
+  </tr>
+  <tr>
+    <td>1 a 3 km</td>
+    <td>Calculada por km × fator de rota</td>
+  </tr>
+  <tr>
+    <td>3 a 5 km</td>
+    <td>Calculada por km × fator de rota</td>
+  </tr>
+  <tr>
+    <td>5 a 10 km</td>
+    <td>Calculada por km × fator de rota</td>
+  </tr>
+  <tr>
+    <td>Acima de 10 km</td>
+    <td>Verificar disponibilidade de entrega</td>
+  </tr>
+</table>
+
+<div class="info-box">
+  <strong>&#x2139;&#xFE0F; Nota:</strong> O cálculo do frete usa a fórmula: <strong>distância em linha reta × 1.3 (fator de rota) × valor por km</strong>. 
+  O ponto de origem é o endereço do restaurante: <strong>Rua 58, Parque dos Faróis, Nossa Sra. do Socorro - SE</strong>.
+  Sempre há uma taxa mínima, mesmo para distâncias muito curtas.
+</div>
+
+<br><br>
+<hr>
+
+<!-- ================================================================ -->
+<!--                     CHECKLIST DIÁRIO                             -->
+<!-- ================================================================ -->
+<h1>Checklist Diário do Restaurante</h1>
+
+<h2>&#x2600;&#xFE0F; Início do Expediente</h2>
+<ol>
+  <li>&#x2705; Abrir o Painel da Cozinha (cozinha.html) no navegador</li>
+  <li>&#x2705; Verificar se o volume do dispositivo está ligado (para ouvir alertas de pedido)</li>
+  <li>&#x2705; Tocar em <strong>"Abrir Loja"</strong></li>
+  <li>&#x2705; Ajustar o <strong>tempo de entrega estimado</strong></li>
+  <li>&#x2705; Verificar se a impressora térmica está ligada e com papel (se usar)</li>
+</ol>
+
+<h2>&#x1F319; Fim do Expediente</h2>
+<ol>
+  <li>&#x2705; Verificar se todos os pedidos foram concluídos ou cancelados</li>
+  <li>&#x2705; Tocar em <strong>"Fechar Loja"</strong></li>
+  <li>&#x2705; <strong>NÃO</strong> limpar os dados do navegador</li>
+</ol>
+
+<br><br>
+<hr>
+<p style="text-align: center; color: #999; font-size: 9pt;">
+  Manual de Usabilidade — Casa Oriental Sushi Bar &amp; Delivery<br>
+  Versão 1.0 — Setembro 2026<br>
+  Este manual é de uso exclusivo da equipe do restaurante.<br>
+  Em caso de dúvidas, entre em contato com o suporte técnico.
+</p>
+
+</body>
+</html>

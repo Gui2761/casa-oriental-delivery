@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CASA ORIENTAL — Cardápio Digital & Delivery</title>
+  <!-- Favicon e Ícones -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="shortcut icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Plus Jakarta Sans -->
@@ -107,8 +111,6 @@
             </span>
           </div>
           <p class="text-xs text-neutral-400 flex items-center space-x-2 mt-0.5">
-            <span class="text-amber-400 flex items-center font-medium"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 mr-1 inline"></i> 4.9</span>
-            <span>•</span>
             <span>📍 Parque dos Faróis (Socorro)</span>
             <span>•</span>
             <span id="storeDeliveryTimeDisplay">⏱️ 30-50 min</span>
@@ -918,6 +920,12 @@
         const raw = localStorage.getItem(STORAGE_KEYS.CUSTOMER);
         if (!raw) return;
         const data = JSON.parse(raw);
+
+        // Se houver dados de teste antigos, descarta
+        if (data.name && (data.name.toLowerCase().includes('teste') || data.name.toLowerCase().includes('guilherme'))) {
+          localStorage.removeItem(STORAGE_KEYS.CUSTOMER);
+          return;
+        }
 
         if (data.name && document.getElementById('clientName')) {
           document.getElementById('clientName').value = data.name;

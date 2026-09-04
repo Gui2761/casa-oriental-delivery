@@ -7,6 +7,8 @@
   
   <!-- Favicon e Ícones -->
   <link rel="icon" type="image/png" href="logo.png">
+  <link rel="shortcut icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -466,13 +468,13 @@
         </div>
 
         <div class="flex items-center space-x-2">
-          <button onclick="fetchOrdersFromCloud(true)" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold flex items-center space-x-1 border border-neutral-700 transition" title="Recarregar pedidos">
+          <button onclick="fetchOrdersFromCloud(true)" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold flex items-center space-x-1.5 border border-neutral-700 transition" title="Recarregar pedidos">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Atualizar</span>
           </button>
-          <button onclick="confirmClearHistory()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-neutral-900 hover:bg-red-950/40 text-neutral-500 hover:text-red-400 text-xs font-semibold flex items-center space-x-1 border border-neutral-800 hover:border-red-800/40 transition" title="Limpar pedidos concluídos">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">Limpar Histórico</span>
+          <button onclick="confirmClearHistory()" class="px-2.5 py-1.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-400 hover:text-red-300 text-xs font-bold flex items-center space-x-1.5 border border-red-800/50 transition active:scale-95 shadow-sm" title="Apagar todos os pedidos e clientes de teste">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5 text-red-400"></i>
+            <span>Limpar Todos os Pedidos</span>
           </button>
         </div>
       </div>
@@ -935,6 +937,20 @@
             </button>
           </div>
           <p class="text-[10px] text-neutral-500">Dispara o som de alto volume de cozinha e exibe o banner animado de novo pedido na tela.</p>
+        </div>
+
+        <!-- Limpar Todos os Pedidos / Clientes Teste -->
+        <div class="p-3.5 rounded-2xl bg-red-950/30 border border-red-900/40 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-red-400 font-bold flex items-center">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5 mr-1.5 text-red-400"></i> Limpar Pedidos & Testes
+            </span>
+            <button type="button" onclick="confirmClearHistory()" class="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-black flex items-center space-x-1.5 shadow-md active:scale-95 transition">
+              <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+              <span>Limpar Todos os Pedidos</span>
+            </button>
+          </div>
+          <p class="text-[10px] text-neutral-400">Apaga permanentemente todos os pedidos e clientes de teste do histórico deste navegador.</p>
         </div>
       </div>
 
@@ -2146,9 +2162,20 @@
     }
 
     function confirmClearHistory() {
-      if (confirm('Deseja realmente limpar todo o histórico de pedidos deste navegador?')) {
+      if (confirm('Deseja realmente apagar TODOS os pedidos e clientes de teste? Essa ação não pode ser desfeita.')) {
         localStorage.removeItem(KITCHEN_STORAGE_KEYS.ORDERS);
+        localStorage.removeItem('casa_oriental_orders_history');
+        localStorage.removeItem('casaOriental_orders');
+        localStorage.removeItem('casa_oriental_cart');
+        localStorage.removeItem('casa_oriental_customer_info');
+        if (typeof hideNewOrderAlertBanner === 'function') {
+          hideNewOrderAlertBanner();
+        }
         renderOrdersList();
+        if (typeof closeSettingsModal === 'function') {
+          closeSettingsModal();
+        }
+        alert('Todos os pedidos e clientes de teste foram apagados com sucesso!');
       }
     }
 
