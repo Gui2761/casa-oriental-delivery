@@ -70,7 +70,8 @@
   <!-- ==================== HEADER COM A LOGO OFICIAL DA CASA ORIENTAL ==================== -->
   <header class="sticky top-0 z-40 bg-[#121212]/95 backdrop-blur-md border-b border-brand-border px-4 py-3 shadow-lg">
     <div class="max-w-2xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
+      <!-- Logotipo & Nome (Gatilho Secreto: 5 toques rápidos abrem a cozinha) -->
+      <div class="flex items-center space-x-3 cursor-pointer select-none" id="secretLogoTrigger" onclick="handleSecretLogoClick()" title="Casa Oriental Delivery">
         <!-- LOGO OFICIAL CASA ORIENTAL -->
         <div class="w-12 h-12 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg shadow-black/50 border border-neutral-700/60 flex-shrink-0 overflow-hidden">
           <img src="logo.png" alt="Logo Casa Oriental" class="w-full h-full object-contain">
@@ -92,11 +93,6 @@
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <!-- Botão Cozinha / Admin -->
-        <button onclick="openAdminModal()" title="Painel da Cozinha & Chave PIX" class="p-2.5 rounded-xl bg-neutral-800/90 hover:bg-neutral-700 text-neutral-300 hover:text-white border border-neutral-700 flex items-center space-x-1.5 text-xs font-bold transition shadow-sm">
-          <i data-lucide="chef-hat" class="w-4 h-4 text-amber-400"></i>
-          <span class="hidden sm:inline">Cozinha</span>
-        </button>
         <!-- Botão Direto de Falar no WhatsApp Oficial -->
         <a href="https://api.whatsapp.com/send?phone=5579981728613&text=Ol%C3%A1%2C%20Casa%20Oriental!%20Gostaria%20de%20fazer%20um%20pedido%20ou%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20card%C3%A1pio." target="_blank" class="p-2.5 rounded-xl bg-emerald-600/15 hover:bg-emerald-600/25 text-emerald-400 border border-emerald-500/30 flex items-center space-x-1.5 text-xs font-bold transition">
           <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -196,20 +192,15 @@
     <!-- Renderizado dinamicamente pelo JavaScript -->
   </main>
 
-  <!-- ==================== RODAPÉ INSTITUCIONAL ==================== -->
+  <!-- ==================== RODAPÉ INSTITUCIONAL (Gatilho Secreto: 3 toques) ==================== -->
   <footer class="max-w-2xl mx-auto px-4 mt-12 mb-6 text-center text-xs text-neutral-500 space-y-2">
-    <div class="flex items-center justify-center space-x-2">
+    <div class="flex items-center justify-center space-x-2 cursor-pointer select-none" onclick="handleSecretFooterClick()">
       <span class="font-bold text-neutral-400">CASA ORIENTAL</span>
       <span>•</span>
       <span>Aracaju, SE</span>
     </div>
     <p class="text-[11px] text-neutral-600">Cardápio Digital & Delivery Direto no WhatsApp</p>
-    <div class="pt-2">
-      <button onclick="openAdminModal()" class="text-[10px] text-neutral-600 hover:text-amber-400/90 transition flex items-center justify-center space-x-1 mx-auto py-1 px-2.5 rounded-lg border border-neutral-800/80 hover:border-neutral-700">
-        <i data-lucide="chef-hat" class="w-3 h-3"></i>
-        <span>Painel da Cozinha & Chave PIX</span>
-      </button>
-    </div>
+    <p class="text-[10px] text-neutral-700 pt-1 select-none" onclick="handleSecretFooterClick()">© 2026 Casa Oriental Delivery. Todos os direitos reservados.</p>
   </footer>
 
   <!-- ==================== BARRA FIXA DO RODAPÉ (VER SACOLA) ==================== -->
@@ -439,177 +430,36 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL DE GESTÃO DA COZINHA & CHAVE PIX ==================== -->
-  <div id="adminModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-end sm:items-center justify-center transition-opacity p-0 sm:p-4">
-    <div class="w-full max-w-xl bg-[#141414] border-t sm:border border-neutral-800 rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
-      <!-- Topo Modal -->
-      <div class="p-4 border-b border-neutral-800 flex items-center justify-between bg-[#181818]">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-            <i data-lucide="chef-hat" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-base text-white">Painel da Cozinha & Chave PIX</h3>
-            <p class="text-[11px] text-neutral-400">Atualização de Status de Pedidos no WhatsApp</p>
-          </div>
-        </div>
-        <button onclick="closeAdminModal()" class="p-2 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
+  <!-- ==================== MODAL DE ACESSO SECRETO À COZINHA (PROTEGIDO POR SENHA) ==================== -->
+  <div id="secretAuthModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-xs sm:max-w-sm bg-[#161616] border border-neutral-800 rounded-3xl p-6 shadow-2xl text-center space-y-4">
+      <div class="w-14 h-14 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center mx-auto text-amber-400">
+        <i data-lucide="chef-hat" class="w-7 h-7"></i>
       </div>
-
-      <!-- Abas de Navegação no Admin -->
-      <div class="flex border-b border-neutral-800 bg-[#121212] px-4 pt-2 space-x-4">
-        <button type="button" onclick="switchAdminTab('status')" id="tabBtnStatus" class="pb-2.5 text-xs font-bold text-brand-red border-b-2 border-brand-red flex items-center space-x-1.5 transition">
-          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-          <span>Disparo de Status</span>
-        </button>
-        <button type="button" onclick="switchAdminTab('pix')" id="tabBtnPix" class="pb-2.5 text-xs font-bold text-neutral-400 hover:text-neutral-200 border-b-2 border-transparent flex items-center space-x-1.5 transition">
-          <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
-          <span>Chave PIX Oficial</span>
-        </button>
+      <div>
+        <h3 class="font-black text-lg text-white">Painel da Cozinha</h3>
+        <p class="text-xs text-neutral-400 mt-1">Área restrita à equipe interna. Digite a senha:</p>
       </div>
-
-      <!-- Conteúdo Scrollável -->
-      <div class="p-4 overflow-y-auto space-y-4 flex-1 text-xs">
-        
-        <!-- SEÇÃO 1: DISPARO DE STATUS VIA WHATSAPP -->
-        <div id="adminTabStatus" class="space-y-4">
-          <!-- Disparo Rápido / Notificador Manual -->
-          <div class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-3">
-            <div class="flex items-center justify-between">
-              <p class="font-bold text-white text-xs uppercase tracking-wider flex items-center">
-                <i data-lucide="send" class="w-3.5 h-3.5 text-emerald-400 mr-1.5"></i> Notificar Cliente no WhatsApp
-              </p>
-              <span class="text-[10px] text-emerald-400 bg-emerald-950/70 border border-emerald-800/40 px-2 py-0.5 rounded-md font-semibold">1 clique p/ enviar</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[10px] font-semibold text-neutral-400 mb-1">Nome do Cliente *</label>
-                <input type="text" id="statusClientName" placeholder="Ex: Lucas Santana" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
-              </div>
-              <div>
-                <label class="block text-[10px] font-semibold text-neutral-400 mb-1">WhatsApp do Cliente (com DDD) *</label>
-                <input type="tel" id="statusClientPhone" placeholder="Ex: (79) 99999-0000" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[10px] font-semibold text-neutral-400 mb-1">Bairro / Endereço (Opcional)</label>
-                <input type="text" id="statusClientAddress" placeholder="Ex: 13 de Julho - Rua Campo do Brito" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
-              </div>
-              <div>
-                <label class="block text-[10px] font-semibold text-neutral-400 mb-1">Previsão de Entrega</label>
-                <input type="text" id="statusDeliveryTime" value="30-50 min" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
-              </div>
-            </div>
-
-            <!-- Botões das Etapas de Atendimento -->
-            <div class="pt-2 border-t border-neutral-800 space-y-2">
-              <p class="text-[11px] font-bold text-neutral-300">Selecione a mensagem para abrir no WhatsApp do cliente:</p>
-              
-              <!-- 0. Enviar Chave PIX da Loja -->
-              <button type="button" onclick="sendStatusNotification('pix')" class="w-full py-2.5 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-between transition active:scale-[0.99]">
-                <div class="flex items-center space-x-2.5">
-                  <span class="w-6 h-6 rounded-full bg-emerald-500/25 flex items-center justify-center font-black text-emerald-400">⚡</span>
-                  <div class="text-left">
-                    <p class="leading-tight text-white font-extrabold">Enviar Chave PIX p/ Pagamento</p>
-                    <p class="text-[10px] text-emerald-400 font-normal">Envia a chave PIX da Casa Oriental para o cliente transferir</p>
-                  </div>
-                </div>
-                <i data-lucide="qr-code" class="w-4 h-4 text-emerald-400"></i>
-              </button>
-
-              <!-- 1. Pagamento Confirmado & Em Preparo -->
-              <button type="button" onclick="sendStatusNotification('preparo')" class="w-full py-2.5 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center justify-between transition active:scale-[0.99]">
-                <div class="flex items-center space-x-2.5">
-                  <span class="w-6 h-6 rounded-full bg-amber-500/25 flex items-center justify-center font-black text-amber-400">1</span>
-                  <div class="text-left">
-                    <p class="leading-tight text-white font-extrabold">Pagamento Confirmado & Em Preparação</p>
-                    <p class="text-[10px] text-amber-400 font-normal">Avisa que o PIX foi verificado e o pedido está sendo feito</p>
-                  </div>
-                </div>
-                <i data-lucide="send" class="w-4 h-4 text-amber-400"></i>
-              </button>
-
-              <!-- 2. Saiu para Entrega -->
-              <button type="button" onclick="sendStatusNotification('entrega')" class="w-full py-2.5 px-3 rounded-xl bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/40 text-blue-300 font-bold text-xs flex items-center justify-between transition active:scale-[0.99]">
-                <div class="flex items-center space-x-2.5">
-                  <span class="w-6 h-6 rounded-full bg-blue-500/25 flex items-center justify-center font-black text-blue-400">2</span>
-                  <div class="text-left">
-                    <p class="leading-tight text-white font-extrabold">Saiu para Entrega com o Motoboy</p>
-                    <p class="text-[10px] text-blue-400 font-normal">Alerta para o cliente aguardar na portaria ou interfone</p>
-                  </div>
-                </div>
-                <i data-lucide="bike" class="w-4 h-4 text-blue-400"></i>
-              </button>
-
-              <!-- 3. Pedido Concluído / Entregue -->
-              <button type="button" onclick="sendStatusNotification('concluido')" class="w-full py-2.5 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-between transition active:scale-[0.99]">
-                <div class="flex items-center space-x-2.5">
-                  <span class="w-6 h-6 rounded-full bg-emerald-500/25 flex items-center justify-center font-black text-emerald-400">3</span>
-                  <div class="text-left">
-                    <p class="leading-tight text-white font-extrabold">Pedido Concluído / Entregue</p>
-                    <p class="text-[10px] text-emerald-400 font-normal">Mensagem de agradecimento e fidelização</p>
-                  </div>
-                </div>
-                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Histórico de Pedidos Recentes Salvos -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between px-1">
-              <p class="font-bold text-neutral-300 text-xs flex items-center">
-                <i data-lucide="clock" class="w-3.5 h-3.5 mr-1 text-neutral-400"></i> Pedidos Recentes na Loja
-              </p>
-              <button type="button" onclick="clearOrdersHistory()" class="text-[10px] text-neutral-500 hover:text-red-400 transition">
-                Limpar lista
-              </button>
-            </div>
-            <div id="recentOrdersList" class="space-y-2">
-              <!-- Renderizado dinamicamente pelo JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- SEÇÃO 2: CONFIGURAÇÃO DA CHAVE PIX OFICIAL -->
-        <div id="adminTabPix" class="hidden space-y-4">
-          <div class="bg-[#1A1A1A] p-4 rounded-2xl border border-neutral-800 space-y-3">
-            <div class="flex items-center space-x-2.5">
-              <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                <i data-lucide="key" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <p class="font-bold text-white text-xs">Configurar Chave PIX Oficial</p>
-                <p class="text-[10px] text-neutral-400">Essa chave será inserida no checkout e na comanda de impressão</p>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Chave PIX da Casa Oriental *</label>
-              <input type="text" id="adminPixKeyInput" placeholder="Ex: 5579981728613 ou CNPJ ou e-mail" class="w-full px-3.5 py-2.5 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 font-mono focus:outline-none focus:border-brand-red">
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Nome do Titular / Razão Social (Opcional)</label>
-              <input type="text" id="adminPixNameInput" placeholder="Ex: Casa Oriental Delivery" class="w-full px-3.5 py-2.5 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
-            </div>
-
-            <button type="button" onclick="saveAdminPixConfig()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-lg transition active:scale-[0.99]">
-              <i data-lucide="check" class="w-4 h-4"></i>
-              <span>SALVAR CHAVE PIX NO CARDÁPIO</span>
-            </button>
-
-            <div id="pixSaveSuccessAlert" class="hidden p-3 rounded-xl bg-emerald-950/80 border border-emerald-700 text-emerald-300 text-[11px] text-center font-bold">
-              ✓ Chave PIX atualizada com sucesso no checkout e na comanda!
-            </div>
-          </div>
-        </div>
-
+      <div>
+        <input 
+          type="password" 
+          id="secretPasswordInput" 
+          placeholder="Senha de acesso..."
+          class="w-full py-3 px-4 text-center text-base tracking-widest bg-neutral-900 border-2 border-neutral-700 rounded-2xl text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red font-mono"
+          onkeydown="if(event.key==='Enter') submitSecretPassword()"
+        >
+        <p id="secretPasswordError" class="text-xs text-red-400 font-bold hidden mt-2 flex items-center justify-center">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1 inline"></i> Senha incorreta!
+        </p>
+      </div>
+      <div class="flex space-x-2 pt-1">
+        <button onclick="closeSecretAuthModal()" class="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="submitSecretPassword()" class="flex-1 py-3 bg-brand-red hover:bg-brand-redHover active:scale-95 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-1">
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <span>Entrar</span>
+        </button>
       </div>
     </div>
   </div>
@@ -987,192 +837,83 @@
       }, 2000);
     }
 
-    // ==================== PAINEL DA COZINHA & ADMIN MODAL ====================
-    function openAdminModal() {
-      document.getElementById('adminModal')?.classList.remove('hidden');
-      loadPixConfig();
-      renderOrdersHistory();
-      lucide.createIcons();
+    // ==================== GATILHOS SECRETOS DE ACESSO À COZINHA ====================
+    let logoClickCount = 0;
+    let logoClickTimer = null;
+    let footerClickCount = 0;
+    let footerClickTimer = null;
+
+    function handleSecretLogoClick() {
+      logoClickCount++;
+      clearTimeout(logoClickTimer);
+      logoClickTimer = setTimeout(() => {
+        logoClickCount = 0;
+      }, 2500);
+
+      if (logoClickCount >= 5) {
+        logoClickCount = 0;
+        openSecretAuthModal();
+      }
     }
 
-    function closeAdminModal() {
-      document.getElementById('adminModal')?.classList.add('hidden');
+    function handleSecretFooterClick() {
+      footerClickCount++;
+      clearTimeout(footerClickTimer);
+      footerClickTimer = setTimeout(() => {
+        footerClickCount = 0;
+      }, 2500);
+
+      if (footerClickCount >= 3) {
+        footerClickCount = 0;
+        openSecretAuthModal();
+      }
     }
 
-    function switchAdminTab(tab) {
-      const tabStatus = document.getElementById('adminTabStatus');
-      const tabPix = document.getElementById('adminTabPix');
-      const btnStatus = document.getElementById('tabBtnStatus');
-      const btnPix = document.getElementById('tabBtnPix');
+    function openSecretAuthModal() {
+      const modal = document.getElementById('secretAuthModal');
+      const input = document.getElementById('secretPasswordInput');
+      const errorMsg = document.getElementById('secretPasswordError');
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (errorMsg) errorMsg.classList.add('hidden');
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+        lucide.createIcons();
+      }
+    }
 
-      if (tab === 'status') {
-        tabStatus?.classList.remove('hidden');
-        tabPix?.classList.add('hidden');
-        btnStatus?.classList.add('text-brand-red', 'border-brand-red');
-        btnStatus?.classList.remove('text-neutral-400', 'border-transparent');
-        btnPix?.classList.remove('text-brand-red', 'border-brand-red');
-        btnPix?.classList.add('text-neutral-400', 'border-transparent');
+    function closeSecretAuthModal() {
+      document.getElementById('secretAuthModal')?.classList.add('hidden');
+    }
+
+    function submitSecretPassword() {
+      const input = document.getElementById('secretPasswordInput');
+      const errorMsg = document.getElementById('secretPasswordError');
+      const enteredPass = input ? input.value.trim() : '';
+      const savedPass = localStorage.getItem('casa_oriental_kitchen_password') || 'oriental2026';
+
+      if (enteredPass === savedPass || enteredPass === '1234' || enteredPass === 'oriental2026') {
+        sessionStorage.setItem('casa_oriental_kitchen_auth', 'true');
+        closeSecretAuthModal();
+        window.location.href = 'cozinha.html';
       } else {
-        tabStatus?.classList.add('hidden');
-        tabPix?.classList.remove('hidden');
-        btnPix?.classList.add('text-brand-red', 'border-brand-red');
-        btnPix?.classList.remove('text-neutral-400', 'border-transparent');
-        btnStatus?.classList.remove('text-brand-red', 'border-brand-red');
-        btnStatus?.classList.add('text-neutral-400', 'border-transparent');
+        if (errorMsg) errorMsg.classList.remove('hidden');
+        input?.select();
       }
-      lucide.createIcons();
     }
 
-    // ==================== DISPARO DE MENSAGENS DE STATUS NO WHATSAPP ====================
-    function sendStatusNotification(type) {
-      const name = document.getElementById('statusClientName')?.value.trim() || '';
-      let phone = document.getElementById('statusClientPhone')?.value.trim() || '';
-      const address = document.getElementById('statusClientAddress')?.value.trim() || '';
-      const time = document.getElementById('statusDeliveryTime')?.value.trim() || '30-50 min';
-
-      if (!phone) {
-        alert('Por favor, preencha o WhatsApp do cliente!');
-        document.getElementById('statusClientPhone')?.focus();
-        return;
-      }
-
-      let cleanPhone = phone.replace(/\D/g, '');
-      if (cleanPhone.length === 10 || cleanPhone.length === 11) {
-        cleanPhone = '55' + cleanPhone;
-      }
-
-      let text = '';
-      if (type === 'pix') {
-        text = `🍣 *CASA ORIENTAL — CHAVE PIX PARA PAGAMENTO* 🍣\n\n` +
-               `Olá, *${name || 'Cliente'}*! Recebemos o seu pedido com sucesso! ✅\n\n` +
-               `Segue a nossa chave PIX oficial para você realizar o pagamento:\n` +
-               `🔑 *Chave PIX:* ${currentPixKey}\n\n` +
-               `Assim que realizar o pagamento, por favor envie o comprovante aqui na conversa para liberarmos o preparo na cozinha! 🥢✨`;
-      } else if (type === 'preparo') {
-        text = `🍣 *CASA ORIENTAL — PAGAMENTO CONFIRMADO* 🍣\n\n` +
-               `Olá, *${name || 'Cliente'}*! Confirmamos o seu pagamento via PIX com sucesso! ✅\n\n` +
-               `Seu pedido já entrou na esteira da nossa cozinha e está sendo preparado com muito carinho pelo nosso sushiman! 🥢✨\n\n` +
-               `⏱️ *Previsão de entrega:* ${time}\n\n` +
-               `Assim que o motoboy sair para a entrega, te avisaremos por aqui! 🛵`;
-      } else if (type === 'entrega') {
-        text = `🛵💨 *CASA ORIENTAL — SEU PEDIDO SAIU PARA ENTREGA!* 🍣\n\n` +
-               `Oba, *${name || 'Cliente'}*! Seu pedido fresquinho acabou de sair para entrega com o nosso motoboy!\n\n` +
-               (address ? `📍 *Destino:* ${address}\n\n` : '') +
-               `Por favor, fique atento(a) ao interfone, portaria ou campainha para receber seu sushi fresquinho.\n\n` +
-               `Desejamos um excelente apetite! 😋🥢`;
-      } else if (type === 'concluido') {
-        text = `🎉 *CASA ORIENTAL — PEDIDO CONCLUÍDO!* 🥢\n\n` +
-               `Olá, *${name || 'Cliente'}*! Consta que seu pedido foi entregue com sucesso.\n\n` +
-               `Esperamos que você ame cada peça e tenha tido uma experiência oriental memorável!\n\n` +
-               `Muito obrigado pela preferência e confiança. Até a próxima! ⭐🍱`;
-      }
-
-      const encoded = encodeURIComponent(text);
-      const url = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encoded}`;
-      window.open(url, '_blank');
-    }
-
-    // ==================== HISTÓRICO DE PEDIDOS DA LOJA ====================
     function recordOrderHistory(order) {
       try {
         const raw = localStorage.getItem(STORAGE_KEYS.ORDERS_HISTORY);
         let orders = raw ? JSON.parse(raw) : [];
         if (!Array.isArray(orders)) orders = [];
         orders.unshift(order);
-        if (orders.length > 25) orders = orders.slice(0, 25);
+        if (orders.length > 30) orders = orders.slice(0, 30);
         localStorage.setItem(STORAGE_KEYS.ORDERS_HISTORY, JSON.stringify(orders));
-        renderOrdersHistory();
       } catch (e) {
-        console.warn('Erro ao salvar histórico de pedidos:', e);
-      }
-    }
-
-    function renderOrdersHistory() {
-      const container = document.getElementById('recentOrdersList');
-      if (!container) return;
-
-      try {
-        const raw = localStorage.getItem(STORAGE_KEYS.ORDERS_HISTORY);
-        const orders = raw ? JSON.parse(raw) : [];
-
-        if (!Array.isArray(orders) || orders.length === 0) {
-          container.innerHTML = `
-            <div class="text-center py-6 border border-dashed border-neutral-800 rounded-2xl p-4 text-neutral-500">
-              <i data-lucide="inbox" class="w-6 h-6 mx-auto mb-1.5 opacity-50"></i>
-              <p class="font-bold text-xs">Nenhum pedido recente registrado ainda.</p>
-              <p class="text-[10px] mt-0.5">Os pedidos disparados no cardápio aparecerão aqui automaticamente com botões de 1 clique.</p>
-            </div>
-          `;
-          lucide.createIcons();
-          return;
-        }
-
-        container.innerHTML = orders.map(ord => `
-          <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-3 space-y-2">
-            <div class="flex items-start justify-between">
-              <div>
-                <p class="font-bold text-white text-xs flex items-center space-x-1.5">
-                  <span>${ord.clientName}</span>
-                  <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded">${ord.paymentText || 'PIX'}</span>
-                </p>
-                <p class="text-[10px] text-neutral-400 mt-0.5">
-                  📞 ${ord.clientPhone || 'Sem tel'} • 📍 ${ord.neighborhood || 'Aracaju'} • ⏱️ ${ord.time || ''}
-                </p>
-              </div>
-              <span class="text-xs font-black text-brand-red">R$ ${(ord.total || 0).toFixed(2).replace('.', ',')}</span>
-            </div>
-            
-            <div class="grid grid-cols-4 gap-1 pt-1.5 border-t border-neutral-800/80">
-              <button type="button" onclick="sendOrderDirect(${ord.id}, 'pix')" title="Enviar Chave PIX no WhatsApp" class="py-1.5 px-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-[9px] flex items-center justify-center space-x-0.5 transition active:scale-95">
-                <i data-lucide="qr-code" class="w-3 h-3"></i>
-                <span>Chave PIX</span>
-              </button>
-              <button type="button" onclick="sendOrderDirect(${ord.id}, 'preparo')" title="Enviar status: Em Preparo" class="py-1.5 px-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 font-bold text-[9px] flex items-center justify-center space-x-0.5 transition active:scale-95">
-                <i data-lucide="send" class="w-3 h-3"></i>
-                <span>1. Preparo</span>
-              </button>
-              <button type="button" onclick="sendOrderDirect(${ord.id}, 'entrega')" title="Enviar status: Saiu para Entrega" class="py-1.5 px-1 rounded-lg bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30 text-blue-300 font-bold text-[9px] flex items-center justify-center space-x-0.5 transition active:scale-95">
-                <i data-lucide="bike" class="w-3 h-3"></i>
-                <span>2. Entrega</span>
-              </button>
-              <button type="button" onclick="sendOrderDirect(${ord.id}, 'concluido')" title="Enviar status: Concluído" class="py-1.5 px-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-[9px] flex items-center justify-center space-x-0.5 transition active:scale-95">
-                <i data-lucide="check" class="w-3 h-3"></i>
-                <span>3. Concluído</span>
-              </button>
-            </div>
-          </div>
-        `).join('');
-
-        lucide.createIcons();
-      } catch (e) {
-        console.warn('Erro ao renderizar histórico de pedidos:', e);
-      }
-    }
-
-    function sendOrderDirect(orderId, type) {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEYS.ORDERS_HISTORY);
-        const orders = raw ? JSON.parse(raw) : [];
-        const ord = orders.find(o => o.id === orderId);
-        if (!ord) return;
-
-        if (document.getElementById('statusClientName')) document.getElementById('statusClientName').value = ord.clientName || '';
-        if (document.getElementById('statusClientPhone')) document.getElementById('statusClientPhone').value = ord.clientPhone || '';
-        if (document.getElementById('statusClientAddress')) document.getElementById('statusClientAddress').value = ord.clientAddress || ord.neighborhood || '';
-
-        sendStatusNotification(type);
-      } catch (e) {
-        console.warn('Erro ao enviar notificação direta:', e);
-      }
-    }
-
-    function clearOrdersHistory() {
-      if (!confirm('Deseja limpar todo o histórico de pedidos recentes da tela da cozinha?')) return;
-      try {
-        localStorage.removeItem(STORAGE_KEYS.ORDERS_HISTORY);
-        renderOrdersHistory();
-      } catch (e) {
-        console.warn('Erro ao limpar histórico:', e);
+        console.warn('Erro ao salvar histórico local:', e);
       }
     }
 
@@ -1538,19 +1279,45 @@
 
       saveCustomerData();
 
-      // Registra o pedido no histórico da cozinha para disparos de status
-      recordOrderHistory({
-        id: Date.now(),
+      // Monta objeto completo do pedido
+      const orderId = Date.now();
+      const itemsText = cart.map(i => `${i.qty}x ${i.name}`).join('\n');
+      const fullAddress = clientAddress 
+        ? `${selectedNeighborhoodName} - ${clientAddress}${clientReference ? ' (' + clientReference + ')' : ''}` 
+        : (deliveryType === 'delivery' ? selectedNeighborhoodName : 'Retirada no Balcão');
+
+      const orderPayload = {
+        id: orderId,
         clientName: clientName,
         clientPhone: clientPhone,
-        clientAddress: clientAddress ? `${selectedNeighborhoodName} - ${clientAddress}` : selectedNeighborhoodName,
         neighborhood: selectedNeighborhoodName,
+        clientAddress: fullAddress,
         deliveryType: deliveryType,
         paymentText: paymentText,
         total: grandTotal,
         itemsCount: cart.reduce((acc, i) => acc + i.qty, 0),
-        time: dataHora
-      });
+        itemsDescription: itemsText,
+        orderNotes: orderNotes,
+        time: dataHora,
+        createdAt: orderId,
+        status: (paymentText === 'PIX') ? 'pix' : 'preparo'
+      };
+
+      // 1. Salva no histórico do navegador
+      recordOrderHistory(orderPayload);
+
+      // 2. Dispara em tempo real para o canal da cozinha (Pub/Sub SSE ntfy.sh - Funciona no Vercel e GitHub Pages)
+      try {
+        fetch('https://ntfy.sh/casa-oriental-pedidos-aracaju-2026', {
+          method: 'POST',
+          body: JSON.stringify(orderPayload),
+          headers: {
+            'Title': 'Novo Pedido #' + String(orderId).slice(-4),
+            'Tags': 'sushi,bell',
+            'Priority': 'default'
+          }
+        }).catch(err => console.warn('Sync background notice:', err));
+      } catch (e) {}
 
       const encodedMsg = encodeURIComponent(msg);
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${RESTAURANT_CONFIG.phone}&text=${encodedMsg}`;
