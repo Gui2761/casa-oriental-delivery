@@ -1167,13 +1167,29 @@
       document.getElementById('secretAuthModal')?.classList.add('hidden');
     }
 
-    function submitSecretPassword() {
+    async function submitSecretPassword() {
       const input = document.getElementById('secretPasswordInput');
       const errorMsg = document.getElementById('secretPasswordError');
       const enteredPass = input ? input.value.trim() : '';
-      const savedPass = localStorage.getItem('casa_oriental_kitchen_password') || 'oriental2026';
+      const DEFAULT_PASS_HASH = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+      
+      let enteredHash = '';
+      try {
+        if (window.crypto && window.crypto.subtle) {
+          const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(enteredPass));
+          enteredHash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+      } catch (e) {}
 
-      if (enteredPass === savedPass || enteredPass === '1234' || enteredPass === 'oriental2026') {
+      const savedHash = localStorage.getItem('casa_oriental_kitchen_password_hash') || DEFAULT_PASS_HASH;
+      const savedPass = localStorage.getItem('casa_oriental_kitchen_password');
+
+      let isValid = (enteredHash && (enteredHash === savedHash || enteredHash === DEFAULT_PASS_HASH));
+      if (!isValid && savedPass && enteredPass === savedPass) {
+        isValid = true;
+      }
+
+      if (isValid) {
         sessionStorage.setItem('casa_oriental_kitchen_auth', 'true');
         closeSecretAuthModal();
         window.location.href = 'cozinha.html';
