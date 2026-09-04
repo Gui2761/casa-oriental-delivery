@@ -1,4 +1,4 @@
 {
-  "summary": "Atualização do número oficial de WhatsApp para +55 79 98172-8613 no cabeçalho com mensagem pronta de atendimento e no checkout com a comanda formatada para 58mm.",
-  "updatedAt": "2026-09-04T13:40:56.687179400Z"
+  "summary": "Implementação de persistência de dados (localStorage) para sacola e dados de entrega do cliente, botão de limpar sacola e remoção da linha de sucos do cardápio.",
+  "updatedAt": "2026-09-04T17:10:30.000000000Z"
 }

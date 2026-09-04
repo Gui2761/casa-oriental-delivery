@@ -217,9 +217,15 @@
           <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-red"></i>
           <h3 class="font-extrabold text-lg text-white">Sua Sacola</h3>
         </div>
-        <button onclick="closeCartModal()" class="p-2 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
+        <div class="flex items-center space-x-2">
+          <button onclick="clearCart()" title="Esvaziar sacola" class="text-xs text-neutral-400 hover:text-red-400 font-semibold px-2.5 py-1 rounded-lg hover:bg-neutral-800 transition flex items-center space-x-1 border border-neutral-800 hover:border-red-900/40">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Limpar</span>
+          </button>
+          <button onclick="closeCartModal()" class="p-2 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Conteúdo Scrollável do Pedido -->
@@ -320,7 +326,12 @@
 
         <!-- Identificação do Cliente -->
         <div class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-3">
-          <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Identificação</p>
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Identificação</p>
+            <span class="text-[10px] text-emerald-400/90 font-medium flex items-center">
+              <i data-lucide="check-circle" class="w-3 h-3 mr-1 inline"></i> Salvo automaticamente
+            </span>
+          </div>
           <div>
             <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Seu Nome *</label>
             <input type="text" id="clientName" placeholder="Ex: Lucas Santana" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
@@ -511,20 +522,13 @@
       { id: 98, cat: 'rolinhos', name: 'Rolinho Banana c/ Doce de Leite', desc: 'Banana frita com recheio cremoso de doce de leite', price: 10.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
       { id: 99, cat: 'rolinhos', name: 'Rolinho Banana c/ Nutella', desc: 'A combinação favorita: banana fresquinha com Nutella original', price: 10.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80', badge: 'FAVORITO' },
 
-      // 8. BEBIDAS & SUCOS
+      // 8. BEBIDAS (REFRIGERANTES)
       { id: 100, cat: 'bebidas', name: 'Coca-Cola Lata 350ml', desc: 'Refrigerante em lata geladinho', price: 6.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
       { id: 101, cat: 'bebidas', name: 'Fanta Lata 350ml', desc: 'Refrigerante em lata bem gelado', price: 5.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
       { id: 102, cat: 'bebidas', name: 'Guaraná Antarctica Lata 350ml', desc: 'Guaraná tradicional gelado', price: 5.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
       { id: 103, cat: 'bebidas', name: 'Coca-Cola 1 Litro', desc: 'Garrafa de 1 litro ideal para compartilhar', price: 10.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
       { id: 104, cat: 'bebidas', name: 'Pepsi 1 Litro', desc: 'Garrafa de 1 litro gelada', price: 9.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
       { id: 105, cat: 'bebidas', name: 'Guaraná Antarctica 1 Litro', desc: 'Garrafa de 1 litro geladinha', price: 9.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
-      { id: 106, cat: 'bebidas', name: 'Suco de Polpa Mangaba (400ml)', desc: 'Feito na hora da fruta natural (com leite +R$ 0,50)', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
-      { id: 107, cat: 'bebidas', name: 'Suco de Polpa Cacau (400ml)', desc: 'Polpa natural de cacau fresca', price: 6.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
-      { id: 108, cat: 'bebidas', name: 'Suco de Polpa Graviola (400ml)', desc: 'Polpa cremosa de graviola', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
-      { id: 109, cat: 'bebidas', name: 'Suco de Polpa Cupuaçu (400ml)', desc: 'Sabor marcante do cupuaçu natural', price: 6.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
-      { id: 110, cat: 'bebidas', name: 'Suco de Polpa Umbu (400ml)', desc: 'Polpa refrescante de umbu', price: 6.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
-      { id: 111, cat: 'bebidas', name: 'Suco de Polpa Maracujá (400ml)', desc: 'Suco natural relaxante de maracujá', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
-      { id: 112, cat: 'bebidas', name: 'Suco de Polpa Ameixa (400ml)', desc: 'Suco de ameixa doce e nutritivo', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
 
       // 9. MOLHOS E EXTRAS
       { id: 115, cat: 'molhos', name: 'Molho Tarê Especial', desc: 'Pote com molho agridoce e encorpado artesanal', price: 1.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
@@ -540,8 +544,14 @@
       temakis: { title: '🍙 Linha de Temakis', desc: 'Cones tradicionais, temakinhos e minis nas versões cruas e hots' },
       yakissoba: { title: '🥢 Yakissoba Artesanal', desc: 'Massa clássica salteada na wok com carnes nobres e legumes frescos' },
       rolinhos: { title: '🌯 Rolinhos Primavera (Harumaki)', desc: 'Massa fininha e crocante com recheios salgados e sobremesas' },
-      bebidas: { title: '🥤 Bebidas & Sucos de Polpa', desc: 'Refrigerantes em lata, garrafas de 1L e sucos naturais de fruta (400ml)' },
+      bebidas: { title: '🥤 Bebidas & Refrigerantes', desc: 'Refrigerantes em lata de 350ml e garrafas de 1 Litro bem geladas' },
       molhos: { title: '🥢 Molhos & Acessórios', desc: 'Molhos extras e palitinhos hashi adicionais para o seu pedido' }
+    };
+
+    // ==================== PERSISTÊNCIA LOCAL (STORAGE KEYS) ====================
+    const STORAGE_KEYS = {
+      CART: 'casa_oriental_cart',
+      CUSTOMER: 'casa_oriental_customer'
     };
 
     // Estado da Aplicação
@@ -553,10 +563,145 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       initDragScroll();
+      loadCartFromStorage();
+      loadCustomerData();
+      initCustomerListeners();
       renderProducts();
       updateNeighborhoodFee();
+      updateCartUI();
       lucide.createIcons();
     });
+
+    // ==================== MÉTODOS DE PERSISTÊNCIA (LOCALSTORAGE) ====================
+    function saveCartToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
+      } catch (e) {
+        console.warn('Falha ao persistir sacola:', e);
+      }
+    }
+
+    function loadCartFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.CART);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          // Revalida itens com a lista atual de PRODUCTS (remove sucos automaticamente caso estivessem salvos)
+          cart = parsed
+            .map(item => {
+              const currentProd = PRODUCTS.find(p => p.id === item.id);
+              if (currentProd) {
+                return { ...currentProd, qty: Math.max(1, parseInt(item.qty, 10) || 1) };
+              }
+              return null;
+            })
+            .filter(Boolean);
+        }
+      } catch (e) {
+        console.warn('Falha ao recuperar sacola persistida:', e);
+        cart = [];
+      }
+    }
+
+    function clearCart(confirmBefore = true) {
+      if (confirmBefore && !confirm('Deseja realmente esvaziar a sua sacola?')) {
+        return;
+      }
+      cart = [];
+      saveCartToStorage();
+      updateCartUI();
+      renderProducts(document.getElementById('searchInput')?.value || '');
+    }
+
+    function saveCustomerData() {
+      try {
+        const radios = document.getElementsByName('paymentMethod');
+        let paymentMethod = 'PIX';
+        for (let r of radios) {
+          if (r.checked) paymentMethod = r.value;
+        }
+
+        const data = {
+          name: document.getElementById('clientName')?.value || '',
+          phone: document.getElementById('clientPhone')?.value || '',
+          address: document.getElementById('clientAddress')?.value || '',
+          reference: document.getElementById('clientReference')?.value || '',
+          orderNotes: document.getElementById('orderNotes')?.value || '',
+          neighborhoodValue: document.getElementById('aracajuNeighborhood')?.value || '6.00',
+          deliveryType: deliveryType,
+          paymentMethod: paymentMethod,
+          changeAmount: document.getElementById('changeAmount')?.value || ''
+        };
+        localStorage.setItem(STORAGE_KEYS.CUSTOMER, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Falha ao persistir dados do cliente:', e);
+      }
+    }
+
+    function loadCustomerData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.CUSTOMER);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+
+        if (data.name && document.getElementById('clientName')) {
+          document.getElementById('clientName').value = data.name;
+        }
+        if (data.phone && document.getElementById('clientPhone')) {
+          document.getElementById('clientPhone').value = data.phone;
+        }
+        if (data.address && document.getElementById('clientAddress')) {
+          document.getElementById('clientAddress').value = data.address;
+        }
+        if (data.reference && document.getElementById('clientReference')) {
+          document.getElementById('clientReference').value = data.reference;
+        }
+        if (data.orderNotes && document.getElementById('orderNotes')) {
+          document.getElementById('orderNotes').value = data.orderNotes;
+        }
+        if (data.changeAmount && document.getElementById('changeAmount')) {
+          document.getElementById('changeAmount').value = data.changeAmount;
+        }
+
+        if (data.neighborhoodValue && document.getElementById('aracajuNeighborhood')) {
+          const select = document.getElementById('aracajuNeighborhood');
+          select.value = data.neighborhoodValue;
+          updateNeighborhoodFee();
+        }
+
+        if (data.deliveryType) {
+          setDeliveryType(data.deliveryType);
+        }
+
+        if (data.paymentMethod) {
+          const radios = document.getElementsByName('paymentMethod');
+          for (let r of radios) {
+            if (r.value === data.paymentMethod) {
+              r.checked = true;
+              break;
+            }
+          }
+          handlePaymentChange();
+        }
+      } catch (e) {
+        console.warn('Falha ao recuperar dados persistidos do cliente:', e);
+      }
+    }
+
+    function initCustomerListeners() {
+      const inputs = ['clientName', 'clientPhone', 'clientAddress', 'clientReference', 'orderNotes', 'changeAmount'];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', saveCustomerData);
+        }
+      });
+      const neighSelect = document.getElementById('aracajuNeighborhood');
+      if (neighSelect) {
+        neighSelect.addEventListener('change', saveCustomerData);
+      }
+    }
 
     function scrollMenu(direction) {
       const container = document.getElementById('categoryTabs');
@@ -704,6 +849,7 @@
         cart.push({ ...product, qty: 1 });
       }
 
+      saveCartToStorage();
       updateCartUI();
       renderProducts(document.getElementById('searchInput').value);
     }
@@ -717,6 +863,7 @@
         cart.splice(idx, 1);
       }
 
+      saveCartToStorage();
       updateCartUI();
       renderProducts(document.getElementById('searchInput').value);
     }
@@ -734,6 +881,7 @@
         feeTag.innerText = `Frete: A combinar`;
       }
 
+      saveCustomerData();
       updateCartUI();
     }
 
@@ -758,6 +906,7 @@
         paymentSection.classList.add('hidden');
         pickupNotice.classList.remove('hidden');
       }
+      saveCustomerData();
       updateCartUI();
     }
 
@@ -772,6 +921,7 @@
       } else {
         troco.classList.add('hidden');
       }
+      saveCustomerData();
     }
 
     function updateCartUI() {
@@ -907,10 +1057,18 @@
       msg += `*================================*\n`;
       msg += `Obrigado pela preferência!`;
 
+      saveCustomerData();
+
       const encodedMsg = encodeURIComponent(msg);
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${RESTAURANT_CONFIG.phone}&text=${encodedMsg}`;
 
       window.open(whatsappUrl, '_blank');
+
+      setTimeout(() => {
+        if (confirm('Pedido enviado para o WhatsApp! Deseja esvaziar a sacola agora? (Seus dados de endereço e telefone continuarão salvos para as próximas compras)')) {
+          clearCart(false);
+        }
+      }, 600);
     }
   </script>
 </body>
