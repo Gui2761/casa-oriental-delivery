@@ -270,28 +270,11 @@
             <span id="btnStoreStatusText">Loja Aberta</span>
           </button>
 
-          <!-- Seletor Rápido de Tempo de Entrega -->
-          <div class="flex items-center space-x-1 bg-neutral-950/90 px-2.5 py-1 rounded-xl border border-neutral-800">
-            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
-            <select 
-              id="kitchenDeliveryTimeSelect" 
-              onchange="changeKitchenDeliveryTime(this.value)" 
-              class="bg-transparent text-xs font-bold text-neutral-200 focus:outline-none cursor-pointer py-0.5"
-              title="Tempo de entrega estimado informado aos clientes e no WhatsApp"
-            >
-              <option value="30-50 min" class="bg-neutral-900 text-white">⏱️ 30-50 min (Padrão)</option>
-              <option value="40-60 min" class="bg-neutral-900 text-white">⏱️ 40-60 min</option>
-              <option value="50-70 min" class="bg-neutral-900 text-white">⏱️ 50-70 min</option>
-              <option value="60-80 min" class="bg-neutral-900 text-white">⏱️ 60-80 min (Pico/Chuva)</option>
-              <option value="custom" class="bg-neutral-900 text-white">✏️ Outro tempo...</option>
-            </select>
-          </div>
-
-          <!-- Botão de Configurações Avançadas de Funcionamento -->
+          <!-- Botão de Ajustes Operacionais (Tempo de Entrega e Aviso) -->
           <button 
             onclick="openStoreControlModal()" 
             class="p-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white border border-neutral-700 transition"
-            title="Configurar aviso de fechamento e horários"
+            title="Ajustar tempo de entrega e aviso aos clientes"
           >
             <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
           </button>
@@ -1642,7 +1625,6 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
       const btnToggle = document.getElementById('btnStoreStatusToggle');
       const dot = document.getElementById('btnStoreStatusDot');
       const text = document.getElementById('btnStoreStatusText');
-      const timeSelect = document.getElementById('kitchenDeliveryTimeSelect');
       const closedInput = document.getElementById('kitchenClosedNoticeInput');
 
       const isOpen = kitchenMenuState.isOpen !== false;
@@ -1660,23 +1642,30 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
         }
       }
 
-      if (timeSelect) {
-        let found = false;
-        for (let i = 0; i < timeSelect.options.length; i++) {
-          if (timeSelect.options[i].value === deliveryTime) {
-            timeSelect.selectedIndex = i;
-            found = true;
-            break;
-          }
+      // Atualiza também o painel dentro da aba de Cardápio
+      const menuBtn = document.getElementById('menuStoreToggleBtn');
+      const menuDot = document.getElementById('menuStoreToggleDot');
+      const menuText = document.getElementById('menuStoreToggleText');
+      if (menuBtn && menuDot && menuText) {
+        if (isOpen) {
+          menuBtn.className = 'px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 border bg-emerald-600/20 text-emerald-400 border-emerald-500/40 hover:bg-emerald-600/30 active:scale-95';
+          menuDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
+          menuText.innerText = 'Loja Aberta';
+        } else {
+          menuBtn.className = 'px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 border bg-red-600/20 text-red-400 border-red-500/40 hover:bg-red-600/30 active:scale-95';
+          menuDot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
+          menuText.innerText = 'Loja Fechada';
         }
-        if (!found) {
-          const customOpt = timeSelect.querySelector('option[value="custom"]');
-          if (customOpt) {
-            customOpt.text = `⏱️ ${deliveryTime} (Personalizado)`;
-            customOpt.value = deliveryTime;
-            timeSelect.value = deliveryTime;
-          }
-        }
+      }
+
+      // Pílulas de tempo de entrega na aba do Cardápio
+      const pillsContainer = document.getElementById('deliveryTimePillsContainer');
+      if (pillsContainer) {
+        const standardTimes = ['30-50 min', '40-60 min', '50-70 min', '60-80 min'];
+        pillsContainer.innerHTML = standardTimes.map(t => {
+          const isAct = deliveryTime === t;
+          return `<button type="button" onclick="changeKitchenDeliveryTime('${t}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${isAct ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-sm' : 'bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/60'}">${t}</button>`;
+        }).join('') + `<button type="button" onclick="changeKitchenDeliveryTime('custom')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${!standardTimes.includes(deliveryTime) ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50' : 'bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/60'}">✏️ ${!standardTimes.includes(deliveryTime) ? deliveryTime : 'Outro tempo...'}</button>`;
       }
 
       if (closedInput && document.activeElement !== closedInput) {
