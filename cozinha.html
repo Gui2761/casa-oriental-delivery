@@ -1036,11 +1036,12 @@
       PASSWORD: 'casa_oriental_kitchen_password',
       PIX_KEY: 'casa_oriental_pix_key',
       ORDERS: 'casa_oriental_orders_history',
-      AUDIO_MUTED: 'casa_oriental_audio_muted'
+      AUDIO_MUTED: 'casa_oriental_audio_muted',
+      CLEARED_BEFORE: 'casa_oriental_cleared_before'
     };
 
-    // Canal Pub/Sub de Sincronização em Tempo Real (Zero Custo, Aberto, Suporta Vercel e GitHub Pages)
-    const SYNC_TOPIC = 'casa-oriental-pedidos-aracaju-2026';
+    // Canal Pub/Sub de Sincronização em Tempo Real (Tópico de Produção Limpo)
+    const SYNC_TOPIC = 'casa-oriental-pedidos-live-socorro-2026';
     const SYNC_ENDPOINT = `https://ntfy.sh/${SYNC_TOPIC}`;
 
     const DEFAULT_PASSWORD = 'oriental2026';
@@ -1125,7 +1126,27 @@
     }
 
     // ==================== DASHBOARD INICIAL E SINCRONIZAÇÃO EM NUVEM ====================
+    function cleanResidualTestOrders() {
+      try {
+        const raw = localStorage.getItem(KITCHEN_STORAGE_KEYS.ORDERS);
+        if (!raw) return;
+        let orders = JSON.parse(raw);
+        if (!Array.isArray(orders)) return;
+        const clearedBefore = parseInt(localStorage.getItem(KITCHEN_STORAGE_KEYS.CLEARED_BEFORE) || '0', 10);
+        const filtered = orders.filter(o => {
+          if (o.clientName && (o.clientName.toLowerCase().includes('teste') || o.clientName === 'Guilherme Santos')) return false;
+          const orderTime = o.createdAt || o.id || 0;
+          if (clearedBefore && orderTime < clearedBefore) return false;
+          return true;
+        });
+        if (filtered.length !== orders.length) {
+          localStorage.setItem(KITCHEN_STORAGE_KEYS.ORDERS, JSON.stringify(filtered));
+        }
+      } catch (e) {}
+    }
+
     function initKitchenDashboard() {
+      cleanResidualTestOrders();
       lucide.createIcons();
       renderOrdersList();
       loadKitchenMenuState();
@@ -1157,6 +1178,14 @@
             if (data && data.message) {
               const orderPayload = JSON.parse(data.message);
               if (orderPayload && (orderPayload.id || orderPayload.clientName)) {
+                if (orderPayload.clientName && (orderPayload.clientName.toLowerCase().includes('teste') || orderPayload.clientName === 'Guilherme Santos')) {
+                  return;
+                }
+                const clearedBefore = parseInt(localStorage.getItem(KITCHEN_STORAGE_KEYS.CLEARED_BEFORE) || '0', 10);
+                const orderTime = orderPayload.createdAt || orderPayload.id || 0;
+                if (clearedBefore && orderTime < clearedBefore) {
+                  return;
+                }
                 handleIncomingCloudOrder(orderPayload);
               }
             }
@@ -1177,6 +1206,7 @@
     // Polling inicial para capturar pedidos realizados nas últimas 24 horas
     async function fetchOrdersFromCloud(showFeedback = false) {
       const badge = document.getElementById('connectionBadge');
+      const clearedBefore = parseInt(localStorage.getItem(KITCHEN_STORAGE_KEYS.CLEARED_BEFORE) || '0', 10);
       try {
         const response = await fetch(`${SYNC_ENDPOINT}/json?poll=1&since=24h`);
         if (response.ok) {
@@ -1191,6 +1221,13 @@
               if (msgObj.event === 'message' && msgObj.message) {
                 const order = JSON.parse(msgObj.message);
                 if (order && (order.id || order.clientName)) {
+                  if (order.clientName && (order.clientName.toLowerCase().includes('teste') || order.clientName === 'Guilherme Santos')) {
+                    return;
+                  }
+                  const orderTime = order.createdAt || order.id || 0;
+                  if (clearedBefore && orderTime < clearedBefore) {
+                    return;
+                  }
                   if (saveOrderToLocalHistory(order, false)) {
                     addedCount++;
                   }
@@ -1236,6 +1273,15 @@
 
     function saveOrderToLocalHistory(order, isNewArrival = false) {
       try {
+        if (order.clientName && (order.clientName.toLowerCase().includes('teste') || order.clientName === 'Guilherme Santos')) {
+          return false;
+        }
+        const clearedBefore = parseInt(localStorage.getItem(KITCHEN_STORAGE_KEYS.CLEARED_BEFORE) || '0', 10);
+        const orderTime = order.createdAt || order.id || 0;
+        if (clearedBefore && orderTime < clearedBefore) {
+          return false;
+        }
+
         const raw = localStorage.getItem(KITCHEN_STORAGE_KEYS.ORDERS);
         let orders = raw ? JSON.parse(raw) : [];
         if (!Array.isArray(orders)) orders = [];
@@ -1413,7 +1459,7 @@
     function testNewOrderAlertAndSound() {
       const demoOrder = {
         id: Date.now(),
-        clientName: "Guilherme Santos",
+        clientName: "Cliente Demonstração",
         clientPhone: "(79) 98172-8613",
         neighborhood: "13 de Julho",
         clientAddress: "Rua das Flores, 120 - Ap 402",
@@ -1994,7 +2040,7 @@
     function previewDemoOrderComanda() {
       const demoOrder = {
         id: Date.now(),
-        clientName: "Guilherme Santos",
+        clientName: "Cliente Demonstração",
         clientPhone: "(79) 98172-8613",
         neighborhood: "Parque dos Faróis",
         distanceKm: 1.0,
@@ -2163,10 +2209,13 @@
 
     function confirmClearHistory() {
       if (confirm('Deseja realmente apagar TODOS os pedidos e clientes de teste? Essa ação não pode ser desfeita.')) {
+        const now = Date.now();
+        localStorage.setItem(KITCHEN_STORAGE_KEYS.CLEARED_BEFORE, now.toString());
         localStorage.removeItem(KITCHEN_STORAGE_KEYS.ORDERS);
         localStorage.removeItem('casa_oriental_orders_history');
         localStorage.removeItem('casaOriental_orders');
         localStorage.removeItem('casa_oriental_cart');
+        localStorage.removeItem('casa_oriental_customer');
         localStorage.removeItem('casa_oriental_customer_info');
         if (typeof hideNewOrderAlertBanner === 'function') {
           hideNewOrderAlertBanner();
