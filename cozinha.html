@@ -32,6 +32,8 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Catálogo Oficial de Produtos -->
+  <script src="products.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
@@ -195,6 +197,40 @@
       </div>
     </header>
 
+    <!-- NAVEGAÇÃO PRINCIPAL ENTRE ABAS: PEDIDOS / CARDÁPIO & ESTOQUE -->
+    <div class="bg-neutral-900/90 border-b border-neutral-800 px-4 py-2 sticky top-[57px] z-30 backdrop-blur-md">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <button 
+            id="viewBtnOrders" 
+            onclick="switchKitchenView('orders')" 
+            class="px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-brand-red text-white shadow-md shadow-red-950/50"
+          >
+            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+            <span>Fila de Pedidos</span>
+          </button>
+          
+          <button 
+            id="viewBtnMenu" 
+            onclick="switchKitchenView('menu')" 
+            class="px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/80 hover:border-neutral-600"
+          >
+            <i data-lucide="utensils" class="w-4 h-4 text-amber-400"></i>
+            <span>Cardápio, Destaque & Estoque</span>
+            <span id="tabSoldOutBadge" class="px-1.5 py-0.5 rounded-full bg-neutral-700 text-[10px] text-neutral-300 font-bold hidden">0 esgotados</span>
+          </button>
+        </div>
+
+        <div class="text-[11px] text-neutral-400 hidden sm:flex items-center space-x-1.5 bg-neutral-950/60 px-2.5 py-1 rounded-lg border border-neutral-800">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Nuvem em Tempo Real</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WRAPPER DA FILA DE PEDIDOS -->
+    <div id="ordersViewSection" class="flex-1 flex flex-col">
+
     <!-- BARRA DE RESUMO OPERACIONAL & FILTROS -->
     <div class="bg-[#161616] border-b border-neutral-800 px-4 py-3">
       <div class="max-w-6xl mx-auto space-y-3">
@@ -324,6 +360,92 @@
       </div>
 
     </main>
+
+    </div> <!-- Fim de #ordersViewSection -->
+
+    <!-- ==================== SEÇÃO DE GESTÃO DO CARDÁPIO, DESTAQUE & ESTOQUE ==================== -->
+    <div id="menuManagerSection" class="hidden flex-1 max-w-6xl w-full mx-auto p-4 space-y-5">
+      
+      <!-- Topo da Gestão -->
+      <div class="bg-gradient-to-r from-neutral-900 via-[#161616] to-neutral-900 border border-neutral-800 rounded-3xl p-5 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="p-1.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </span>
+            <h2 class="text-base sm:text-lg font-black text-white">Controle de Destaque & Estoque</h2>
+          </div>
+          <p class="text-xs text-neutral-400 mt-1.5 leading-relaxed">
+            Escolha o <strong>Destaque da Semana</strong> exibido no topo do cardápio e marque itens que <strong>esgotaram hoje</strong> na cozinha. Sincroniza em tempo real com o WhatsApp e tela dos clientes!
+          </p>
+        </div>
+
+        <div class="flex items-center space-x-2 flex-shrink-0">
+          <button onclick="reloadMenuFromCloud(true)" class="px-3.5 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white text-xs font-bold transition flex items-center space-x-1.5 border border-neutral-700">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Atualizar Nuvem</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Destaque Atual em Evidência -->
+      <div id="currentFeaturedCardContainer" class="bg-neutral-900/90 border border-amber-500/40 rounded-3xl p-4 sm:p-5 shadow-2xl">
+        <!-- Renderizado dinamicamente via JavaScript -->
+      </div>
+
+      <!-- Barra de Filtros, Busca e Status de Estoque -->
+      <div class="bg-[#141414] border border-neutral-800 rounded-3xl p-4 space-y-3 shadow-lg">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+          
+          <!-- Campo de Busca de Produtos -->
+          <div class="relative w-full sm:max-w-xs">
+            <i data-lucide="search" class="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="menuSearchInput" 
+              placeholder="Buscar sushi, combo, temaki..." 
+              oninput="filterKitchenMenu()"
+              class="w-full pl-9 pr-3 py-2.5 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red font-medium"
+            >
+          </div>
+
+          <!-- Filtro Rápido de Disponibilidade -->
+          <div class="flex items-center space-x-1.5 w-full sm:w-auto overflow-x-auto no-scrollbar">
+            <button onclick="setMenuAvailabilityFilter('all', this)" class="menu-avail-pill px-3 py-2 rounded-xl text-xs font-bold transition bg-brand-red text-white flex-shrink-0 flex items-center space-x-1 shadow-sm">
+              <span>Todos</span>
+              <span id="countAllProducts" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]">90</span>
+            </button>
+            <button onclick="setMenuAvailabilityFilter('available', this)" class="menu-avail-pill px-3 py-2 rounded-xl text-xs font-bold transition bg-neutral-800 text-neutral-300 hover:text-white flex-shrink-0 flex items-center space-x-1">
+              <span>🟢 Disponíveis</span>
+              <span id="countAvailableProducts" class="px-1.5 py-0.2 rounded-full bg-neutral-700 text-[10px]">90</span>
+            </button>
+            <button onclick="setMenuAvailabilityFilter('soldout', this)" class="menu-avail-pill px-3 py-2 rounded-xl text-xs font-bold transition bg-neutral-800 text-neutral-300 hover:text-white flex-shrink-0 flex items-center space-x-1">
+              <span>🔴 Esgotados</span>
+              <span id="countSoldOutProducts" class="px-1.5 py-0.2 rounded-full bg-neutral-700 text-[10px]">0</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Carrossel de Categorias -->
+        <div id="menuCategoriesPills" class="flex items-center space-x-2 overflow-x-auto no-scrollbar pt-1">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </div>
+
+      <!-- Grid de Produtos com Botões Rápidos de Ação -->
+      <div id="kitchenProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pb-12">
+        <!-- Injetado dinamicamente via JS -->
+      </div>
+
+      <!-- Mensagem de Lista Vazia -->
+      <div id="menuEmptyState" class="hidden py-16 text-center border-2 border-dashed border-neutral-800 rounded-3xl p-8 max-w-md mx-auto">
+        <i data-lucide="search-x" class="w-10 h-10 text-neutral-600 mx-auto mb-2"></i>
+        <p class="text-sm font-bold text-neutral-300">Nenhum item encontrado no cardápio</p>
+        <p class="text-xs text-neutral-500 mt-1">Verifique o termo digitado na busca ou selecione outra categoria.</p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -521,6 +643,21 @@
     let cancellingOrderId = null;
     let sseEventSource = null;
 
+    // CANAL DE SINCRONIZAÇÃO DO CARDÁPIO & ESTOQUE
+    const MENU_SYNC_TOPIC = 'casa-oriental-cardapio-estado-2026';
+    const MENU_SYNC_ENDPOINT = `https://ntfy.sh/${MENU_SYNC_TOPIC}`;
+    const MENU_STORAGE_KEY = 'casa_oriental_menu_state';
+
+    let kitchenMenuState = {
+      featuredId: (typeof DEFAULT_FEATURED_ID !== 'undefined' ? DEFAULT_FEATURED_ID : 14),
+      soldOutIds: []
+    };
+    let menuCategoryFilter = 'all';
+    let menuAvailabilityFilter = 'all';
+    let menuSearchQuery = '';
+    let currentKitchenView = 'orders';
+    let menuSseSource = null;
+
     // Inicialização da Página
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
@@ -569,6 +706,10 @@
         sseEventSource.close();
         sseEventSource = null;
       }
+      if (menuSseSource) {
+        menuSseSource.close();
+        menuSseSource = null;
+      }
       checkAuthStatus();
     }
 
@@ -576,6 +717,7 @@
     function initKitchenDashboard() {
       lucide.createIcons();
       renderOrdersList();
+      loadKitchenMenuState();
       connectRealtimeCloudSync();
       fetchOrdersFromCloud(false);
       
@@ -1196,6 +1338,426 @@ TOTAL: R$ ${(parseFloat(ord.total) || 0).toFixed(2).replace('.', ',')}
         localStorage.removeItem(KITCHEN_STORAGE_KEYS.ORDERS);
         renderOrdersList();
       }
+    }
+
+    // ==================== NAVEGAÇÃO ENTRE ABAS (PEDIDOS / CARDÁPIO & ESTOQUE) ====================
+    function switchKitchenView(view) {
+      currentKitchenView = view;
+      const btnOrders = document.getElementById('viewBtnOrders');
+      const btnMenu = document.getElementById('viewBtnMenu');
+      const secOrders = document.getElementById('ordersViewSection');
+      const secMenu = document.getElementById('menuManagerSection');
+
+      if (view === 'orders') {
+        btnOrders.className = 'px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-brand-red text-white shadow-md shadow-red-950/50';
+        btnMenu.className = 'px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/80 hover:border-neutral-600';
+        secOrders.classList.remove('hidden');
+        secMenu.classList.add('hidden');
+      } else {
+        btnMenu.className = 'px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-brand-red text-white shadow-md shadow-red-950/50';
+        btnOrders.className = 'px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center space-x-2 bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700/80 hover:border-neutral-600';
+        secOrders.classList.add('hidden');
+        secMenu.classList.remove('hidden');
+        renderKitchenMenu();
+      }
+      lucide.createIcons();
+    }
+
+    // ==================== GESTÃO DO CARDÁPIO, DESTAQUE & ESTOQUE ====================
+    function loadKitchenMenuState() {
+      try {
+        const raw = localStorage.getItem(MENU_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            kitchenMenuState = {
+              featuredId: parsed.featuredId || 14,
+              soldOutIds: Array.isArray(parsed.soldOutIds) ? parsed.soldOutIds : []
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Erro ao carregar menuState:', e);
+      }
+      updateSoldOutBadges();
+      connectMenuCloudSync();
+      reloadMenuFromCloud(false);
+    }
+
+    function updateSoldOutBadges() {
+      const count = (kitchenMenuState.soldOutIds || []).length;
+      const badge = document.getElementById('tabSoldOutBadge');
+      if (badge) {
+        badge.innerText = `${count} esgotado${count === 1 ? '' : 's'}`;
+        if (count > 0) {
+          badge.classList.remove('hidden');
+          badge.className = 'px-1.5 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 text-[10px] font-bold';
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+    }
+
+    function connectMenuCloudSync() {
+      if (menuSseSource) return;
+      try {
+        menuSseSource = new EventSource(`${MENU_SYNC_ENDPOINT}/sse`);
+        menuSseSource.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data && data.message) {
+              const incoming = JSON.parse(data.message);
+              if (incoming && (incoming.featuredId || Array.isArray(incoming.soldOutIds))) {
+                applyRemoteKitchenMenuState(incoming);
+              }
+            }
+          } catch (e) {}
+        };
+      } catch (e) {
+        console.warn('Erro ao conectar SSE do cardapio:', e);
+      }
+    }
+
+    async function reloadMenuFromCloud(showFeedback = false) {
+      try {
+        const res = await fetch(`${MENU_SYNC_ENDPOINT}/json?poll=1&since=48h`);
+        if (res.ok) {
+          const text = await res.text();
+          const lines = text.trim().split('\n').filter(Boolean);
+          let latest = null;
+          for (const line of lines) {
+            try {
+              const msgObj = JSON.parse(line);
+              if (msgObj.event === 'message' && msgObj.message) {
+                const parsed = JSON.parse(msgObj.message);
+                if (parsed && (parsed.featuredId || Array.isArray(parsed.soldOutIds))) {
+                  latest = parsed;
+                }
+              }
+            } catch (e) {}
+          }
+          if (latest) {
+            applyRemoteKitchenMenuState(latest);
+            if (showFeedback) showKitchenToast('✅ Dados do cardápio sincronizados com a nuvem!');
+          } else if (showFeedback) {
+            showKitchenToast('ℹ️ O cardápio já está com o estado mais atual!');
+          }
+        }
+      } catch (e) {
+        console.warn('Erro ao fazer polling do cardápio:', e);
+      }
+    }
+
+    function applyRemoteKitchenMenuState(incoming) {
+      kitchenMenuState = {
+        featuredId: incoming.featuredId || kitchenMenuState.featuredId || 14,
+        soldOutIds: Array.isArray(incoming.soldOutIds) ? incoming.soldOutIds : []
+      };
+      try {
+        localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(kitchenMenuState));
+      } catch (e) {}
+      updateSoldOutBadges();
+      if (currentKitchenView === 'menu') {
+        renderKitchenMenu();
+      }
+    }
+
+    function syncMenuChangeToCloud(actionMsg) {
+      try {
+        localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(kitchenMenuState));
+      } catch (e) {}
+
+      updateSoldOutBadges();
+      if (currentKitchenView === 'menu') {
+        renderKitchenMenu();
+      }
+
+      try {
+        fetch(MENU_SYNC_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify(kitchenMenuState),
+          headers: {
+            'Title': 'Atualizacao de Cardapio',
+            'Tags': 'sushi,gear',
+            'Priority': 'default'
+          }
+        }).catch(err => console.warn('Erro sync menu ntfy:', err));
+      } catch (e) {}
+
+      if (actionMsg) {
+        showKitchenToast(actionMsg);
+      }
+    }
+
+    function setProductAsFeatured(productId) {
+      const prod = PRODUCTS.find(p => p.id === productId);
+      if (!prod) return;
+      kitchenMenuState.featuredId = productId;
+      syncMenuChangeToCloud(`⭐ "${prod.name}" é o novo Destaque da Semana!`);
+    }
+
+    function toggleProductSoldOut(productId) {
+      const prod = PRODUCTS.find(p => p.id === productId);
+      if (!prod) return;
+
+      if (!Array.isArray(kitchenMenuState.soldOutIds)) {
+        kitchenMenuState.soldOutIds = [];
+      }
+
+      const idx = kitchenMenuState.soldOutIds.indexOf(productId);
+      if (idx === -1) {
+        kitchenMenuState.soldOutIds.push(productId);
+        syncMenuChangeToCloud(`🔴 "${prod.name}" marcado como ESGOTADO!`);
+      } else {
+        kitchenMenuState.soldOutIds.splice(idx, 1);
+        syncMenuChangeToCloud(`🟢 "${prod.name}" reativado como DISPONÍVEL!`);
+      }
+    }
+
+    function renderKitchenMenu() {
+      renderFeaturedCardSpotlight();
+      renderCategoryPills();
+      renderProductsStockGrid();
+      updateMenuCounts();
+      lucide.createIcons();
+    }
+
+    function renderFeaturedCardSpotlight() {
+      const container = document.getElementById('currentFeaturedCardContainer');
+      if (!container) return;
+
+      const featId = kitchenMenuState.featuredId || 14;
+      const prod = PRODUCTS.find(p => p.id === featId) || PRODUCTS[0];
+      if (!prod) return;
+
+      const isSoldOut = (kitchenMenuState.soldOutIds || []).includes(prod.id);
+      const catTitle = (CATEGORIES && CATEGORIES[prod.cat]) ? CATEGORIES[prod.cat].title : prod.cat;
+
+      container.innerHTML = `
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-center space-x-4 min-w-0">
+            <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-amber-500/50 flex-shrink-0 shadow-lg bg-neutral-950">
+              <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover">
+              <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded bg-amber-500 text-black text-[9px] font-black uppercase tracking-wider">
+                ⭐ Topo
+              </span>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center space-x-2 flex-wrap mb-1">
+                <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  Destaque da Semana Ativo
+                </span>
+                <span class="text-[10px] text-neutral-400 font-semibold">${catTitle}</span>
+                ${isSoldOut ? `<span class="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800/60">Esgotado Hoje</span>` : `<span class="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/60">Disponível</span>`}
+              </div>
+              <h3 class="text-base sm:text-lg font-black text-white truncate">${prod.name}</h3>
+              <p class="text-xs text-neutral-400 line-clamp-1 mt-0.5">${prod.desc}</p>
+              <p class="text-sm font-black text-brand-red mt-1">R$ ${prod.price.toFixed(2).replace('.', ',')}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 w-full md:w-auto justify-end pt-2 md:pt-0 border-t md:border-t-0 border-neutral-800">
+            <button 
+              onclick="toggleProductSoldOut(${prod.id})" 
+              class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 ${isSoldOut ? 'bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40' : 'bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/40'}"
+            >
+              <i data-lucide="${isSoldOut ? 'check-circle' : 'slash'}" class="w-4 h-4"></i>
+              <span>${isSoldOut ? 'Reativar no Destaque' : 'Marcar Esgotado'}</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCategoryPills() {
+      const container = document.getElementById('menuCategoriesPills');
+      if (!container || !CATEGORIES) return;
+
+      let html = `
+        <button 
+          onclick="setMenuCategoryFilter('all', this)" 
+          class="menu-cat-pill flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition ${menuCategoryFilter === 'all' ? 'bg-brand-red text-white' : 'bg-neutral-800 text-neutral-300 hover:text-white'}"
+        >
+          Todas Categorias
+        </button>
+      `;
+
+      Object.keys(CATEGORIES).forEach(catKey => {
+        const cat = CATEGORIES[catKey];
+        const isActive = menuCategoryFilter === catKey;
+        html += `
+          <button 
+            onclick="setMenuCategoryFilter('${catKey}', this)" 
+            class="menu-cat-pill flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition ${isActive ? 'bg-brand-red text-white' : 'bg-neutral-800 text-neutral-300 hover:text-white'}"
+          >
+            ${cat.title.split(' ')[0]} ${cat.title.replace(/^[^\s]+\s/, '')}
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function setMenuCategoryFilter(cat, btn) {
+      menuCategoryFilter = cat;
+      document.querySelectorAll('.menu-cat-pill').forEach(b => {
+        b.classList.remove('bg-brand-red', 'text-white');
+        b.classList.add('bg-neutral-800', 'text-neutral-300');
+      });
+      btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+      btn.classList.add('bg-brand-red', 'text-white');
+      renderProductsStockGrid();
+      lucide.createIcons();
+    }
+
+    function setMenuAvailabilityFilter(filter, btn) {
+      menuAvailabilityFilter = filter;
+      document.querySelectorAll('.menu-avail-pill').forEach(b => {
+        b.classList.remove('bg-brand-red', 'text-white');
+        b.classList.add('bg-neutral-800', 'text-neutral-300');
+      });
+      btn.classList.remove('bg-neutral-800', 'text-neutral-300');
+      btn.classList.add('bg-brand-red', 'text-white');
+      renderProductsStockGrid();
+      lucide.createIcons();
+    }
+
+    function filterKitchenMenu() {
+      const input = document.getElementById('menuSearchInput');
+      menuSearchQuery = input ? input.value.trim().toLowerCase() : '';
+      renderProductsStockGrid();
+      lucide.createIcons();
+    }
+
+    function renderProductsStockGrid() {
+      const container = document.getElementById('kitchenProductsGrid');
+      const emptyState = document.getElementById('menuEmptyState');
+      if (!container || typeof PRODUCTS === 'undefined') return;
+
+      let items = PRODUCTS;
+
+      if (menuCategoryFilter !== 'all') {
+        items = items.filter(p => p.cat === menuCategoryFilter);
+      }
+
+      if (menuAvailabilityFilter === 'available') {
+        items = items.filter(p => !(kitchenMenuState.soldOutIds || []).includes(p.id));
+      } else if (menuAvailabilityFilter === 'soldout') {
+        items = items.filter(p => (kitchenMenuState.soldOutIds || []).includes(p.id));
+      }
+
+      if (menuSearchQuery) {
+        items = items.filter(p => 
+          p.name.toLowerCase().includes(menuSearchQuery) || 
+          p.desc.toLowerCase().includes(menuSearchQuery) ||
+          String(p.id).includes(menuSearchQuery)
+        );
+      }
+
+      if (items.length === 0) {
+        container.innerHTML = '';
+        emptyState?.classList.remove('hidden');
+        return;
+      }
+
+      emptyState?.classList.add('hidden');
+
+      container.innerHTML = items.map(p => {
+        const isSoldOut = (kitchenMenuState.soldOutIds || []).includes(p.id);
+        const isFeatured = (kitchenMenuState.featuredId || 14) === p.id;
+        const catTitle = (CATEGORIES && CATEGORIES[p.cat]) ? CATEGORIES[p.cat].title : p.cat;
+
+        return `
+          <div class="bg-[#141414] border ${isFeatured ? 'border-amber-500/50 shadow-md shadow-amber-950/30' : isSoldOut ? 'border-red-900/50 opacity-75' : 'border-neutral-800'} rounded-2xl p-3.5 flex flex-col justify-between space-y-3 transition hover:border-neutral-700">
+            
+            <!-- Topo do Card: Info e Thumb -->
+            <div class="flex items-start justify-between space-x-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5 flex-wrap mb-1">
+                  <span class="text-[9px] font-bold text-neutral-400 bg-neutral-800 px-1.5 py-0.5 rounded">#${p.id}</span>
+                  <span class="text-[9px] font-bold text-neutral-400 bg-neutral-800/80 px-1.5 py-0.5 rounded truncate max-w-[120px]">${catTitle}</span>
+                  ${isFeatured ? `<span class="text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.5 rounded">⭐ Destaque</span>` : ''}
+                  ${isSoldOut ? `<span class="text-[9px] font-black uppercase tracking-wider bg-red-950 text-red-400 border border-red-800/60 px-1.5 py-0.5 rounded">Esgotado</span>` : ''}
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-white leading-snug truncate">${p.name}</h4>
+                <p class="text-[11px] text-neutral-400 line-clamp-2 mt-0.5 leading-tight">${p.desc}</p>
+                <p class="text-xs font-black text-brand-red mt-1.5">R$ ${p.price.toFixed(2).replace('.', ',')}</p>
+              </div>
+
+              <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-neutral-900 border border-neutral-800 flex-shrink-0 shadow-inner">
+                <img src="${p.img}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover">
+                ${isSoldOut ? `
+                  <div class="absolute inset-0 bg-red-950/85 backdrop-blur-[1px] flex items-center justify-center p-1 text-center">
+                    <span class="text-[9px] font-black text-red-300 uppercase tracking-wider">Esgotado</span>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- Botões de Ação na Cozinha -->
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-neutral-800/80">
+              
+              <!-- Botão 1: Toggle Estoque -->
+              <button 
+                onclick="toggleProductSoldOut(${p.id})" 
+                class="py-2 px-2 rounded-xl text-[11px] font-bold transition flex items-center justify-center space-x-1 ${isSoldOut ? 'bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40' : 'bg-red-950/40 hover:bg-red-950 text-red-400 border border-red-800/40'}"
+              >
+                <i data-lucide="${isSoldOut ? 'check' : 'slash'}" class="w-3.5 h-3.5"></i>
+                <span>${isSoldOut ? 'Reativar' : 'Esgotado'}</span>
+              </button>
+
+              <!-- Botão 2: Definir como Destaque -->
+              ${isFeatured ? `
+                <div class="py-2 px-2 rounded-xl text-[11px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center justify-center space-x-1 text-center">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                  <span>Destaque</span>
+                </div>
+              ` : `
+                <button 
+                  onclick="setProductAsFeatured(${p.id})" 
+                  class="py-2 px-2 rounded-xl text-[11px] font-bold bg-neutral-800 hover:bg-amber-500/20 text-neutral-300 hover:text-amber-300 border border-neutral-700 hover:border-amber-500/40 transition flex items-center justify-center space-x-1"
+                >
+                  <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Fazer Destaque</span>
+                </button>
+              `}
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateMenuCounts() {
+      if (typeof PRODUCTS === 'undefined') return;
+      const total = PRODUCTS.length;
+      const soldOutCount = (kitchenMenuState.soldOutIds || []).length;
+      const availCount = total - soldOutCount;
+
+      const elTotal = document.getElementById('countAllProducts');
+      const elAvail = document.getElementById('countAvailableProducts');
+      const elSold = document.getElementById('countSoldOutProducts');
+
+      if (elTotal) elTotal.innerText = total;
+      if (elAvail) elAvail.innerText = availCount;
+      if (elSold) elSold.innerText = soldOutCount;
+    }
+
+    function showKitchenToast(text) {
+      let toast = document.getElementById('kitchenToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'kitchenToast';
+        toast.className = 'fixed bottom-5 right-5 z-50 bg-[#1A1A1A] border border-neutral-700 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold transition duration-300 transform translate-y-10 opacity-0 flex items-center space-x-2';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span>${text}</span>`;
+      toast.classList.remove('translate-y-10', 'opacity-0');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+      }, 2800);
     }
   </script>
 </body>
