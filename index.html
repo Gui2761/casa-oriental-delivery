@@ -305,98 +305,23 @@
             type="button" 
             onclick="calculateFeeWithGPS()" 
             id="btnGpsCalculate" 
-            class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-850 hover:from-neutral-800 hover:to-neutral-800 border border-emerald-500/30 hover:border-emerald-500/50 text-neutral-200 text-xs font-bold flex items-center justify-between transition shadow-sm group"
+            class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-850 hover:from-neutral-800 hover:to-neutral-800 border border-emerald-500/30 hover:border-emerald-500/50 text-neutral-200 text-xs font-bold flex items-center justify-between transition shadow-sm group"
           >
             <div class="flex items-center space-x-2">
               <i data-lucide="crosshair" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform"></i>
-              <span id="btnGpsLabel">Calcular Frete pelo meu GPS (Distância Real)</span>
+              <span id="btnGpsLabel">Localizar meu Endereço e Frete pelo GPS</span>
             </div>
             <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-semibold border border-emerald-500/20">Automático</span>
           </button>
 
-          <!-- Seletor de Bairros centrados na sede Parque dos Faróis com Distância em km -->
-          <div>
-            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Ou selecione o seu Bairro na lista *</label>
-            <select id="aracajuNeighborhood" onchange="updateNeighborhoodFee()" class="w-full px-3 py-2.5 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white focus:outline-none focus:border-brand-red">
-              <optgroup label="📍 Nossa Senhora do Socorro (Sede da Loja)">
-                <option value="4.00" data-name="Parque dos Faróis" data-distance="1.0" selected>Parque dos Faróis (~1.0 km) — R$ 4,00</option>
-                <option value="4.50" data-name="Marcos Freire I" data-distance="2.8">Marcos Freire I (~2.8 km) — R$ 4,50</option>
-                <option value="5.00" data-name="Marcos Freire II" data-distance="3.2">Marcos Freire II (~3.2 km) — R$ 5,00</option>
-                <option value="6.00" data-name="Marcos Freire III" data-distance="4.2">Marcos Freire III (~4.2 km) — R$ 6,00</option>
-                <option value="6.00" data-name="Piabeta" data-distance="4.5">Piabeta (~4.5 km) — R$ 6,00</option>
-                <option value="6.50" data-name="Taiçoca" data-distance="4.8">Taiçoca (De Dentro / Fora) (~4.8 km) — R$ 6,50</option>
-                <option value="6.00" data-name="João Alves" data-distance="4.5">João Alves (~4.5 km) — R$ 6,00</option>
-                <option value="7.00" data-name="Albano Franco" data-distance="5.5">Albano Franco (~5.5 km) — R$ 7,00</option>
-                <option value="7.00" data-name="Conjunto Jardim" data-distance="5.8">Conjunto Jardim (~5.8 km) — R$ 7,00</option>
-                <option value="8.00" data-name="Guajará" data-distance="6.8">Guajará (~6.8 km) — R$ 8,00</option>
-                <option value="8.50" data-name="Palestina" data-distance="7.2">Palestina (~7.2 km) — R$ 8,50</option>
-                <option value="9.50" data-name="Sede de Socorro" data-distance="8.5">Sede de Socorro (Centro) (~8.5 km) — R$ 9,50</option>
-              </optgroup>
-              <optgroup label="🛵 Zona Norte de Aracaju (Próximo a Socorro)">
-                <option value="8.50" data-name="Santos Dumont" data-distance="7.0">Santos Dumont (~7.0 km) — R$ 8,50</option>
-                <option value="8.50" data-name="Bugio" data-distance="7.5">Bugio (~7.5 km) — R$ 8,50</option>
-                <option value="8.50" data-name="Lamarão" data-distance="7.2">Lamarão (~7.2 km) — R$ 8,50</option>
-                <option value="9.50" data-name="Olaria" data-distance="8.2">Olaria (~8.2 km) — R$ 9,50</option>
-                <option value="9.50" data-name="Soledade" data-distance="8.5">Soledade (~8.5 km) — R$ 9,50</option>
-                <option value="10.00" data-name="Cidade Nova" data-distance="8.8">Cidade Nova (~8.8 km) — R$ 10,00</option>
-                <option value="9.50" data-name="Bairro Industrial" data-distance="8.5">Bairro Industrial (~8.5 km) — R$ 9,50</option>
-                <option value="10.00" data-name="Santo Antônio" data-distance="8.8">Santo Antônio (~8.8 km) — R$ 10,00</option>
-                <option value="9.50" data-name="Dezoito do Forte" data-distance="8.5">Dezoito do Forte (~8.5 km) — R$ 9,50</option>
-                <option value="10.50" data-name="Porto Dantas" data-distance="9.8">Porto Dantas (~9.8 km) — R$ 10,50</option>
-              </optgroup>
-              <optgroup label="🏙️ Zona Centro e Oeste de Aracaju">
-                <option value="10.50" data-name="Centro" data-distance="9.8">Centro (~9.8 km) — R$ 10,50</option>
-                <option value="11.00" data-name="São José" data-distance="10.5">São José (~10.5 km) — R$ 11,00</option>
-                <option value="11.00" data-name="Getúlio Vargas" data-distance="10.0">Getúlio Vargas (~10.0 km) — R$ 11,00</option>
-                <option value="11.00" data-name="Cirurgia" data-distance="10.2">Cirurgia (~10.2 km) — R$ 11,00</option>
-                <option value="10.50" data-name="Siqueira Campos" data-distance="9.5">Siqueira Campos (~9.5 km) — R$ 10,50</option>
-                <option value="11.00" data-name="América" data-distance="10.0">América (~10.0 km) — R$ 11,00</option>
-                <option value="11.00" data-name="Novo Paraíso / Capucho" data-distance="10.2">Novo Paraíso / Capucho (~10.2 km) — R$ 11,00</option>
-                <option value="12.50" data-name="Jabotiana" data-distance="12.0">Jabotiana (~12.0 km) — R$ 12,50</option>
-                <option value="12.00" data-name="Ponto Novo" data-distance="11.5">Ponto Novo (~11.5 km) — R$ 12,00</option>
-              </optgroup>
-              <optgroup label="🌴 Zona Sul & Orla de Aracaju">
-                <option value="13.50" data-name="13 de Julho" data-distance="13.0">13 de Julho (~13.0 km) — R$ 13,50</option>
-                <option value="14.00" data-name="Jardins" data-distance="13.5">Jardins (~13.5 km) — R$ 14,00</option>
-                <option value="13.50" data-name="Grageru" data-distance="13.2">Grageru (~13.2 km) — R$ 13,50</option>
-                <option value="14.00" data-name="Garcia" data-distance="13.5">Garcia (~13.5 km) — R$ 14,00</option>
-                <option value="13.50" data-name="Salgado Filho" data-distance="13.0">Salgado Filho (~13.0 km) — R$ 13,50</option>
-                <option value="13.50" data-name="Luzia" data-distance="13.0">Luzia (~13.0 km) — R$ 13,50</option>
-                <option value="14.00" data-name="Inácio Barbosa" data-distance="13.5">Inácio Barbosa (~13.5 km) — R$ 14,00</option>
-                <option value="13.00" data-name="Suíça" data-distance="12.5">Suíça (~12.5 km) — R$ 13,00</option>
-                <option value="14.50" data-name="Coroa do Meio" data-distance="14.5">Coroa do Meio (~14.5 km) — R$ 14,50</option>
-                <option value="15.50" data-name="Atalaia" data-distance="15.5">Atalaia (~15.5 km) — R$ 15,50</option>
-                <option value="15.50" data-name="Farolândia / Unit" data-distance="15.5">Farolândia / Unit (~15.5 km) — R$ 15,50</option>
-                <option value="17.00" data-name="Aeroporto" data-distance="17.0">Aeroporto (~17.0 km) — R$ 17,00</option>
-                <option value="19.00" data-name="Aruana" data-distance="19.5">Aruana (~19.5 km) — R$ 19,00</option>
-                <option value="26.00" data-name="Mosqueiro" data-distance="28.0">Mosqueiro (~28.0 km) — R$ 26,00</option>
-              </optgroup>
-              <optgroup label="🌉 Região Metropolitana & Litoral">
-                <option value="14.00" data-name="Barra dos Coqueiros" data-distance="14.0">Barra dos Coqueiros (~14.0 km) — R$ 14,00</option>
-                <option value="14.00" data-name="São Cristóvão / Eduardo Gomes" data-distance="13.5">São Cristóvão / Eduardo Gomes (~13.5 km) — R$ 14,00</option>
-              </optgroup>
-              <option value="0.00" data-name="Outro Bairro" data-distance="custom">Outro Bairro (A combinar no WhatsApp)</option>
-            </select>
-          </div>
-
-          <!-- Card Informativo de Distância & Regra de Frete -->
-          <div id="distanceFeeInfoCard" class="p-3 rounded-xl bg-neutral-900/90 border border-neutral-800 text-[11px] text-neutral-300 space-y-1.5 shadow-sm">
-            <div class="flex items-center justify-between font-bold">
-              <span class="flex items-center text-emerald-400">
-                <i data-lucide="navigation" class="w-3.5 h-3.5 mr-1.5 inline"></i>
-                <span id="distanceValueDisplay">Distância estimada: ~1.0 km da sede</span>
-              </span>
-              <span class="text-white font-mono bg-neutral-800 px-2 py-0.5 rounded border border-neutral-700 text-xs" id="calculatedFeeDisplay">R$ 4,00</span>
-            </div>
-            <p class="text-[10px] text-neutral-400 leading-snug">
-              📍 <span class="text-neutral-300">Origem:</span> Rua 58, Parque dos Faróis (Socorro/SE).<br>
-              🛡️ <strong class="text-neutral-200">Taxa Mínima Base:</strong> R$ 4,00 (cobre até 2 km, garantindo atendimento e remuneração da entrega mesmo no quarteirão ao lado).
-            </p>
-          </div>
-
+          <!-- Campos de Endereço de Entrega (Sem o card e sem o dropdown da foto 1) -->
           <div>
             <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Rua, Número e Complemento (Apto/Bloco) *</label>
             <input type="text" id="clientAddress" placeholder="Ex: Rua 58, 120 - Casa" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Bairro *</label>
+            <input type="text" id="clientNeighborhood" placeholder="Ex: Parque dos Faróis" value="Parque dos Faróis" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
           </div>
           <div>
             <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Ponto de Referência (Opcional)</label>
@@ -926,7 +851,6 @@
       loadCustomerData();
       initCustomerListeners();
       loadMenuState();
-      updateNeighborhoodFee();
       updateCartUI();
       renderOrdersHistory();
       lucide.createIcons();
@@ -980,14 +904,15 @@
           name: document.getElementById('clientName')?.value || '',
           phone: document.getElementById('clientPhone')?.value || '',
           address: document.getElementById('clientAddress')?.value || '',
+          neighborhood: document.getElementById('clientNeighborhood')?.value || selectedNeighborhoodName || 'Parque dos Faróis',
           reference: document.getElementById('clientReference')?.value || '',
           orderNotes: document.getElementById('orderNotes')?.value || '',
-          neighborhoodValue: document.getElementById('aracajuNeighborhood')?.value || '4.00',
           deliveryType: deliveryType,
           paymentMethodType: paymentMethodType,
           deliveryPaymentSubtype: deliveryPaymentSubtype,
           changeAmount: document.getElementById('changeAmount')?.value || '',
           distanceKm: currentDistanceKm,
+          deliveryFee: currentDeliveryFee,
           isGps: isGpsCalculated
         };
         localStorage.setItem(STORAGE_KEYS.CUSTOMER, JSON.stringify(data));
@@ -1011,8 +936,15 @@
         if (data.address && document.getElementById('clientAddress')) {
           document.getElementById('clientAddress').value = data.address;
         }
+        if (data.neighborhood && document.getElementById('clientNeighborhood')) {
+          document.getElementById('clientNeighborhood').value = data.neighborhood;
+          selectedNeighborhoodName = data.neighborhood;
+        }
         if (data.reference && document.getElementById('clientReference')) {
-          document.getElementById('clientReference').value = data.reference;
+          // Limpa resíduos de coordenadas de versões anteriores
+          if (!data.reference.startsWith('Ponto GPS:')) {
+            document.getElementById('clientReference').value = data.reference;
+          }
         }
         if (data.orderNotes && document.getElementById('orderNotes')) {
           document.getElementById('orderNotes').value = data.orderNotes;
@@ -1028,19 +960,14 @@
         if (data.isGps && data.distanceKm) {
           isGpsCalculated = true;
           currentDeliveryFee = calculateDeliveryFeeByDistance(currentDistanceKm);
-          selectedNeighborhoodName = `GPS (~${currentDistanceKm} km)`;
           const feeTag = document.getElementById('neighborhoodFeeTag');
           if (feeTag) feeTag.innerText = `Frete: R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
           const btnLabel = document.getElementById('btnGpsLabel');
           if (btnLabel) btnLabel.innerText = `✅ GPS: ~${currentDistanceKm} km (Frete R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')})`;
-          const distDisplay = document.getElementById('distanceValueDisplay');
-          if (distDisplay) distDisplay.innerText = `Distância via GPS: ~${currentDistanceKm} km da sede`;
-          const feeDisplay = document.getElementById('calculatedFeeDisplay');
-          if (feeDisplay) feeDisplay.innerText = `R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
-        } else if (data.neighborhoodValue && document.getElementById('aracajuNeighborhood')) {
-          const select = document.getElementById('aracajuNeighborhood');
-          select.value = data.neighborhoodValue;
-          updateNeighborhoodFee();
+        } else if (data.deliveryFee) {
+          currentDeliveryFee = parseFloat(data.deliveryFee) || 4.00;
+          const feeTag = document.getElementById('neighborhoodFeeTag');
+          if (feeTag) feeTag.innerText = `Frete: R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
         }
 
         if (data.deliveryPaymentSubtype) {
@@ -1082,17 +1009,18 @@
     }
 
     function initCustomerListeners() {
-      const inputs = ['clientName', 'clientPhone', 'clientAddress', 'clientReference', 'orderNotes', 'changeAmount'];
+      const inputs = ['clientName', 'clientPhone', 'clientAddress', 'clientNeighborhood', 'clientReference', 'orderNotes', 'changeAmount'];
       inputs.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.addEventListener('input', saveCustomerData);
+          el.addEventListener('input', () => {
+            if (id === 'clientNeighborhood') {
+              selectedNeighborhoodName = el.value.trim() || 'Parque dos Faróis';
+            }
+            saveCustomerData();
+          });
         }
       });
-      const neighSelect = document.getElementById('aracajuNeighborhood');
-      if (neighSelect) {
-        neighSelect.addEventListener('change', saveCustomerData);
-      }
     }
 
     // ==================== CONFIGURAÇÃO E CÓPIA DA CHAVE PIX ====================
@@ -1432,111 +1360,128 @@
       renderProducts(document.getElementById('searchInput').value);
     }
 
-    function updateNeighborhoodFee() {
-      const select = document.getElementById('aracajuNeighborhood');
-      if (!select) return;
-      const selectedOption = select.options[select.selectedIndex];
-      if (!selectedOption) return;
-
-      const dataDistance = selectedOption.getAttribute('data-distance');
-      
-      isGpsCalculated = false;
-      const btnLabel = document.getElementById('btnGpsLabel');
-      if (btnLabel) btnLabel.innerText = 'Calcular Frete pelo meu GPS (Distância Real)';
-
-      if (dataDistance && dataDistance !== 'custom') {
-        const distKm = parseFloat(dataDistance) || 1.0;
-        currentDistanceKm = distKm;
-        currentDeliveryFee = calculateDeliveryFeeByDistance(distKm);
-        selectedNeighborhoodName = selectedOption.getAttribute('data-name') || select.value;
-
-        const distDisplay = document.getElementById('distanceValueDisplay');
-        if (distDisplay) distDisplay.innerText = `Distância estimada: ~${distKm} km da sede`;
-
-        const feeDisplay = document.getElementById('calculatedFeeDisplay');
-        if (feeDisplay) feeDisplay.innerText = `R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
-      } else {
-        currentDistanceKm = null;
-        currentDeliveryFee = 0;
-        selectedNeighborhoodName = selectedOption.getAttribute('data-name') || 'Outro Bairro';
-
-        const distDisplay = document.getElementById('distanceValueDisplay');
-        if (distDisplay) distDisplay.innerText = `Distância: A consultar no WhatsApp`;
-
-        const feeDisplay = document.getElementById('calculatedFeeDisplay');
-        if (feeDisplay) feeDisplay.innerText = `A combinar`;
-      }
-
-      const feeTag = document.getElementById('neighborhoodFeeTag');
-      if (feeTag) {
-        if (currentDeliveryFee > 0) {
-          feeTag.innerText = `Frete: R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
-        } else {
-          feeTag.innerText = `Frete: A combinar`;
+    // Geocodificação Reversa Inteligente (Nominatim OSM + Fallback BigDataCloud)
+    async function reverseGeocodeAddress(lat, lng) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
+        });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          const data = await res.json();
+          const addr = data.address || {};
+          const road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.avenue || addr.square || '';
+          const suburb = addr.suburb || addr.neighbourhood || addr.city_district || addr.quarter || addr.subdivision || '';
+          const city = addr.city || addr.town || addr.municipality || 'Aracaju';
+          if (road || suburb) {
+            return { road, suburb, city };
+          }
         }
+      } catch (e) {
+        console.warn('Nominatim reverse geocode error:', e);
       }
 
-      saveCustomerData();
-      updateCartUI();
+      try {
+        const res2 = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=pt`);
+        if (res2.ok) {
+          const data2 = await res2.json();
+          const road = data2.localityInfo?.administrative?.find(a => a.adminLevel === 10 || a.adminLevel === 9)?.name || '';
+          const suburb = data2.locality || data2.city || '';
+          return { road, suburb, city: data2.city || 'Aracaju' };
+        }
+      } catch (e) {
+        console.warn('BigDataCloud reverse geocode error:', e);
+      }
+
+      return { road: '', suburb: '', city: 'Aracaju' };
     }
 
-    function calculateFeeWithGPS() {
+    async function calculateFeeWithGPS() {
       if (!navigator.geolocation) {
-        alert('Geolocalização não é suportada pelo seu navegador. Selecione seu bairro na lista!');
+        alert('Geolocalização não é suportada pelo seu navegador. Por favor, digite seu endereço e bairro!');
         return;
       }
 
       const btn = document.getElementById('btnGpsCalculate');
       const label = document.getElementById('btnGpsLabel');
-      const originalLabel = 'Calcular Frete pelo meu GPS (Distância Real)';
+      const originalLabel = 'Localizar meu Endereço e Frete pelo GPS';
 
-      if (label) label.innerText = '📡 Obtendo sua localização GPS...';
+      if (label) label.innerText = '📡 Detectando rua e calculando frete...';
       if (btn) btn.classList.add('opacity-75');
 
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (btn) btn.classList.remove('opacity-75');
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+        async (position) => {
+          try {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
 
-          const distKm = calculateHaversineRoadDistance(RESTAURANT_CONFIG.lat, RESTAURANT_CONFIG.lng, userLat, userLng);
-          currentDistanceKm = distKm;
-          currentDeliveryFee = calculateDeliveryFeeByDistance(distKm);
-          isGpsCalculated = true;
-          selectedNeighborhoodName = `GPS (~${distKm} km)`;
+            const distKm = calculateHaversineRoadDistance(RESTAURANT_CONFIG.lat, RESTAURANT_CONFIG.lng, userLat, userLng);
+            currentDistanceKm = distKm;
+            currentDeliveryFee = calculateDeliveryFeeByDistance(distKm);
+            isGpsCalculated = true;
 
-          // Atualiza UI
-          const feeTag = document.getElementById('neighborhoodFeeTag');
-          if (feeTag) {
-            feeTag.innerText = `Frete: R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
+            // Busca nome real da rua e bairro via Geocodificação Reversa
+            const geo = await reverseGeocodeAddress(userLat, userLng);
+
+            // Preenche o campo de Rua
+            const addrInput = document.getElementById('clientAddress');
+            if (addrInput) {
+              if (geo.road) {
+                addrInput.value = `${geo.road}, `;
+                addrInput.focus();
+                const len = addrInput.value.length;
+                addrInput.setSelectionRange(len, len);
+              }
+            }
+
+            // Preenche o campo de Bairro
+            const neighInput = document.getElementById('clientNeighborhood');
+            if (neighInput && geo.suburb) {
+              neighInput.value = geo.suburb;
+              selectedNeighborhoodName = geo.suburb;
+            } else if (geo.suburb) {
+              selectedNeighborhoodName = geo.suburb;
+            }
+
+            // Garante que o Ponto de Referência NÃO contenha coordenadas brutas
+            const refInput = document.getElementById('clientReference');
+            if (refInput && refInput.value.startsWith('Ponto GPS:')) {
+              refInput.value = '';
+            }
+
+            // Atualiza tag de frete
+            const feeTag = document.getElementById('neighborhoodFeeTag');
+            if (feeTag) {
+              feeTag.innerText = `Frete: R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
+            }
+
+            // Atualiza o botão com a rua detectada e o frete calculado
+            const streetDisplay = geo.road || 'Endereço Localizado';
+            if (label) {
+              label.innerText = `✅ ${streetDisplay} • ~${distKm} km (Frete R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')})`;
+            }
+
+            saveCustomerData();
+            updateCartUI();
+          } catch (err) {
+            console.error('Erro no pós-processamento de localização:', err);
+          } finally {
+            if (btn) btn.classList.remove('opacity-75');
+            if (window.lucide) lucide.createIcons();
           }
-
-          if (label) label.innerText = `✅ GPS: ~${distKm} km (Frete R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')})`;
-
-          const distDisplay = document.getElementById('distanceValueDisplay');
-          if (distDisplay) distDisplay.innerText = `Localização via GPS: ~${distKm} km da sede`;
-
-          const feeDisplay = document.getElementById('calculatedFeeDisplay');
-          if (feeDisplay) feeDisplay.innerText = `R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
-
-          const refInput = document.getElementById('clientReference');
-          if (refInput && !refInput.value) {
-            refInput.value = `Ponto GPS: ${userLat.toFixed(5)}, ${userLng.toFixed(5)}`;
-          }
-
-          saveCustomerData();
-          updateCartUI();
-          if (window.lucide) lucide.createIcons();
         },
         (error) => {
           if (btn) btn.classList.remove('opacity-75');
           if (label) label.innerText = originalLabel;
           let msg = 'Não foi possível obter sua localização exata.';
           if (error.code === error.PERMISSION_DENIED) {
-            msg = 'Permissão de localização negada. Selecione seu bairro na lista abaixo para calcular o frete!';
+            msg = 'Permissão de localização negada. Por favor, digite seu endereço e bairro manualmente!';
           }
           alert(msg);
-          document.getElementById('aracajuNeighborhood')?.focus();
+          document.getElementById('clientAddress')?.focus();
         },
         { enableHighAccuracy: true, timeout: 9000, maximumAge: 60000 }
       );
@@ -1688,6 +1633,7 @@
       const clientName = document.getElementById('clientName').value.trim();
       const clientPhone = document.getElementById('clientPhone').value.trim();
       const clientAddress = document.getElementById('clientAddress').value.trim();
+      const clientNeighborhood = document.getElementById('clientNeighborhood')?.value.trim() || selectedNeighborhoodName || 'Parque dos Faróis';
       const clientReference = document.getElementById('clientReference').value.trim();
       const orderNotes = document.getElementById('orderNotes').value.trim();
       const changeAmount = document.getElementById('changeAmount')?.value.trim() || '';
@@ -1698,10 +1644,17 @@
         return;
       }
 
-      if (deliveryType === 'delivery' && !clientAddress) {
-        alert('Por favor, informe a rua e número para entrega!');
-        document.getElementById('clientAddress').focus();
-        return;
+      if (deliveryType === 'delivery') {
+        if (!clientAddress) {
+          alert('Por favor, informe a rua e número para entrega!');
+          document.getElementById('clientAddress').focus();
+          return;
+        }
+        if (!clientNeighborhood) {
+          alert('Por favor, informe o seu bairro!');
+          document.getElementById('clientNeighborhood').focus();
+          return;
+        }
       }
 
       let paymentTitle = "";
@@ -1743,7 +1696,7 @@
       
       if (deliveryType === 'delivery') {
         const distStr = currentDistanceKm ? ` (~${currentDistanceKm} km)` : '';
-        msg += `Bairro: ${selectedNeighborhoodName}${distStr}\n`;
+        msg += `Bairro: ${clientNeighborhood}${distStr}\n`;
         msg += `End: ${clientAddress}\n`;
         if (clientReference) msg += `Ref: ${clientReference}\n`;
       } else {
@@ -1792,8 +1745,8 @@
       const orderId = Date.now();
       const itemsText = cart.map(i => `${i.qty}x ${i.name} - R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`).join('\n');
       const fullAddress = clientAddress 
-        ? `${selectedNeighborhoodName} - ${clientAddress}${clientReference ? ' (' + clientReference + ')' : ''}` 
-        : (deliveryType === 'delivery' ? selectedNeighborhoodName : 'Retirada no Balcão');
+        ? `${clientNeighborhood} - ${clientAddress}${clientReference ? ' (' + clientReference + ')' : ''}` 
+        : (deliveryType === 'delivery' ? clientNeighborhood : 'Retirada no Balcão');
 
       const paymentBadgeText = (paymentMethodType === 'PIX')
         ? 'PIX (Cardápio)'
@@ -1805,7 +1758,7 @@
         id: orderId,
         clientName: clientName,
         clientPhone: clientPhone,
-        neighborhood: selectedNeighborhoodName,
+        neighborhood: clientNeighborhood,
         distanceKm: currentDistanceKm,
         deliveryFee: fee,
         clientAddress: fullAddress,
