@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CASA ORIENTAL — Cardápio Digital & Delivery</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#E53935',
+              redHover: '#D32F2F',
+              dark: '#0D0D0D',
+              card: '#1A1A1A',
+              cardHover: '#242424',
+              border: '#2A2A2A',
+              gold: '#D4AF37'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0D0D0D;
+      color: #F3F4F6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .badge-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .5; }
+    }
+    .grab-scroll {
+      cursor: grab;
+      user-select: none;
+    }
+    .grab-scroll:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body class="pb-28 antialiased selection:bg-brand-red selection:text-white">
+
+  <!-- ==================== HEADER COM A LOGO OFICIAL DA CASA ORIENTAL ==================== -->
+  <header class="sticky top-0 z-40 bg-[#121212]/95 backdrop-blur-md border-b border-brand-border px-4 py-3 shadow-lg">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- LOGO OFICIAL CASA ORIENTAL -->
+        <div class="w-12 h-12 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg shadow-black/50 border border-neutral-700/60 flex-shrink-0 overflow-hidden">
+          <img src="logo.png" alt="Logo Casa Oriental" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-black text-lg tracking-tight text-white">CASA ORIENTAL</h1>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 badge-pulse"></span> Aberto
+            </span>
+          </div>
+          <p class="text-xs text-neutral-400 flex items-center space-x-2 mt-0.5">
+            <span class="text-amber-400 flex items-center font-medium"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 mr-1 inline"></i> 4.9</span>
+            <span>•</span>
+            <span>📍 Aracaju, SE</span>
+            <span>•</span>
+            <span>⏱️ 30-50 min</span>
+          </p>
+        </div>
+      </div>
+      <!-- Botão Direto de Falar no WhatsApp -->
+      <a href="https://api.whatsapp.com/send?phone=5579999999999&text=Ol%C3%A1%2C%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20o%20card%C3%A1pio" target="_blank" class="p-2.5 rounded-xl bg-emerald-600/15 hover:bg-emerald-600/25 text-emerald-400 border border-emerald-500/30 flex items-center space-x-1.5 text-xs font-bold transition">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">WhatsApp</span>
+      </a>
+    </div>
+
+    <!-- Barra de Pesquisa Rápida -->
+    <div class="max-w-2xl mx-auto mt-3">
+      <div class="relative">
+        <i data-lucide="search" class="w-4 h-4 text-neutral-400 absolute left-3.5 top-3.5"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          onkeyup="filterProducts()" 
+          placeholder="Buscar no cardápio: combos, temakis, yakissoba..."
+          class="w-full pl-10 pr-4 py-2.5 bg-[#1A1A1A] border border-neutral-800 rounded-xl text-sm text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-brand-red transition"
+        >
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== BANNER DESTAQUE ==================== -->
+  <div class="max-w-2xl mx-auto px-4 mt-4">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-950 via-neutral-900 to-black p-4 border border-red-900/40 shadow-xl">
+      <div class="flex justify-between items-center relative z-10">
+        <div class="max-w-[65%]">
+          <span class="inline-block px-2 py-0.5 rounded bg-brand-red text-white text-[10px] font-bold uppercase tracking-wider mb-1">Destaque da Semana</span>
+          <h2 class="text-lg font-black text-white leading-tight">Combo Especial 25 Peças</h2>
+          <p class="text-xs text-neutral-300 mt-1 line-clamp-2">Seleção nobre com uramakis, hots, niguiris e sashimis frescos.</p>
+          <div class="mt-2.5 flex items-center space-x-2">
+            <span class="text-brand-red font-black text-lg">R$ 40,00</span>
+            <button onclick="addItemToCart(14)" class="px-3 py-1 bg-brand-red hover:bg-brand-redHover text-white text-xs font-bold rounded-lg shadow transition flex items-center">
+              <i data-lucide="plus" class="w-3.5 h-3.5 mr-1"></i> Pedir Agora
+            </button>
+          </div>
+        </div>
+        <div class="w-24 h-24 rounded-xl overflow-hidden shadow-lg border border-neutral-700/50 flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80" alt="Combo Especial" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NAVEGAÇÃO DE CATEGORIAS COM BOTÕES DE SETA E ARRASTO ==================== -->
+  <div class="sticky top-[108px] z-30 bg-[#0D0D0D]/95 backdrop-blur-md py-2.5 px-3 border-b border-neutral-800 shadow-md">
+    <div class="max-w-2xl mx-auto relative flex items-center">
+      <!-- Seta Esquerda -->
+      <button onclick="scrollMenu('left')" class="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-800 hover:bg-neutral-700 active:scale-95 text-white flex items-center justify-center mr-1 shadow-md z-10 transition border border-neutral-700">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Barra de Categorias -->
+      <div class="flex space-x-2 overflow-x-auto no-scrollbar scroll-smooth grab-scroll flex-1 py-1 px-1" id="categoryTabs">
+        <button onclick="filterCategory('all', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-brand-red text-white shadow-sm shadow-red-950">
+          🥢 Todos
+        </button>
+        <button onclick="filterCategory('combos', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🍱 Combos
+        </button>
+        <button onclick="filterCategory('sushis_simples', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🍙 Sushis Simples
+        </button>
+        <button onclick="filterCategory('hots_especiais', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🔥 Hots & Especiais
+        </button>
+        <button onclick="filterCategory('niguiris_joys', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🍣 Niguiris & Joys
+        </button>
+        <button onclick="filterCategory('temakis', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🍙 Temakis
+        </button>
+        <button onclick="filterCategory('yakissoba', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🥢 Yakissoba
+        </button>
+        <button onclick="filterCategory('rolinhos', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🌯 Rolinhos
+        </button>
+        <button onclick="filterCategory('bebidas', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🥤 Bebidas
+        </button>
+        <button onclick="filterCategory('molhos', this)" class="cat-tab flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-neutral-800/90 text-neutral-300 hover:text-white">
+          🥢 Molhos & Extras
+        </button>
+      </div>
+
+      <!-- Seta Direita -->
+      <button onclick="scrollMenu('right')" class="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-800 hover:bg-neutral-700 active:scale-95 text-white flex items-center justify-center ml-1 shadow-md z-10 transition border border-neutral-700">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== LISTAGEM DE PRODUTOS ==================== -->
+  <main class="max-w-2xl mx-auto px-4 mt-4 space-y-8" id="productsContainer">
+    <!-- Renderizado dinamicamente pelo JavaScript -->
+  </main>
+
+  <!-- ==================== BARRA FIXA DO RODAPÉ (VER SACOLA) ==================== -->
+  <div id="floatingCartBar" class="fixed bottom-0 left-0 right-0 z-40 p-4 bg-gradient-to-t from-black via-[#0D0D0D]/90 to-transparent pointer-events-none transition-all duration-300 transform translate-y-full">
+    <div class="max-w-2xl mx-auto pointer-events-auto">
+      <button onclick="openCartModal()" class="w-full bg-brand-red hover:bg-brand-redHover active:scale-[0.99] text-white p-4 rounded-2xl shadow-xl shadow-red-950/60 border border-red-500/30 flex items-center justify-between transition duration-200">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center font-bold text-sm" id="cartCountBadge">0</div>
+          <div class="text-left">
+            <p class="text-xs font-medium text-red-200">Total do pedido</p>
+            <p class="text-lg font-black text-white leading-tight" id="cartTotalDisplay">R$ 0,00</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-1.5 font-extrabold text-sm tracking-wide">
+          <span>VER SACOLA</span>
+          <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DA SACOLA (CHECKOUT) ==================== -->
+  <div id="cartModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center transition-opacity">
+    <div class="w-full max-w-lg bg-[#141414] border-t sm:border border-neutral-800 rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <!-- Topo Modal -->
+      <div class="p-4 border-b border-neutral-800 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-red"></i>
+          <h3 class="font-extrabold text-lg text-white">Sua Sacola</h3>
+        </div>
+        <button onclick="closeCartModal()" class="p-2 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Conteúdo Scrollável do Pedido -->
+      <div class="p-4 overflow-y-auto space-y-4 flex-1">
+        <!-- Lista de Itens -->
+        <div id="cartItemsList" class="space-y-3">
+          <!-- Injetado pelo JS -->
+        </div>
+
+        <!-- Tipo de Pedido: Entrega vs Retirada -->
+        <div class="bg-[#1A1A1A] p-3 rounded-2xl border border-neutral-800">
+          <p class="text-xs font-bold text-neutral-400 mb-2 uppercase tracking-wider">Como deseja receber?</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="setDeliveryType('delivery')" id="btnDelivery" class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red">
+              <i data-lucide="bike" class="w-4 h-4"></i>
+              <span>Entrega em Aracaju</span>
+            </button>
+            <button type="button" onclick="setDeliveryType('pickup')" id="btnPickup" class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700">
+              <i data-lucide="store" class="w-4 h-4"></i>
+              <span>Retirada no Balcão</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==================== BLOCO DE ENTREGA (SÓ APARECE QUANDO É ENTREGA) ==================== -->
+        <div id="deliveryAddressSection" class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-bold text-neutral-300 uppercase tracking-wider flex items-center">
+              <i data-lucide="map-pin" class="w-4 h-4 text-brand-red mr-1.5"></i> Destino da Entrega (Aracaju)
+            </p>
+            <span class="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md" id="neighborhoodFeeTag">
+              Frete: R$ 6,00
+            </span>
+          </div>
+
+          <!-- Seletor de Bairros de Aracaju com Frete Calculado por Região/Distância -->
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Selecione o seu Bairro em Aracaju *</label>
+            <select id="aracajuNeighborhood" onchange="updateNeighborhoodFee()" class="w-full px-3 py-2.5 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white focus:outline-none focus:border-brand-red">
+              <optgroup label="Zona Sul (Mais Próximo)">
+                <option value="6.00" data-name="13 de Julho">13 de Julho — R$ 6,00</option>
+                <option value="6.00" data-name="Jardins">Jardins — R$ 6,00</option>
+                <option value="6.00" data-name="Garcia">Garcia — R$ 6,00</option>
+                <option value="6.00" data-name="Grageru">Grageru — R$ 6,00</option>
+                <option value="6.00" data-name="Salgado Filho">Salgado Filho — R$ 6,00</option>
+                <option value="7.00" data-name="Luzia">Luzia — R$ 7,00</option>
+                <option value="7.00" data-name="Inácio Barbosa">Inácio Barbosa — R$ 7,00</option>
+                <option value="7.00" data-name="Suíça">Suíça — R$ 7,00</option>
+              </optgroup>
+              <optgroup label="Orla & Região das Praias">
+                <option value="8.00" data-name="Atalaia">Atalaia — R$ 8,00</option>
+                <option value="7.00" data-name="Coroa do Meio">Coroa do Meio — R$ 7,00</option>
+                <option value="8.00" data-name="Farolândia / Unit">Farolândia / Unit — R$ 8,00</option>
+                <option value="8.00" data-name="Aeroporto">Aeroporto — R$ 8,00</option>
+                <option value="10.00" data-name="Aruana">Aruana — R$ 10,00</option>
+                <option value="15.00" data-name="Mosqueiro">Mosqueiro — R$ 15,00</option>
+              </optgroup>
+              <optgroup label="Zona Centro">
+                <option value="6.00" data-name="Centro">Centro — R$ 6,00</option>
+                <option value="6.00" data-name="São José">São José — R$ 6,00</option>
+                <option value="7.00" data-name="Getúlio Vargas">Getúlio Vargas — R$ 7,00</option>
+                <option value="7.00" data-name="Cirurgia">Cirurgia — R$ 7,00</option>
+              </optgroup>
+              <optgroup label="Zona Oeste">
+                <option value="8.00" data-name="Jabotiana">Jabotiana — R$ 8,00</option>
+                <option value="8.00" data-name="Ponto Novo">Ponto Novo — R$ 8,00</option>
+                <option value="8.00" data-name="Siqueira Campos">Siqueira Campos — R$ 8,00</option>
+                <option value="9.00" data-name="América">América — R$ 9,00</option>
+                <option value="10.00" data-name="Novo Paraíso / Capucho">Novo Paraíso / Capucho — R$ 10,00</option>
+              </optgroup>
+              <optgroup label="Zona Norte">
+                <option value="8.00" data-name="Santo Antônio">Santo Antônio — R$ 8,00</option>
+                <option value="9.00" data-name="Bairro Industrial">Bairro Industrial — R$ 9,00</option>
+                <option value="9.00" data-name="Dezoito do Forte">Dezoito do Forte — R$ 9,00</option>
+                <option value="10.00" data-name="Santos Dumont">Santos Dumont — R$ 10,00</option>
+                <option value="10.00" data-name="Bugio">Bugio — R$ 10,00</option>
+                <option value="11.00" data-name="Olaria">Olaria — R$ 11,00</option>
+                <option value="12.00" data-name="Porto Dantas">Porto Dantas — R$ 12,00</option>
+              </optgroup>
+              <optgroup label="Grande Aracaju">
+                <option value="12.00" data-name="Barra dos Coqueiros">Barra dos Coqueiros — R$ 12,00</option>
+                <option value="12.00" data-name="São Cristóvão / Eduardo Gomes">São Cristóvão / Eduardo Gomes — R$ 12,00</option>
+                <option value="12.00" data-name="Nossa Senhora do Socorro">Nossa Senhora do Socorro — R$ 12,00</option>
+              </optgroup>
+              <option value="0.00" data-name="Outro Bairro">Outro Bairro (A combinar no WhatsApp)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Rua, Número e Complemento (Apto/Bloco) *</label>
+            <input type="text" id="clientAddress" placeholder="Ex: Rua Campo do Brito, 450 - Apto 102" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Ponto de Referência (Opcional)</label>
+            <input type="text" id="clientReference" placeholder="Ex: Próximo à praça / padaria" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+        </div>
+
+        <!-- Identificação do Cliente -->
+        <div class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-3">
+          <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Identificação</p>
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Seu Nome *</label>
+            <input type="text" id="clientName" placeholder="Ex: Lucas Santana" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Telefone / WhatsApp *</label>
+            <input type="tel" id="clientPhone" placeholder="Ex: (79) 99999-0000" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Observações para a cozinha (Opcional)</label>
+            <input type="text" id="orderNotes" placeholder="Ex: Caprichar no gengibre, sem cebolinha..." class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+        </div>
+
+        <!-- ==================== FORMA DE PAGAMENTO (OCULTA NA RETIRADA) ==================== -->
+        <div id="paymentSection" class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-2.5">
+          <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Forma de Pagamento na Entrega</p>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="cursor-pointer">
+              <input type="radio" name="paymentMethod" value="PIX" checked class="peer sr-only" onchange="handlePaymentChange()">
+              <div class="py-2.5 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-brand-red peer-checked:bg-red-950/40 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex flex-col items-center">
+                <span>⚡ PIX</span>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="paymentMethod" value="Cartão" class="peer sr-only" onchange="handlePaymentChange()">
+              <div class="py-2.5 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-brand-red peer-checked:bg-red-950/40 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex flex-col items-center">
+                <span>💳 Cartão</span>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="paymentMethod" value="Dinheiro" class="peer sr-only" onchange="handlePaymentChange()">
+              <div class="py-2.5 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-brand-red peer-checked:bg-red-950/40 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex flex-col items-center">
+                <span>💵 Dinheiro</span>
+              </div>
+            </label>
+          </div>
+          <div id="trocoContainer" class="hidden mt-2 pt-2 border-t border-neutral-800">
+            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Precisa de troco para quanto?</label>
+            <input type="text" id="changeAmount" placeholder="Ex: Para R$ 50,00 ou Não precisa" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          </div>
+        </div>
+
+        <!-- AVISO QUANDO FOR RETIRADA NO BALCÃO -->
+        <div id="pickupNoticeSection" class="hidden bg-emerald-950/30 border border-emerald-800/50 p-3.5 rounded-2xl text-xs text-emerald-300 flex items-start space-x-2.5">
+          <i data-lucide="info" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-bold text-white">Pagamento Presencial no Balcão</p>
+            <p class="text-[11px] text-emerald-200/80 mt-0.5">Você não precisa escolher forma de pagamento agora. Pague diretamente ao retirar o pedido (PIX, Cartão ou Dinheiro).</p>
+          </div>
+        </div>
+
+        <!-- Resumo Financeiro -->
+        <div class="p-3.5 bg-neutral-900/90 rounded-2xl border border-neutral-800 text-xs space-y-2">
+          <div class="flex justify-between text-neutral-400">
+            <span>Subtotal dos itens</span>
+            <span id="summarySubtotal">R$ 0,00</span>
+          </div>
+          <div class="flex justify-between text-neutral-400">
+            <span>Taxa de entrega (Aracaju)</span>
+            <span id="summaryDelivery">R$ 6,00</span>
+          </div>
+          <div class="flex justify-between text-base font-black text-white pt-2 border-t border-neutral-800">
+            <span>TOTAL GERAL</span>
+            <span class="text-brand-red font-black" id="summaryTotal">R$ 0,00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão Enviar Pedido para o WhatsApp -->
+      <div class="p-4 border-t border-neutral-800 bg-[#121212]">
+        <button onclick="sendOrderToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white py-3.5 px-4 rounded-2xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-emerald-950 transition">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>ENVIAR PEDIDO PELO WHATSAPP</span>
+        </button>
+        <p class="text-[10px] text-center text-neutral-500 mt-2">Comanda formatada com 32 colunas para mini impressora 58mm</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BANCO DE DADOS E SCRIPTS ==================== -->
+  <script>
+    // Configurações Oficiais da Casa Oriental (Aracaju/SE)
+    // Para alterar o WhatsApp oficial de recebimento, basta trocar o número abaixo:
+    const RESTAURANT_CONFIG = {
+      name: "CASA ORIENTAL",
+      phone: "5579999999999" // Digite 55 + DDD (79) + Número do WhatsApp oficial
+    };
+
+    // Todos os 90 itens catalogados com imagens de alta qualidade
+    const PRODUCTS = [
+      // 1. COMBOS
+      { id: 10, cat: 'combos', name: 'Combo 10 Peças', desc: '10 peças variadas de sushis e hots selecionados pelo chef', price: 23.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 11, cat: 'combos', name: 'Combo 15 Peças', desc: '15 peças sortidas (sushis, uramakis e hots crocantes)', price: 28.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 12, cat: 'combos', name: 'Combo 20 Peças', desc: '20 peças perfeitas para compartilhar com qualidade e frescor', price: 33.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 14, cat: 'combos', name: 'Combo 25 Peças (Destaque)', desc: '25 peças especiais com os favoritos da casa e acabamento impecável', price: 40.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80', badge: 'MAIS PEDIDO' },
+      { id: 15, cat: 'combos', name: 'Combo 35 Peças', desc: '35 peças generosas com sushis simples, especiais e hots', price: 52.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 16, cat: 'combos', name: 'Combo 45 Peças (Família)', desc: 'Banquete com 45 peças variadas para a família toda', price: 65.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+
+      // 2. SUSHIS SIMPLES / URAMAKIS
+      { id: 20, cat: 'sushis_simples', name: 'Uramaki Kani', desc: 'Arroz temperado por fora com gergelim e recheio de kani', price: 3.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
+      { id: 21, cat: 'sushis_simples', name: 'Uramaki Atum', desc: 'Arroz por fora, gergelim e recheio cremoso de atum', price: 3.50, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 22, cat: 'sushis_simples', name: 'Uramaki Camarão', desc: 'Arroz por fora, gergelim e camarão selecionado', price: 5.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 23, cat: 'sushis_simples', name: 'Uramaki Manga', desc: 'Refrescante uramaki com lâmina de manga fresca', price: 3.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 24, cat: 'sushis_simples', name: 'Uramaki Morango', desc: 'Toque doce e especial de morango com arroz e gergelim', price: 4.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 25, cat: 'sushis_simples', name: 'Uramaki Kiwi', desc: 'Uramaki agridoce contemporâneo com kiwi fresco', price: 4.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+      { id: 26, cat: 'sushis_simples', name: 'Uramaki Abacate', desc: 'Sabor clássico e textura aveludada do abacate', price: 3.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
+      { id: 27, cat: 'sushis_simples', name: 'Uramaki Califórnia', desc: 'Kani, pepino crocante e abacate envolto em gergelim', price: 4.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 28, cat: 'sushis_simples', name: 'Uramaki Kani c/ Goiabada', desc: 'Deliciosa e surpreendente combinação agridoce', price: 5.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+
+      // 3. HOTS & ESPECIAIS
+      { id: 30, cat: 'hots_especiais', name: 'Uramaki Roll Ebi (Camarão)', desc: 'Massa primavera frita, arroz, cream cheese e camarão frito empanado no panko', price: 6.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80', badge: 'ESPECIAL' },
+      { id: 31, cat: 'hots_especiais', name: 'Uramaki Roll Patê de Atum', desc: 'Massa primavera frita, cream cheese e atum com casquinha panko', price: 5.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 32, cat: 'hots_especiais', name: 'Uramaki Roll Filadélfia', desc: 'Massa primavera crocante, salmão fresco e cream cheese no panko', price: 7.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80', badge: 'TOP' },
+      { id: 33, cat: 'hots_especiais', name: 'Uramaki Roll Kani', desc: 'Massa primavera crocante, kani e cream cheese com panko', price: 5.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 34, cat: 'hots_especiais', name: 'Hot Roll Tradicional', desc: 'Hot roll clássico envolto com alga nori bem crocante', price: 4.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 35, cat: 'hots_especiais', name: 'Hot Salmão', desc: 'Recheado de salmão envolto em alga nori, frito na hora', price: 6.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
+      { id: 36, cat: 'hots_especiais', name: 'Hot Camarão', desc: 'Recheio de camarão envolto em nori e farinha panko', price: 5.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 37, cat: 'hots_especiais', name: 'Hot Atum', desc: 'Recheio de atum com casquinha crocante envolto em nori', price: 3.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 38, cat: 'hots_especiais', name: 'Hot Kani', desc: 'Kani empanado e frito envolto em nori', price: 3.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 39, cat: 'hots_especiais', name: 'Hot Especial com Camarão', desc: 'Sushi hot em massa de rolinho finalizado com camarão por cima', price: 7.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80', badge: 'CHEF' },
+      { id: 40, cat: 'hots_especiais', name: 'Hot Especial com Salmão', desc: 'Sushi hot em massa de rolinho finalizado com salmão fresco por cima', price: 7.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80', badge: 'CHEF' },
+
+      // 4. NIGUIRIS, JOYS E SASHIMIS
+      { id: 41, cat: 'niguiris_joys', name: 'Niguiri de Salmão', desc: 'Fatia generosa de salmão cru sobre arroz prensado', price: 7.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 42, cat: 'niguiris_joys', name: 'Niguiri de Camarão', desc: 'Camarão cozido ao ponto sobre bolinho de arroz', price: 6.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 43, cat: 'niguiris_joys', name: 'Niguiri Skin', desc: 'Pele de salmão grelhada bem crocante com molho especial', price: 6.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 44, cat: 'niguiris_joys', name: 'Niguiri Texano Salmão Skin', desc: 'Salmão skin com toque texano picante e marcante', price: 6.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 45, cat: 'niguiris_joys', name: 'Joy Tradicional', desc: 'Lâmina nobre de salmão envolvendo arroz com cream cheese', price: 7.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+      { id: 46, cat: 'niguiris_joys', name: 'Joy Maçaricado', desc: 'Salmão levemente maçaricado no fogo com gotas de tarê', price: 7.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80', badge: 'PREMIUM' },
+      { id: 47, cat: 'niguiris_joys', name: 'Joy com Camarão Frito', desc: 'Joy de salmão coroado com camarão empanado crocante', price: 7.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80', badge: 'TOP' },
+      { id: 48, cat: 'niguiris_joys', name: 'Empanado de Camarão', desc: 'Camarão selecionado empanado e frito no panko', price: 7.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 49, cat: 'niguiris_joys', name: 'Sashimi de Salmão', desc: 'Fatias nobres de salmão cru fresco selecionado', price: 7.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+
+      // 5. LINHA DE TEMAKIS (GRANDES, MÉDIOS E MINIS)
+      { id: 50, cat: 'temakis', name: 'Temaki Salmão Cru (Grande)', desc: 'Cone de alga nori crocante com salmão e cream cheese', price: 34.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80', badge: 'CLÁSSICO' },
+      { id: 51, cat: 'temakis', name: 'Temaki Salmão Hot (Grande Frito)', desc: 'Cone de temaki inteiramente empanado e frito, super recheado', price: 38.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80', badge: 'CAMPEÃO' },
+      { id: 52, cat: 'temakis', name: 'Temaki Camarão Cru (Grande)', desc: 'Camarões selecionados com cream cheese e cebolinha', price: 29.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 53, cat: 'temakis', name: 'Temaki Camarão Hot (Grande Frito)', desc: 'Temaki de camarão empanado crocante por fora', price: 35.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 54, cat: 'temakis', name: 'Temaki Kani Cru (Grande)', desc: 'Cone clássico recheado com kani desfiado e arroz', price: 25.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 55, cat: 'temakis', name: 'Temaki Kani Hot (Grande Frito)', desc: 'Temaki de kani frito e crocante', price: 28.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+      { id: 56, cat: 'temakis', name: 'Temaki Atum Cru (Grande)', desc: 'Cone com atum fresco picado e tempero especial', price: 27.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
+      { id: 57, cat: 'temakis', name: 'Temaki Atum Hot (Grande Frito)', desc: 'Cone com atum empanado e frito na hora', price: 30.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 58, cat: 'temakis', name: 'Temaki Especial Cru (Grande)', desc: 'Mix nobre com salmão, camarão e kani com cream cheese', price: 37.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80', badge: 'ESPECIAL' },
+      { id: 59, cat: 'temakis', name: 'Temaki Especial Hot (Grande Frito)', desc: 'Cone especial gigante empanado e frito', price: 40.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80', badge: 'TOP' },
+      // Temakinhos Médios
+      { id: 60, cat: 'temakis', name: 'Temakinho Salmão Cru (Médio)', desc: 'Tamanho médio ideal para matar a vontade', price: 15.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
+      { id: 61, cat: 'temakis', name: 'Temakinho Salmão Hot (Médio)', desc: 'Tamanho médio empanado e crocante', price: 17.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 62, cat: 'temakis', name: 'Temakinho Camarão Cru (Médio)', desc: 'Tamanho médio recheado com camarão fresco', price: 13.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 63, cat: 'temakis', name: 'Temakinho Camarão Hot (Médio)', desc: 'Tamanho médio com camarão empanado frito', price: 15.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 64, cat: 'temakis', name: 'Temakinho Kani Cru (Médio)', desc: 'Tamanho médio com kani cremoso', price: 10.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 65, cat: 'temakis', name: 'Temakinho Kani Hot (Médio)', desc: 'Tamanho médio com kani frito e panko', price: 12.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+      // Minis Temakis
+      { id: 66, cat: 'temakis', name: 'Mini Temakinho Kani Cru', desc: 'Mini porção petisco para experimentar', price: 3.50, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
+      { id: 67, cat: 'temakis', name: 'Mini Temakinho Camarão Cru', desc: 'Mini cone com camarão fresco', price: 4.50, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+      { id: 68, cat: 'temakis', name: 'Mini Temakinho Salmão Cru', desc: 'Mini cone recheado com salmão', price: 5.50, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+      { id: 69, cat: 'temakis', name: 'Mini Temakinho Especial Cru', desc: 'Mini cone com mix de salmão e camarão', price: 6.50, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+      { id: 70, cat: 'temakis', name: 'Mini Temakinho Kani Hot', desc: 'Mini cone de kani empanado frito', price: 4.50, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+      { id: 71, cat: 'temakis', name: 'Mini Temakinho Camarão Hot', desc: 'Mini cone de camarão empanado frito', price: 5.50, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+
+      // 6. YAKISSOBA ARTESANAL (500G E 1KG)
+      { id: 72, cat: 'yakissoba', name: 'Yakissoba de Frango (500g)', desc: 'Massa tradicional, pedaços de frango dourado e legumes ao molho especial', price: 25.99, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 73, cat: 'yakissoba', name: 'Yakissoba de Frango (1 kg)', desc: 'Porção família com 1 kg de yakissoba de frango suculento', price: 37.99, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80', badge: 'FAMÍLIA' },
+      { id: 74, cat: 'yakissoba', name: 'Yakissoba de Legumes (500g)', desc: 'Opção vegetariana rica em brócolis, couve-flor, cenoura e acelga fresca', price: 27.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 75, cat: 'yakissoba', name: 'Yakissoba de Legumes (1 kg)', desc: '1 kg de yakissoba artesanal repleto de legumes frescos', price: 30.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 76, cat: 'yakissoba', name: 'Yakissoba de Carne (500g)', desc: 'Tiras macias de carne bovina, legumes e molho shoyu encorpado', price: 29.99, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 77, cat: 'yakissoba', name: 'Yakissoba de Carne (1 kg)', desc: '1 kg de yakissoba de carne suculenta com legumes', price: 40.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80', badge: 'FAMÍLIA' },
+      { id: 78, cat: 'yakissoba', name: 'Yakissoba Carne c/ Frango (500g)', desc: 'Combinação clássica de carne bovina e frango com legumes', price: 32.99, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 79, cat: 'yakissoba', name: 'Yakissoba Carne c/ Frango (1 kg)', desc: '1 kg de yakissoba misto de carne e frango com legumes', price: 36.99, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 80, cat: 'yakissoba', name: 'Yakissoba Misto Completo (500g)', desc: 'Carne, frango, legumes selecionados e molho oriental', price: 35.99, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 81, cat: 'yakissoba', name: 'Yakissoba Misto Completo (1 kg)', desc: '1 kg de yakissoba misto completo para a família', price: 44.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 82, cat: 'yakissoba', name: 'Yakissoba de Camarão (500g)', desc: 'Camarões suculentos salteados na wok com legumes frescos', price: 36.99, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80', badge: 'ESPECIAL' },
+      { id: 83, cat: 'yakissoba', name: 'Yakissoba de Camarão (1 kg)', desc: '1 kg do nosso melhor yakissoba de camarão', price: 43.99, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80', badge: 'TOP' },
+      { id: 84, cat: 'yakissoba', name: 'Yakissoba sem Legumes (500g)', desc: 'Para quem ama apenas massa e carnes (sem legumes)', price: 43.99, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 85, cat: 'yakissoba', name: 'Yakissoba sem Legumes (1 kg)', desc: '1 kg apenas com muita carne, frango e massa pura', price: 49.99, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 86, cat: 'yakissoba', name: 'Adicional de Legumes p/ Yakissoba', desc: 'Porção extra de legumes salteados na wok', price: 3.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 87, cat: 'yakissoba', name: 'Adicional de Carnes p/ Yakissoba', desc: 'Porção extra generosa de carnes', price: 5.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+
+      // 7. ROLINHO PRIMAVERA (HARUMAKI)
+      { id: 90, cat: 'rolinhos', name: 'Rolinho de Queijo', desc: 'Massa fininha e crocante recheada com queijo derretido', price: 8.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80' },
+      { id: 91, cat: 'rolinhos', name: 'Rolinho de Carne', desc: 'Recheio de carne moída bem temperada com legumes', price: 9.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80' },
+      { id: 92, cat: 'rolinhos', name: 'Rolinho de Frango', desc: 'Frango desfiado suculento e crocante', price: 8.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80' },
+      { id: 93, cat: 'rolinhos', name: 'Rolinho de Camarão', desc: 'Camarões selecionados com tempero leve e massa crocante', price: 10.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80', badge: 'TOP' },
+      { id: 94, cat: 'rolinhos', name: 'Rolinho de Salmão', desc: 'Massa harumaki sequinha recheada de salmão e cream cheese', price: 10.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80' },
+      { id: 95, cat: 'rolinhos', name: 'Rolinho de Legumes', desc: 'Repolho, cenoura e temperos orientais clássicos', price: 7.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80' },
+      { id: 96, cat: 'rolinhos', name: 'Rolinho Banana Flambada', desc: 'Sobremesa com banana caramelizada e canela', price: 8.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 97, cat: 'rolinhos', name: 'Rolinho Romeu e Julieta', desc: 'Queijo derretido com goiabada cremosa', price: 9.00, img: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=300&q=80', badge: 'DOCE' },
+      { id: 98, cat: 'rolinhos', name: 'Rolinho Banana c/ Doce de Leite', desc: 'Banana frita com recheio cremoso de doce de leite', price: 10.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80' },
+      { id: 99, cat: 'rolinhos', name: 'Rolinho Banana c/ Nutella', desc: 'A combinação favorita: banana fresquinha com Nutella original', price: 10.00, img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=300&q=80', badge: 'FAVORITO' },
+
+      // 8. BEBIDAS & SUCOS
+      { id: 100, cat: 'bebidas', name: 'Coca-Cola Lata 350ml', desc: 'Refrigerante em lata geladinho', price: 6.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
+      { id: 101, cat: 'bebidas', name: 'Fanta Lata 350ml', desc: 'Refrigerante em lata bem gelado', price: 5.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
+      { id: 102, cat: 'bebidas', name: 'Guaraná Antarctica Lata 350ml', desc: 'Guaraná tradicional gelado', price: 5.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
+      { id: 103, cat: 'bebidas', name: 'Coca-Cola 1 Litro', desc: 'Garrafa de 1 litro ideal para compartilhar', price: 10.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
+      { id: 104, cat: 'bebidas', name: 'Pepsi 1 Litro', desc: 'Garrafa de 1 litro gelada', price: 9.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
+      { id: 105, cat: 'bebidas', name: 'Guaraná Antarctica 1 Litro', desc: 'Garrafa de 1 litro geladinha', price: 9.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
+      { id: 106, cat: 'bebidas', name: 'Suco de Polpa Mangaba (400ml)', desc: 'Feito na hora da fruta natural (com leite +R$ 0,50)', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+      { id: 107, cat: 'bebidas', name: 'Suco de Polpa Cacau (400ml)', desc: 'Polpa natural de cacau fresca', price: 6.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+      { id: 108, cat: 'bebidas', name: 'Suco de Polpa Graviola (400ml)', desc: 'Polpa cremosa de graviola', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+      { id: 109, cat: 'bebidas', name: 'Suco de Polpa Cupuaçu (400ml)', desc: 'Sabor marcante do cupuaçu natural', price: 6.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+      { id: 110, cat: 'bebidas', name: 'Suco de Polpa Umbu (400ml)', desc: 'Polpa refrescante de umbu', price: 6.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+      { id: 111, cat: 'bebidas', name: 'Suco de Polpa Maracujá (400ml)', desc: 'Suco natural relaxante de maracujá', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+      { id: 112, cat: 'bebidas', name: 'Suco de Polpa Ameixa (400ml)', desc: 'Suco de ameixa doce e nutritivo', price: 7.00, img: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=300&q=80' },
+
+      // 9. MOLHOS E EXTRAS
+      { id: 115, cat: 'molhos', name: 'Molho Tarê Especial', desc: 'Pote com molho agridoce e encorpado artesanal', price: 1.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 116, cat: 'molhos', name: 'Molho Shoyu Extra', desc: 'Sachê/pote de molho de soja tradicional', price: 1.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+      { id: 117, cat: 'molhos', name: 'Par de Hashi de Bambu', desc: 'Pauzinhos tradicionais para sushi', price: 1.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' }
+    ];
+
+    const CATEGORIES = {
+      combos: { title: '🍱 Combos de Sushis', desc: 'Combos variados montados com a melhor seleção de peças da casa' },
+      sushis_simples: { title: '🍙 Sushis Simples (Uramakis)', desc: 'Arroz por fora e gergelim crocante com recheios variados' },
+      hots_especiais: { title: '🔥 Hots & Sushis Especiais', desc: 'Empanados em massa de rolinho primavera ou alga nori com panko' },
+      niguiris_joys: { title: '🍣 Niguiris, Joys e Sashimis', desc: 'Cortes nobres de salmão fresco, camarão e lâminas maçaricadas' },
+      temakis: { title: '🍙 Linha de Temakis', desc: 'Cones tradicionais, temakinhos e minis nas versões cruas e hots' },
+      yakissoba: { title: '🥢 Yakissoba Artesanal', desc: 'Massa clássica salteada na wok com carnes nobres e legumes frescos' },
+      rolinhos: { title: '🌯 Rolinhos Primavera (Harumaki)', desc: 'Massa fininha e crocante com recheios salgados e sobremesas' },
+      bebidas: { title: '🥤 Bebidas & Sucos de Polpa', desc: 'Refrigerantes em lata, garrafas de 1L e sucos naturais de fruta (400ml)' },
+      molhos: { title: '🥢 Molhos & Acessórios', desc: 'Molhos extras e palitinhos hashi adicionais para o seu pedido' }
+    };
+
+    // Estado da Aplicação
+    let currentCategory = 'all';
+    let cart = [];
+    let deliveryType = 'delivery'; // 'delivery' ou 'pickup'
+    let currentDeliveryFee = 6.00;
+    let selectedNeighborhoodName = "13 de Julho";
+
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+      initDragScroll();
+      renderProducts();
+      updateNeighborhoodFee();
+      lucide.createIcons();
+    });
+
+    // Mover Menu
+    function scrollMenu(direction) {
+      const container = document.getElementById('categoryTabs');
+      const amount = 220;
+      if (direction === 'left') {
+        container.scrollBy({ left: -amount, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: amount, behavior: 'smooth' });
+      }
+    }
+
+    function initDragScroll() {
+      const slider = document.getElementById('categoryTabs');
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+      slider.addEventListener('mouseleave', () => { isDown = false; });
+      slider.addEventListener('mouseup', () => { isDown = false; });
+      slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+    }
+
+    // Renderizar Produtos
+    function renderProducts(filterText = '') {
+      const container = document.getElementById('productsContainer');
+      container.innerHTML = '';
+
+      const catsToRender = currentCategory === 'all' 
+        ? Object.keys(CATEGORIES) 
+        : [currentCategory];
+
+      let totalRendered = 0;
+
+      catsToRender.forEach(catKey => {
+        const catInfo = CATEGORIES[catKey];
+        let items = PRODUCTS.filter(p => p.cat === catKey);
+
+        if (filterText) {
+          const query = filterText.toLowerCase();
+          items = items.filter(p => p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+        }
+
+        if (items.length === 0) return;
+        totalRendered += items.length;
+
+        const section = document.createElement('section');
+        section.className = 'space-y-3';
+        section.id = `cat-${catKey}`;
+
+        section.innerHTML = `
+          <div class="border-b border-neutral-800/80 pb-2">
+            <h2 class="text-base font-extrabold text-white flex items-center">
+              ${catInfo.title}
+              <span class="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-neutral-800 text-neutral-400">${items.length}</span>
+            </h2>
+            <p class="text-xs text-neutral-400 mt-0.5">${catInfo.desc}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${items.map(p => {
+              const inCart = cart.find(c => c.id === p.id);
+              return `
+                <div class="bg-[#1A1A1A] hover:bg-[#222222] border border-neutral-800/90 rounded-2xl p-3 flex justify-between items-center space-x-3 transition duration-150 shadow-sm">
+                  <div class="flex-1 min-w-0 pr-1">
+                    ${p.badge ? `<span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-red-950 text-red-400 border border-red-800/40 mb-1">${p.badge}</span>` : ''}
+                    <h3 class="font-bold text-sm text-white leading-snug truncate">${p.name}</h3>
+                    <p class="text-[11px] text-neutral-400 line-clamp-2 mt-0.5 leading-tight">${p.desc}</p>
+                    <p class="text-sm font-extrabold text-brand-red mt-2">R$ ${p.price.toFixed(2).replace('.', ',')}</p>
+                  </div>
+                  
+                  <div class="relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-neutral-900 border border-neutral-700/50 shadow-md">
+                    <img src="${p.img}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover">
+                    
+                    ${inCart ? `
+                      <div class="absolute inset-0 bg-black/60 flex items-center justify-center space-x-1 p-1">
+                        <button onclick="changeQuantity(${p.id}, -1)" class="w-6 h-6 rounded-full bg-neutral-800 hover:bg-neutral-700 text-white font-black text-xs flex items-center justify-center transition">-</button>
+                        <span class="text-white font-extrabold text-xs px-1">${inCart.qty}</span>
+                        <button onclick="changeQuantity(${p.id}, 1)" class="w-6 h-6 rounded-full bg-brand-red hover:bg-brand-redHover text-white font-black text-xs flex items-center justify-center transition">+</button>
+                      </div>
+                    ` : `
+                      <button onclick="addItemToCart(${p.id})" class="absolute bottom-1.5 right-1.5 w-7 h-7 rounded-lg bg-brand-red hover:bg-brand-redHover active:scale-95 text-white flex items-center justify-center shadow-lg transition">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                      </button>
+                    `}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+        container.appendChild(section);
+      });
+
+      if (totalRendered === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12">
+            <i data-lucide="search-x" class="w-12 h-12 text-neutral-600 mx-auto mb-2"></i>
+            <p class="text-neutral-400 font-bold text-sm">Nenhum item encontrado com esse nome.</p>
+            <p class="text-neutral-500 text-xs mt-1">Tente buscar por "combo", "hot", "salmão", "yakissoba"...</p>
+          </div>
+        `;
+      }
+
+      lucide.createIcons();
+    }
+
+    // Filtrar Categoria
+    function filterCategory(cat, element) {
+      currentCategory = cat;
+      const tabs = document.querySelectorAll('.cat-tab');
+      tabs.forEach(t => {
+        t.classList.remove('bg-brand-red', 'text-white', 'shadow-sm', 'shadow-red-950');
+        t.classList.add('bg-neutral-800/90', 'text-neutral-300');
+      });
+
+      element.classList.remove('bg-neutral-800/90', 'text-neutral-300');
+      element.classList.add('bg-brand-red', 'text-white', 'shadow-sm', 'shadow-red-950');
+
+      document.getElementById('searchInput').value = '';
+      renderProducts();
+    }
+
+    function filterProducts() {
+      const q = document.getElementById('searchInput').value;
+      renderProducts(q);
+    }
+
+    function addItemToCart(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find(c => c.id === productId);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+
+      updateCartUI();
+      renderProducts(document.getElementById('searchInput').value);
+    }
+
+    function changeQuantity(productId, delta) {
+      const idx = cart.findIndex(c => c.id === productId);
+      if (idx === -1) return;
+
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+
+      updateCartUI();
+      renderProducts(document.getElementById('searchInput').value);
+    }
+
+    // Frete Bairros de Aracaju
+    function updateNeighborhoodFee() {
+      const select = document.getElementById('aracajuNeighborhood');
+      const selectedOption = select.options[select.selectedIndex];
+      currentDeliveryFee = parseFloat(selectedOption.value) || 0;
+      selectedNeighborhoodName = selectedOption.getAttribute('data-name') || select.value;
+
+      const feeTag = document.getElementById('neighborhoodFeeTag');
+      if (currentDeliveryFee > 0) {
+        feeTag.innerText = `Frete: R$ ${currentDeliveryFee.toFixed(2).replace('.', ',')}`;
+      } else {
+        feeTag.innerText = `Frete: A combinar`;
+      }
+
+      updateCartUI();
+    }
+
+    // Alternar Tipo de Entrega
+    function setDeliveryType(type) {
+      deliveryType = type;
+      const btnDel = document.getElementById('btnDelivery');
+      const btnPick = document.getElementById('btnPickup');
+      const deliverySection = document.getElementById('deliveryAddressSection');
+      const paymentSection = document.getElementById('paymentSection');
+      const pickupNotice = document.getElementById('pickupNoticeSection');
+
+      if (type === 'delivery') {
+        btnDel.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red';
+        btnPick.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700';
+        deliverySection.classList.remove('hidden');
+        paymentSection.classList.remove('hidden');
+        pickupNotice.classList.add('hidden');
+      } else {
+        btnPick.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red';
+        btnDel.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700';
+        deliverySection.classList.add('hidden');
+        paymentSection.classList.add('hidden');
+        pickupNotice.classList.remove('hidden');
+      }
+      updateCartUI();
+    }
+
+    function handlePaymentChange() {
+      const troco = document.getElementById('trocoContainer');
+      const radios = document.getElementsByName('paymentMethod');
+      let val = 'PIX';
+      for (let r of radios) { if (r.checked) val = r.value; }
+      
+      if (val === 'Dinheiro') {
+        troco.classList.remove('hidden');
+      } else {
+        troco.classList.add('hidden');
+      }
+    }
+
+    function updateCartUI() {
+      const totalCount = cart.reduce((acc, i) => acc + i.qty, 0);
+      const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+      const fee = (deliveryType === 'delivery') ? currentDeliveryFee : 0;
+      const grandTotal = subtotal + fee;
+
+      const bar = document.getElementById('floatingCartBar');
+      if (totalCount > 0) {
+        bar.classList.remove('translate-y-full');
+      } else {
+        bar.classList.add('translate-y-full');
+        closeCartModal();
+      }
+
+      document.getElementById('cartCountBadge').innerText = totalCount;
+      document.getElementById('cartTotalDisplay').innerText = `R$ ${grandTotal.toFixed(2).replace('.', ',')}`;
+
+      const cartList = document.getElementById('cartItemsList');
+      cartList.innerHTML = cart.map(item => `
+        <div class="flex items-center justify-between p-2.5 bg-neutral-900 rounded-xl border border-neutral-800">
+          <div class="flex items-center space-x-2.5 min-w-0 pr-2">
+            <img src="${item.img}" alt="${item.name}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0">
+            <div class="truncate">
+              <p class="font-bold text-xs text-white truncate">${item.name}</p>
+              <p class="text-[11px] text-brand-red font-bold">R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 flex-shrink-0">
+            <button onclick="changeQuantity(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs flex items-center justify-center">-</button>
+            <span class="text-xs font-black text-white w-4 text-center">${item.qty}</span>
+            <button onclick="changeQuantity(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-brand-red hover:bg-brand-redHover text-white font-bold text-xs flex items-center justify-center">+</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('summarySubtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+      document.getElementById('summaryDelivery').innerText = deliveryType === 'delivery' 
+        ? (fee > 0 ? `R$ ${fee.toFixed(2).replace('.', ',')}` : 'A combinar') 
+        : 'Grátis (Retirada no Balcão)';
+      document.getElementById('summaryTotal').innerText = `R$ ${grandTotal.toFixed(2).replace('.', ',')}`;
+    }
+
+    function openCartModal() {
+      document.getElementById('cartModal').classList.remove('hidden');
+      updateCartUI();
+    }
+    function closeCartModal() {
+      document.getElementById('cartModal').classList.add('hidden');
+    }
+
+    // ==================== DISPARO DO PEDIDO FORMATADO PARA 58MM ====================
+    function sendOrderToWhatsApp() {
+      if (cart.length === 0) {
+        alert('Sua sacola está vazia!');
+        return;
+      }
+
+      const clientName = document.getElementById('clientName').value.trim();
+      const clientPhone = document.getElementById('clientPhone').value.trim();
+      const clientAddress = document.getElementById('clientAddress').value.trim();
+      const clientReference = document.getElementById('clientReference').value.trim();
+      const orderNotes = document.getElementById('orderNotes').value.trim();
+
+      if (!clientName) {
+        alert('Por favor, informe o seu nome!');
+        document.getElementById('clientName').focus();
+        return;
+      }
+
+      if (deliveryType === 'delivery' && !clientAddress) {
+        alert('Por favor, informe a rua e número para entrega em Aracaju!');
+        document.getElementById('clientAddress').focus();
+        return;
+      }
+
+      let paymentText = "No Balcão ao Retirar";
+      let changeAmount = "";
+
+      if (deliveryType === 'delivery') {
+        const radios = document.getElementsByName('paymentMethod');
+        let method = 'PIX';
+        for (let r of radios) { if (r.checked) method = r.value; }
+        paymentText = method;
+        changeAmount = document.getElementById('changeAmount').value.trim();
+      }
+
+      const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+      const fee = (deliveryType === 'delivery') ? currentDeliveryFee : 0;
+      const grandTotal = subtotal + fee;
+      const now = new Date();
+      const dataHora = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+      // DIAGRAMAÇÃO EXATA DE 32 COLUNAS (BOBINA TÉRMICA 58MM)
+      let msg = `*================================*\n`;
+      msg += `*        ${RESTAURANT_CONFIG.name.toUpperCase()}        *\n`;
+      msg += `*       PEDIDO DE DELIVERY       *\n`;
+      msg += `*================================*\n`;
+      msg += `Data: ${dataHora}\n`;
+      msg += `Cliente: ${clientName}\n`;
+      if (clientPhone) msg += `Tel: ${clientPhone}\n`;
+      msg += `Tipo: ${deliveryType === 'delivery' ? 'ENTREGA (ARACAJU)' : 'RETIRADA NO BALCÃO'}\n`;
+      
+      if (deliveryType === 'delivery') {
+        msg += `Bairro: ${selectedNeighborhoodName}\n`;
+        msg += `End: ${clientAddress}\n`;
+        if (clientReference) msg += `Ref: ${clientReference}\n`;
+      }
+
+      msg += `--------------------------------\n`;
+      msg += `ITENS DO PEDIDO:\n`;
+
+      cart.forEach(item => {
+        const itemTotal = (item.price * item.qty).toFixed(2).replace('.', ',');
+        msg += `${item.qty}x ${item.name} - R$ ${itemTotal}\n`;
+      });
+
+      msg += `--------------------------------\n`;
+      msg += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+      if (deliveryType === 'delivery') {
+        msg += `Taxa Entrega: ${fee > 0 ? 'R$ ' + fee.toFixed(2).replace('.', ',') : 'A combinar'}\n`;
+      }
+      msg += `*TOTAL: R$ ${grandTotal.toFixed(2).replace('.', ',')}*\n`;
+      msg += `--------------------------------\n`;
+      msg += `Pagamento: ${paymentText}\n`;
+      if (deliveryType === 'delivery' && paymentText === 'Dinheiro' && changeAmount) {
+        msg += `Troco para: ${changeAmount}\n`;
+      }
+      if (orderNotes) {
+        msg += `Obs: ${orderNotes}\n`;
+      }
+      msg += `*================================*\n`;
+      msg += `Obrigado pela preferência!`;
+
+      const encodedMsg = encodeURIComponent(msg);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${RESTAURANT_CONFIG.phone}&text=${encodedMsg}`;
+
+      window.open(whatsappUrl, '_blank');
+    }
+  </script>
+</body>
+</html>
