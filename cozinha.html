@@ -1697,7 +1697,8 @@
       }
 
       const clientName = ord.clientName || 'Cliente';
-      const pixKey = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY) || 'd883ab34-450e-44d3-9a9b-d0586121b6d6';
+      const savedPix = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY);
+      const pixKey = (savedPix && savedPix !== '5579981728613') ? savedPix : 'd883ab34-450e-44d3-9a9b-d0586121b6d6';
       const totalFormatted = (parseFloat(ord.total) || 0).toFixed(2).replace('.', ',');
       const orderShortId = String(ord.id).slice(-4);
       let message = '';
