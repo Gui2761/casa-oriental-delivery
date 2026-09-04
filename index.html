@@ -426,36 +426,139 @@
           </div>
         </div>
 
-        <!-- ==================== FORMA DE PAGAMENTO (OCULTA NA RETIRADA) ==================== -->
-        <div id="paymentSection" class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-2.5">
-          <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Forma de Pagamento na Entrega</p>
-          <div class="grid grid-cols-2 gap-2">
-            <label class="cursor-pointer">
-              <input type="radio" name="paymentMethod" value="PIX" checked class="peer sr-only" onchange="handlePaymentChange()">
-              <div class="py-2.5 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-brand-red peer-checked:bg-red-950/40 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex flex-col items-center">
-                <span>⚡ PIX</span>
+        <!-- ==================== FORMA DE PAGAMENTO (3 OPÇÕES OFICIAIS) ==================== -->
+        <div id="paymentSection" class="bg-[#1A1A1A] p-3.5 rounded-2xl border border-neutral-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-bold text-neutral-300 uppercase tracking-wider flex items-center">
+              <i data-lucide="wallet" class="w-4 h-4 text-brand-red mr-1.5"></i> Forma de Pagamento
+            </p>
+            <span class="text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+              3 Opções
+            </span>
+          </div>
+
+          <!-- 3 Opções de Pagamento em Cards Interativos -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <!-- 1. PIX (Pagar no Cardápio) -->
+            <label class="cursor-pointer relative block">
+              <input type="radio" name="paymentOption" value="PIX" id="payOptPix" checked class="peer sr-only" onchange="handlePaymentMethodSelect('PIX')">
+              <div class="p-3 rounded-xl border border-neutral-700 peer-checked:border-emerald-500 peer-checked:bg-emerald-950/30 peer-checked:text-white text-neutral-300 hover:border-neutral-600 transition flex flex-col justify-between h-full space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold flex items-center text-emerald-400">
+                    <i data-lucide="zap" class="w-3.5 h-3.5 mr-1"></i> PIX
+                  </span>
+                  <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">No Cardápio</span>
+                </div>
+                <p class="text-[10px] text-neutral-400 leading-tight">Pagamento online imediato via chave PIX da loja.</p>
               </div>
             </label>
-            <label class="cursor-pointer">
-              <input type="radio" name="paymentMethod" value="Dinheiro" class="peer sr-only" onchange="handlePaymentChange()">
-              <div class="py-2.5 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-brand-red peer-checked:bg-red-950/40 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex flex-col items-center">
-                <span>💵 Dinheiro</span>
+
+            <!-- 2. Pagar na Entrega -->
+            <label class="cursor-pointer relative block">
+              <input type="radio" name="paymentOption" value="ENTREGA" id="payOptEntrega" class="peer sr-only" onchange="handlePaymentMethodSelect('ENTREGA')">
+              <div class="p-3 rounded-xl border border-neutral-700 peer-checked:border-blue-500 peer-checked:bg-blue-950/30 peer-checked:text-white text-neutral-300 hover:border-neutral-600 transition flex flex-col justify-between h-full space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold flex items-center text-blue-400">
+                    <i data-lucide="bike" class="w-3.5 h-3.5 mr-1"></i> Na Entrega
+                  </span>
+                  <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Ao Motoboy</span>
+                </div>
+                <p class="text-[10px] text-neutral-400 leading-tight">Cartão na maquininha ou Dinheiro com troco.</p>
+              </div>
+            </label>
+
+            <!-- 3. Dinheiro ou Cartão na Loja -->
+            <label class="cursor-pointer relative block">
+              <input type="radio" name="paymentOption" value="LOJA" id="payOptLoja" class="peer sr-only" onchange="handlePaymentMethodSelect('LOJA')">
+              <div class="p-3 rounded-xl border border-neutral-700 peer-checked:border-amber-500 peer-checked:bg-amber-950/30 peer-checked:text-white text-neutral-300 hover:border-neutral-600 transition flex flex-col justify-between h-full space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold flex items-center text-amber-400">
+                    <i data-lucide="store" class="w-3.5 h-3.5 mr-1"></i> Na Loja
+                  </span>
+                  <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">No Balcão</span>
+                </div>
+                <p class="text-[10px] text-neutral-400 leading-tight">Dinheiro ou Cartão ao retirar (Sem frete).</p>
               </div>
             </label>
           </div>
 
-          <!-- Aviso PIX informado pelo WhatsApp -->
-          <div id="pixPaymentDetails" class="mt-2.5 p-3 rounded-xl bg-emerald-950/25 border border-emerald-800/40 text-[11px] text-emerald-300 flex items-start space-x-2.5">
-            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
-            <div>
-              <p class="font-bold text-white leading-tight">Chave PIX enviada pelo WhatsApp</p>
-              <p class="text-[10px] text-emerald-200/80 mt-0.5 leading-snug">Ao enviar o pedido, o restaurante responderá diretamente na conversa com a chave PIX para você realizar o pagamento.</p>
+          <!-- DETALHE 1: Informações e Chave PIX (Quando PIX selecionado) -->
+          <div id="pixPaymentBox" class="p-3 rounded-xl bg-emerald-950/25 border border-emerald-800/40 text-xs space-y-2">
+            <div class="flex items-start space-x-2.5">
+              <div class="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0 text-emerald-400 mt-0.5">
+                <i data-lucide="qr-code" class="w-4 h-4"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <p class="font-bold text-white text-xs">Pagar no Cardápio via PIX</p>
+                  <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded">Chave Oficial</span>
+                </div>
+                <p class="text-[10px] text-emerald-200/80 mt-0.5 leading-snug">Favorecido: <strong class="text-white">Casa Oriental Sushi Bar</strong></p>
+              </div>
             </div>
+
+            <!-- Caixa com Chave PIX e Botão Copiar -->
+            <div class="flex items-center space-x-2 bg-neutral-900/90 p-2 rounded-xl border border-neutral-700/80">
+              <span class="font-mono text-[11px] text-emerald-300 truncate flex-1 select-all" id="checkoutPixKeyDisplay">d883ab34-450e-44d3-9a9b-d0586121b6d6</span>
+              <button type="button" onclick="copyCheckoutPixKey()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center space-x-1 flex-shrink-0 transition active:scale-95 shadow">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span id="copyPixText">Copiar</span>
+              </button>
+            </div>
+
+            <p class="text-[10px] text-emerald-200/70 flex items-center space-x-1">
+              <i data-lucide="info" class="w-3 h-3 text-emerald-400 flex-shrink-0"></i>
+              <span>Envie o comprovante na conversa do WhatsApp para liberação imediata do preparo!</span>
+            </p>
           </div>
 
-          <div id="trocoContainer" class="hidden mt-2 pt-2 border-t border-neutral-800">
-            <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Precisa de troco para quanto?</label>
-            <input type="text" id="changeAmount" placeholder="Ex: Para R$ 50,00 ou Não precisa" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+          <!-- DETALHE 2: Sub-opções de Pagamento na Entrega (Quando ENTREGA selecionado) -->
+          <div id="deliveryPaymentBox" class="hidden p-3 rounded-xl bg-blue-950/20 border border-blue-800/40 text-xs space-y-2.5">
+            <p class="text-[11px] font-bold text-blue-300">Como você vai pagar ao motoboy?</p>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="deliverySubOption" value="Cartão" checked class="peer sr-only" onchange="handleDeliverySubChange('Cartão')">
+                <div class="py-2 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-blue-500 peer-checked:bg-blue-950/50 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex items-center justify-center space-x-1.5">
+                  <i data-lucide="credit-card" class="w-3.5 h-3.5 text-blue-400"></i>
+                  <span>Cartão (Maquininha)</span>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="deliverySubOption" value="Dinheiro" class="peer sr-only" onchange="handleDeliverySubChange('Dinheiro')">
+                <div class="py-2 px-2 text-center rounded-xl border border-neutral-700 peer-checked:border-blue-500 peer-checked:bg-blue-950/50 peer-checked:text-white text-neutral-400 text-xs font-bold transition flex items-center justify-center space-x-1.5">
+                  <i data-lucide="banknote" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <span>Dinheiro</span>
+                </div>
+              </label>
+            </div>
+
+            <div id="trocoContainer" class="hidden pt-2 border-t border-neutral-800">
+              <label class="block text-[11px] font-semibold text-neutral-300 mb-1">Precisa de troco para quanto?</label>
+              <input type="text" id="changeAmount" placeholder="Ex: Para R$ 50,00 ou Não precisa" class="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-red">
+            </div>
+
+            <p class="text-[10px] text-blue-200/70 flex items-center space-x-1">
+              <i data-lucide="info" class="w-3 h-3 text-blue-400 flex-shrink-0"></i>
+              <span>O motoboy levará a maquininha ou o seu troco certinho.</span>
+            </p>
+          </div>
+
+          <!-- DETALHE 3: Informações de Pagamento na Loja (Quando LOJA selecionado) -->
+          <div id="storePaymentBox" class="hidden p-3 rounded-xl bg-amber-950/20 border border-amber-800/40 text-xs space-y-2">
+            <div class="flex items-start space-x-2.5">
+              <div class="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0 text-amber-400 mt-0.5">
+                <i data-lucide="store" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <p class="font-bold text-white text-xs">Pagamento Presencial no Balcão</p>
+                <p class="text-[10px] text-amber-200/80 mt-0.5 leading-snug">
+                  Aceitamos <strong class="text-white">Dinheiro, Cartão de Débito e Cartão de Crédito</strong> na maquininha da loja.
+                </p>
+                <p class="text-[10px] text-emerald-400 font-bold mt-1">
+                  🎉 Sem taxa de entrega (Frete R$ 0,00 Grátis)
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -813,6 +916,8 @@
     let currentDistanceKm = 1.0;
     let selectedNeighborhoodName = "Parque dos Faróis";
     let isGpsCalculated = false;
+    let paymentMethodType = 'PIX'; // 'PIX' | 'ENTREGA' | 'LOJA'
+    let deliveryPaymentSubtype = 'Cartão'; // 'Cartão' | 'Dinheiro'
 
     window.addEventListener('DOMContentLoaded', () => {
       initDragScroll();
@@ -871,12 +976,6 @@
 
     function saveCustomerData() {
       try {
-        const radios = document.getElementsByName('paymentMethod');
-        let paymentMethod = 'PIX';
-        for (let r of radios) {
-          if (r.checked) paymentMethod = r.value;
-        }
-
         const data = {
           name: document.getElementById('clientName')?.value || '',
           phone: document.getElementById('clientPhone')?.value || '',
@@ -885,7 +984,8 @@
           orderNotes: document.getElementById('orderNotes')?.value || '',
           neighborhoodValue: document.getElementById('aracajuNeighborhood')?.value || '4.00',
           deliveryType: deliveryType,
-          paymentMethod: paymentMethod,
+          paymentMethodType: paymentMethodType,
+          deliveryPaymentSubtype: deliveryPaymentSubtype,
           changeAmount: document.getElementById('changeAmount')?.value || '',
           distanceKm: currentDistanceKm,
           isGps: isGpsCalculated
@@ -943,19 +1043,38 @@
           updateNeighborhoodFee();
         }
 
-        if (data.deliveryType) {
-          setDeliveryType(data.deliveryType);
-        }
-
-        if (data.paymentMethod) {
-          const radios = document.getElementsByName('paymentMethod');
-          for (let r of radios) {
-            if (r.value === data.paymentMethod) {
+        if (data.deliveryPaymentSubtype) {
+          deliveryPaymentSubtype = data.deliveryPaymentSubtype;
+          const subRadios = document.getElementsByName('deliverySubOption');
+          for (let r of subRadios) {
+            if (r.value === deliveryPaymentSubtype) {
               r.checked = true;
               break;
             }
           }
-          handlePaymentChange();
+          const troco = document.getElementById('trocoContainer');
+          if (troco) {
+            troco.classList.toggle('hidden', deliveryPaymentSubtype !== 'Dinheiro');
+          }
+        }
+
+        if (data.paymentMethodType) {
+          handlePaymentMethodSelect(data.paymentMethodType);
+        } else if (data.paymentMethod) {
+          if (data.paymentMethod === 'PIX') {
+            handlePaymentMethodSelect('PIX');
+          } else {
+            handlePaymentMethodSelect('ENTREGA');
+            deliveryPaymentSubtype = 'Dinheiro';
+            const rDin = document.querySelector('input[name="deliverySubOption"][value="Dinheiro"]');
+            if (rDin) rDin.checked = true;
+            const troco = document.getElementById('trocoContainer');
+            if (troco) troco.classList.remove('hidden');
+          }
+        }
+
+        if (data.deliveryType) {
+          setDeliveryType(data.deliveryType, false);
         }
       } catch (e) {
         console.warn('Falha ao recuperar dados persistidos do cliente:', e);
@@ -1423,44 +1542,83 @@
       );
     }
 
-    function setDeliveryType(type) {
+    function setDeliveryType(type, syncPayment = true) {
       deliveryType = type;
       const btnDel = document.getElementById('btnDelivery');
       const btnPick = document.getElementById('btnPickup');
       const deliverySection = document.getElementById('deliveryAddressSection');
-      const paymentSection = document.getElementById('paymentSection');
       const pickupNotice = document.getElementById('pickupNoticeSection');
 
       if (type === 'delivery') {
         btnDel.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red';
         btnPick.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700';
         deliverySection.classList.remove('hidden');
-        paymentSection.classList.remove('hidden');
         pickupNotice.classList.add('hidden');
+
+        // Se estava com "Na Loja" selecionado, ajusta automaticamente para "Na Entrega"
+        if (syncPayment && paymentMethodType === 'LOJA') {
+          handlePaymentMethodSelect('ENTREGA');
+        }
       } else {
         btnPick.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-brand-red text-white border-brand-red';
         btnDel.className = 'py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 border transition bg-neutral-800 text-neutral-300 border-neutral-700';
         deliverySection.classList.add('hidden');
-        paymentSection.classList.add('hidden');
         pickupNotice.classList.remove('hidden');
+
+        // Se estava com "Na Entrega" selecionado, ajusta automaticamente para "Na Loja"
+        if (syncPayment && paymentMethodType === 'ENTREGA') {
+          handlePaymentMethodSelect('LOJA');
+        }
       }
       saveCustomerData();
       updateCartUI();
+      if (window.lucide) lucide.createIcons();
     }
 
-    function handlePaymentChange() {
+    function handlePaymentMethodSelect(method) {
+      paymentMethodType = method;
+
+      const pixBox = document.getElementById('pixPaymentBox');
+      const delBox = document.getElementById('deliveryPaymentBox');
+      const storeBox = document.getElementById('storePaymentBox');
+
+      if (pixBox) pixBox.classList.toggle('hidden', method !== 'PIX');
+      if (delBox) delBox.classList.toggle('hidden', method !== 'ENTREGA');
+      if (storeBox) storeBox.classList.toggle('hidden', method !== 'LOJA');
+
+      const rPix = document.getElementById('payOptPix');
+      const rEntrega = document.getElementById('payOptEntrega');
+      const rLoja = document.getElementById('payOptLoja');
+      if (rPix) rPix.checked = (method === 'PIX');
+      if (rEntrega) rEntrega.checked = (method === 'ENTREGA');
+      if (rLoja) rLoja.checked = (method === 'LOJA');
+
+      // Sincronização inteligente com modo de entrega
+      if (method === 'LOJA') {
+        if (deliveryType !== 'pickup') {
+          setDeliveryType('pickup', false);
+        }
+      } else if (method === 'ENTREGA') {
+        if (deliveryType !== 'delivery') {
+          setDeliveryType('delivery', false);
+        }
+      }
+
+      saveCustomerData();
+      updateCartUI();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function handleDeliverySubChange(subtype) {
+      deliveryPaymentSubtype = subtype;
       const troco = document.getElementById('trocoContainer');
-      const pixDetails = document.getElementById('pixPaymentDetails');
-      const radios = document.getElementsByName('paymentMethod');
-      let val = 'PIX';
-      for (let r of radios) { if (r.checked) val = r.value; }
-      
-      if (val === 'Dinheiro') {
-        troco?.classList.remove('hidden');
-        pixDetails?.classList.add('hidden');
-      } else {
-        troco?.classList.add('hidden');
-        pixDetails?.classList.remove('hidden');
+      if (troco) {
+        if (subtype === 'Dinheiro') {
+          troco.classList.remove('hidden');
+          document.getElementById('changeAmount')?.focus();
+        } else {
+          troco.classList.add('hidden');
+        }
       }
       saveCustomerData();
     }
@@ -1532,6 +1690,7 @@
       const clientAddress = document.getElementById('clientAddress').value.trim();
       const clientReference = document.getElementById('clientReference').value.trim();
       const orderNotes = document.getElementById('orderNotes').value.trim();
+      const changeAmount = document.getElementById('changeAmount')?.value.trim() || '';
 
       if (!clientName) {
         alert('Por favor, informe o seu nome!');
@@ -1545,15 +1704,25 @@
         return;
       }
 
-      let paymentText = "No Balcão ao Retirar";
-      let changeAmount = "";
+      let paymentTitle = "";
+      let paymentInstruction = "";
 
-      if (deliveryType === 'delivery') {
-        const radios = document.getElementsByName('paymentMethod');
-        let method = 'PIX';
-        for (let r of radios) { if (r.checked) method = r.value; }
-        paymentText = method;
-        changeAmount = document.getElementById('changeAmount').value.trim();
+      if (paymentMethodType === 'PIX') {
+        paymentTitle = "⚡ PIX (PAGO NO CARDÁPIO)";
+        paymentInstruction = `🔑 *Chave PIX:* ${currentPixKey || DEFAULT_PIX_KEY}\n👤 *Favorecido:* Casa Oriental Sushi Bar\n📎 *ESTOU ENVIANDO O COMPROVANTE DO PIX AQUI PARA LIBERAÇÃO DO PREPARO!*`;
+      } else if (paymentMethodType === 'ENTREGA') {
+        if (deliveryPaymentSubtype === 'Cartão') {
+          paymentTitle = "🛵 PAGAR NA ENTREGA (CARTÃO / MAQUININHA)";
+          paymentInstruction = "💳 *O motoboy levará a maquininha de cartão (Débito/Crédito).*";
+        } else {
+          paymentTitle = "💵 PAGAR NA ENTREGA (DINHEIRO)";
+          paymentInstruction = changeAmount 
+            ? `💵 *Troco solicitado para:* R$ ${changeAmount}\n🛵 *O motoboy levará seu troco certinho.*`
+            : "💵 *Pagamento em Dinheiro (Sem necessidade de troco).*";
+        }
+      } else if (paymentMethodType === 'LOJA') {
+        paymentTitle = "🏪 DINHEIRO OU CARTÃO NA LOJA (NO BALCÃO)";
+        paymentInstruction = "💳 *Pagamento presencial no balcão da loja (Dinheiro ou Cartão).*\n📍 *Sede:* Rua 58, Parque dos Faróis, Socorro - SE";
       }
 
       const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
@@ -1565,7 +1734,7 @@
       // DIAGRAMAÇÃO EXATA DE 32 COLUNAS (BOBINA TÉRMICA 58MM)
       let msg = `*================================*\n`;
       msg += `*        ${RESTAURANT_CONFIG.name}        *\n`;
-      msg += `*       PEDIDO DE DELIVERY       *\n`;
+      msg += `*       PEDIDO DE ${deliveryType === 'delivery' ? 'DELIVERY' : 'BALCÃO'}        *\n`;
       msg += `*================================*\n`;
       msg += `Data: ${dataHora}\n`;
       msg += `Cliente: ${clientName}\n`;
@@ -1600,17 +1769,18 @@
           feeDetail = ` (~${currentDistanceKm} km)`;
         }
         msg += `Taxa Entrega: ${fee > 0 ? 'R$ ' + fee.toFixed(2).replace('.', ',') + feeDetail : 'A combinar'}\n`;
+      } else {
+        msg += `Taxa Entrega: R$ 0,00 (Retirada Grátis)\n`;
       }
       msg += `*TOTAL: R$ ${grandTotal.toFixed(2).replace('.', ',')}*\n`;
       msg += `--------------------------------\n`;
-      msg += `Pagamento: ${paymentText}\n`;
-      if (paymentText === 'PIX') {
-        msg += `(Aguardando envio da chave PIX pelo WhatsApp)\n`;
-      }
-      if (deliveryType === 'delivery' && paymentText === 'Dinheiro' && changeAmount) {
-        msg += `Troco para: ${changeAmount}\n`;
+      msg += `PAGAMENTO:\n`;
+      msg += `*${paymentTitle}*\n`;
+      if (paymentInstruction) {
+        msg += `${paymentInstruction}\n`;
       }
       if (orderNotes) {
+        msg += `--------------------------------\n`;
         msg += `Obs: ${orderNotes}\n`;
       }
       msg += `*================================*\n`;
@@ -1620,10 +1790,16 @@
 
       // Monta objeto completo do pedido
       const orderId = Date.now();
-      const itemsText = cart.map(i => `${i.qty}x ${i.name}`).join('\n');
+      const itemsText = cart.map(i => `${i.qty}x ${i.name} - R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`).join('\n');
       const fullAddress = clientAddress 
         ? `${selectedNeighborhoodName} - ${clientAddress}${clientReference ? ' (' + clientReference + ')' : ''}` 
         : (deliveryType === 'delivery' ? selectedNeighborhoodName : 'Retirada no Balcão');
+
+      const paymentBadgeText = (paymentMethodType === 'PIX')
+        ? 'PIX (Cardápio)'
+        : (paymentMethodType === 'ENTREGA')
+          ? `Na Entrega (${deliveryPaymentSubtype})`
+          : 'Na Loja (Balcão)';
 
       const orderPayload = {
         id: orderId,
@@ -1634,14 +1810,19 @@
         deliveryFee: fee,
         clientAddress: fullAddress,
         deliveryType: deliveryType,
-        paymentText: paymentText,
+        paymentMethodType: paymentMethodType,
+        paymentSubtype: (paymentMethodType === 'ENTREGA') ? deliveryPaymentSubtype : '',
+        changeAmount: (paymentMethodType === 'ENTREGA' && deliveryPaymentSubtype === 'Dinheiro') ? changeAmount : '',
+        paymentText: paymentBadgeText,
         total: grandTotal,
+        subtotal: subtotal,
         itemsCount: cart.reduce((acc, i) => acc + i.qty, 0),
         itemsDescription: itemsText,
+        cartItems: cart.map(c => ({ id: c.id, name: c.name, qty: c.qty, price: c.price })),
         orderNotes: orderNotes,
         time: dataHora,
         createdAt: orderId,
-        status: (paymentText === 'PIX') ? 'pix' : 'preparo'
+        status: (paymentMethodType === 'PIX') ? 'pix' : 'preparo'
       };
 
       // 1. Salva no histórico do navegador
