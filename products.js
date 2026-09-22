@@ -3,12 +3,12 @@
 
 const PRODUCTS = [
   // 1. COMBOS
-  { id: 10, cat: 'combos', name: 'Combo 10 Peças', desc: '10 peças variadas de sushis e hots selecionados pelo chef', price: 23.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
-  { id: 11, cat: 'combos', name: 'Combo 15 Peças', desc: '15 peças sortidas (sushis, uramakis e hots crocantes)', price: 28.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
-  { id: 12, cat: 'combos', name: 'Combo 20 Peças', desc: '20 peças perfeitas para compartilhar com qualidade e frescor', price: 33.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
+  { id: 10, cat: 'combos', name: 'Combo 10 Peças', desc: '10 peças variadas de sushis e hots selecionados pelo chef', price: 25.00, img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=300&q=80' },
+  { id: 11, cat: 'combos', name: 'Combo 15 Peças', desc: '15 peças sortidas (sushis, uramakis e hots crocantes)', price: 30.00, img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80' },
+  { id: 12, cat: 'combos', name: 'Combo 20 Peças', desc: '20 peças perfeitas para compartilhar com qualidade e frescor', price: 35.00, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=300&q=80' },
   { id: 14, cat: 'combos', name: 'Combo 25 Peças (Destaque)', desc: '25 peças especiais com os favoritos da casa e acabamento impecável', price: 40.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80', badge: 'MAIS PEDIDO' },
-  { id: 15, cat: 'combos', name: 'Combo 35 Peças', desc: '35 peças generosas com sushis simples, especiais e hots', price: 52.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
-  { id: 16, cat: 'combos', name: 'Combo 45 Peças (Família)', desc: 'Banquete com 45 peças variadas para a família toda', price: 65.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
+  { id: 15, cat: 'combos', name: 'Combo 35 Peças', desc: '35 peças generosas com sushis simples, especiais e hots', price: 60.00, img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=300&q=80' },
+  { id: 16, cat: 'combos', name: 'Combo 45 Peças (Família)', desc: 'Banquete com 45 peças variadas para a família toda', price: 80.00, img: 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80' },
 
   // 2. SUSHIS SIMPLES / URAMAKIS
   { id: 20, cat: 'sushis_simples', name: 'Uramaki Kani', desc: 'Arroz temperado por fora com gergelim e recheio de kani', price: 3.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' },
@@ -110,9 +110,9 @@ const PRODUCTS = [
   { id: 105, cat: 'bebidas', name: 'Guaraná Antarctica 1 Litro', desc: 'Garrafa de 1 litro geladinha', price: 9.00, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=300&q=80' },
 
   // 9. MOLHOS E EXTRAS
-  { id: 115, cat: 'molhos', name: 'Molho Tarê Especial', desc: 'Pote com molho agridoce e encorpado artesanal', price: 1.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
+  { id: 115, cat: 'molhos', name: 'Molho Tarê Especial', desc: 'Pote com molho agridoce e encorpado artesanal', price: 2.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
   { id: 116, cat: 'molhos', name: 'Molho Shoyu Extra', desc: 'Sachê/pote de molho de soja tradicional', price: 1.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80' },
-  { id: 117, cat: 'molhos', name: 'Par de Hashi de Bambu', desc: 'Pauzinhos tradicionais para sushi', price: 1.00, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' }
+  { id: 117, cat: 'molhos', name: 'Par de Hashi de Bambu', desc: 'Pauzinhos tradicionais para sushi', price: 1.50, img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=300&q=80' }
 ];
 
 const CATEGORIES = {
