@@ -1480,7 +1480,7 @@
       const demoOrder = {
         id: Date.now(),
         clientName: "Cliente Demonstração",
-        clientPhone: "(79) 98172-8613",
+        clientPhone: "(79) 98150-8311",
         neighborhood: "13 de Julho",
         clientAddress: "Rua das Flores, 120 - Ap 402",
         itemsDescription: "1x Combo 25 Peças Especial - R$ 68,00\n2x Temaki Salmão Grelhado Hot - R$ 56,00",
@@ -1780,7 +1780,7 @@
 
       const clientName = ord.clientName || 'Cliente';
       const savedPix = localStorage.getItem(KITCHEN_STORAGE_KEYS.PIX_KEY);
-      const pixKey = (savedPix && savedPix !== '5579981728613') ? savedPix : 'd883ab34-450e-44d3-9a9b-d0586121b6d6';
+      const pixKey = (savedPix && savedPix !== '5579981728613' && savedPix !== '5579981508311') ? savedPix : 'd883ab34-450e-44d3-9a9b-d0586121b6d6';
       const totalFormatted = (parseFloat(ord.total) || 0).toFixed(2).replace('.', ',');
       const orderShortId = String(ord.id).slice(-4);
       let message = '';
@@ -2061,7 +2061,7 @@
       const demoOrder = {
         id: Date.now(),
         clientName: "Cliente Demonstração",
-        clientPhone: "(79) 98172-8613",
+        clientPhone: "(79) 98150-8311",
         neighborhood: "Parque dos Faróis",
         distanceKm: 1.0,
         clientAddress: "Rua 58, 120 - Casa",
