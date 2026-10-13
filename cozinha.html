@@ -467,7 +467,7 @@
         </div>
 
         <div class="flex items-center space-x-2">
-          <button onclick="fetchOrdersFromCloud(true)" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold flex items-center space-x-1.5 border border-neutral-700 transition" title="Recarregar pedidos">
+          <button onclick="fetchOrdersFromCloud(true); syncOrdersFromDatabase(true);" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold flex items-center space-x-1.5 border border-neutral-700 transition" title="Recarregar pedidos">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Atualizar</span>
           </button>
@@ -1172,11 +1172,17 @@
       loadKitchenMenuState();
       connectRealtimeCloudSync();
       fetchOrdersFromCloud(false);
+      syncOrdersFromDatabase(false);
       
       // Heartbeat a cada 30 segundos para atualizar tempos relativos (ex: "há 5 min")
       setInterval(() => {
         renderOrdersList();
       }, 30000);
+
+      // Sincronização periódica com o Banco de Dados Neon Postgres a cada 15s
+      setInterval(() => {
+        syncOrdersFromDatabase(false);
+      }, 15000);
     }
 
     // Conexão Server-Sent Events (SSE) com o canal do ntfy.sh
@@ -1266,6 +1272,60 @@
       }
     }
 
+    // Sincronização em Nuvem com Vercel Postgres (Neon Serverless)
+    async function syncOrdersFromDatabase(showFeedback = false) {
+      try {
+        const response = await fetch('/api/orders');
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!data || !Array.isArray(data.orders)) return;
+
+        const raw = localStorage.getItem(KITCHEN_STORAGE_KEYS.ORDERS);
+        let localOrders = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(localOrders)) localOrders = [];
+        const clearedBefore = parseInt(localStorage.getItem(KITCHEN_STORAGE_KEYS.CLEARED_BEFORE) || '0', 10);
+
+        let updated = false;
+        let newCount = 0;
+
+        data.orders.forEach(remoteOrder => {
+          if (!remoteOrder || !remoteOrder.id) return;
+          if (remoteOrder.clientName && (remoteOrder.clientName.toLowerCase().includes('teste') || remoteOrder.clientName === 'Guilherme Santos')) return;
+          const orderTime = remoteOrder.createdAt || remoteOrder.id || 0;
+          if (clearedBefore && orderTime < clearedBefore) return;
+
+          const idx = localOrders.findIndex(o => String(o.id) === String(remoteOrder.id));
+          if (idx === -1) {
+            localOrders.unshift(remoteOrder);
+            newCount++;
+            updated = true;
+          } else {
+            // Sincroniza status e cancelReason caso atualizado em outro dispositivo
+            if (localOrders[idx].status !== remoteOrder.status || localOrders[idx].cancelReason !== remoteOrder.cancelReason) {
+              localOrders[idx].status = remoteOrder.status;
+              localOrders[idx].cancelReason = remoteOrder.cancelReason;
+              updated = true;
+            }
+          }
+        });
+
+        if (updated) {
+          localOrders.sort((a, b) => (b.createdAt || b.id || 0) - (a.createdAt || a.id || 0));
+          if (localOrders.length > 50) localOrders = localOrders.slice(0, 50);
+          localStorage.setItem(KITCHEN_STORAGE_KEYS.ORDERS, JSON.stringify(localOrders));
+          renderOrdersList();
+        }
+
+        if (showFeedback) {
+          alert(newCount > 0 
+            ? `Sincronização com o Banco de Dados concluída! ${newCount} novos pedidos carregados.` 
+            : (data.db_connected ? 'Banco de Dados Neon Postgres sincronizado e atualizado!' : 'Modo offline/local ativo (Postgres aguardando ativação no Vercel).'));
+        }
+      } catch (err) {
+        console.warn('Erro ao sincronizar com Neon Postgres:', err);
+      }
+    }
+
     // Recebe e processa um novo pedido em tempo real
     function handleIncomingCloudOrder(order) {
       const wasAdded = saveOrderToLocalHistory(order, true);
@@ -1274,6 +1334,13 @@
         showNewOrderAlertBanner(order);
         renderOrdersList();
         
+        // Persiste com redundância no banco de dados Neon
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order)
+        }).catch(err => console.warn('Erro ao persistir pedido recebido no Neon:', err));
+
         // Auto-impressão de comanda térmica 58mm se configurada
         if (localStorage.getItem('casa_oriental_auto_print') === 'true') {
           setTimeout(() => {
@@ -1772,6 +1839,13 @@
       localStorage.setItem(KITCHEN_STORAGE_KEYS.ORDERS, JSON.stringify(orders));
       renderOrdersList();
 
+      // Sincroniza status no banco de dados Neon Postgres
+      fetch('/api/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: orderId, status: newStatus })
+      }).catch(err => console.warn('Erro ao atualizar status no Neon:', err));
+
       const cleanPhone = (ord.clientPhone || '').replace(/\D/g, '');
       if (!cleanPhone) {
         alert('Este pedido não possui telefone do cliente para envio.');
@@ -1908,6 +1982,13 @@
       localStorage.setItem(KITCHEN_STORAGE_KEYS.ORDERS, JSON.stringify(orders));
       renderOrdersList();
       closeCancelModal();
+
+      // Sincroniza cancelamento no banco de dados Neon Postgres
+      fetch('/api/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: cancellingOrderId, status: 'cancelado', cancelReason: selectedReason })
+      }).catch(err => console.warn('Erro ao sincronizar cancelamento no Neon:', err));
 
       const cleanPhone = (ord.clientPhone || '').replace(/\D/g, '');
       if (cleanPhone) {
@@ -2181,6 +2262,13 @@
       renderOrdersList();
       closeManualOrderModal();
 
+      // Persiste no banco de dados Neon Postgres
+      fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newOrder)
+      }).catch(err => console.warn('Erro ao salvar pedido manual no Neon:', err));
+
       // Limpa formulário
       document.getElementById('manualClientName').value = '';
       document.getElementById('manualClientPhone').value = '';
@@ -2241,6 +2329,10 @@
         localStorage.removeItem('casa_oriental_cart');
         localStorage.removeItem('casa_oriental_customer');
         localStorage.removeItem('casa_oriental_customer_info');
+
+        // Limpa também o banco de dados Neon Postgres
+        fetch('/api/orders', { method: 'DELETE' }).catch(err => console.warn('Erro ao limpar banco Neon:', err));
+
         if (typeof hideNewOrderAlertBanner === 'function') {
           hideNewOrderAlertBanner();
         }

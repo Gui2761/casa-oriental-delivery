@@ -1871,6 +1871,15 @@
         }).catch(err => console.warn('Sync background notice:', err));
       } catch (e) {}
 
+      // 3. Salva no Banco de Dados Vercel Postgres (Neon)
+      try {
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload)
+        }).catch(err => console.warn('Sync Postgres notice:', err));
+      } catch (e) {}
+
       const encodedMsg = encodeURIComponent(msg);
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${RESTAURANT_CONFIG.phone}&text=${encodedMsg}`;
 

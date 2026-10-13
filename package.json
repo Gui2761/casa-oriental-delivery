@@ -1,0 +1,25 @@
+{
+  "name": "casa-oriental-delivery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "products.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gui2761/casa-oriental-delivery.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Gui2761/casa-oriental-delivery/issues"
+  },
+  "homepage": "https://github.com/Gui2761/casa-oriental-delivery#readme",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "@vercel/postgres": "^0.10.0"
+  }
+}
