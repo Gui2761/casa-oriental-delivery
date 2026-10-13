@@ -62,6 +62,10 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // Auto-limpeza preventiva (Rolling Window de 60 dias) para manter o banco eternamente leve
+    const sixtyDaysAgo = Date.now() - (60 * 24 * 60 * 60 * 1000);
+    await sql`DELETE FROM orders WHERE created_at < ${sixtyDaysAgo}`;
+
     if (req.method === 'GET') {
       const rows = await sql`SELECT * FROM orders ORDER BY created_at DESC LIMIT 100`;
       const orders = rows.map(r => ({

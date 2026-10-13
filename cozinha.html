@@ -375,14 +375,14 @@
       <div class="max-w-6xl mx-auto space-y-3">
         
         <!-- Métricas Rápidas do Dia -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <div class="bg-neutral-900/80 border border-neutral-800 p-2.5 rounded-xl flex items-center justify-between">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+          <div class="bg-emerald-950/30 border border-emerald-500/40 p-2.5 rounded-xl flex items-center justify-between">
             <div>
-              <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Total de Pedidos</p>
-              <p id="metricTotalOrders" class="text-base sm:text-lg font-black text-white leading-tight">0</p>
+              <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Novos (Aguardando)</p>
+              <p id="metricPendingOrders" class="text-base sm:text-lg font-black text-emerald-400 leading-tight">0</p>
             </div>
-            <div class="w-8 h-8 rounded-lg bg-neutral-800 flex items-center justify-center text-neutral-400">
-              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/40">
+              <i data-lucide="bell-ring" class="w-4 h-4"></i>
             </div>
           </div>
 
@@ -415,6 +415,16 @@
               <i data-lucide="dollar-sign" class="w-4 h-4"></i>
             </div>
           </div>
+
+          <div class="bg-neutral-900/80 border border-neutral-800 p-2.5 rounded-xl flex items-center justify-between col-span-2 sm:col-span-1">
+            <div>
+              <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Total de Pedidos</p>
+              <p id="metricTotalOrders" class="text-base sm:text-lg font-black text-white leading-tight">0</p>
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-neutral-800 flex items-center justify-center text-neutral-400">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            </div>
+          </div>
         </div>
 
         <!-- Abas de Filtros de Status -->
@@ -422,6 +432,11 @@
           <button onclick="setFilterStatus('todos')" id="tab-todos" class="filter-tab flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition bg-brand-red text-white shadow-sm flex items-center space-x-1.5">
             <span>Todos</span>
             <span id="badgeCount-todos" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]">0</span>
+          </button>
+
+          <button onclick="setFilterStatus('pendente')" id="tab-pendente" class="filter-tab flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition bg-neutral-800 text-neutral-300 hover:text-white flex items-center space-x-1.5 border border-emerald-500/40">
+            <span>🔔 Novos (Pendentes)</span>
+            <span id="badgeCount-pendente" class="px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-400 font-black text-[10px]">0</span>
           </button>
           
           <button onclick="setFilterStatus('pix')" id="tab-pix" class="filter-tab flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition bg-neutral-800 text-neutral-300 hover:text-white flex items-center space-x-1.5">
@@ -467,6 +482,10 @@
         </div>
 
         <div class="flex items-center space-x-2">
+          <button onclick="exportOrdersToCSV()" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-emerald-400 hover:text-emerald-300 text-xs font-semibold flex items-center space-x-1.5 border border-neutral-700 transition" title="Exportar histórico de vendas em planilha Excel / CSV">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Exportar Excel</span>
+          </button>
           <button onclick="fetchOrdersFromCloud(true); syncOrdersFromDatabase(true);" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold flex items-center space-x-1.5 border border-neutral-700 transition" title="Recarregar pedidos">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Atualizar</span>
@@ -1379,11 +1398,11 @@
           return false;
         }
 
-        // Define status inicial padrão (PIX no cardápio aguarda comprovante; Entrega [mesmo com PIX ao motoboy] e Loja vão direto para preparo)
+        // Define status inicial padrão (PIX no cardápio aguarda comprovante; Entrega e Loja vão para pendente aguardando aceite da cozinha)
         if (!order.status) {
           const isEntrega = (order.paymentMethodType === 'ENTREGA' || (order.paymentText && order.paymentText.toUpperCase().includes('ENTREGA')));
           const isPixOnline = !isEntrega && (order.paymentMethodType === 'PIX' || (order.paymentText && order.paymentText.toUpperCase().includes('CARDÁPIO')) || (order.paymentText && order.paymentText.toUpperCase() === 'PIX'));
-          order.status = isPixOnline ? 'pix' : 'preparo';
+          order.status = isPixOnline ? 'pix' : 'pendente';
         }
         if (!order.createdAt) {
           order.createdAt = Date.now();
@@ -1611,6 +1630,7 @@
 
       // Atualiza Métricas Rápidas
       const totalOrders = orders.length;
+      const pendingCount = orders.filter(o => o.status === 'pendente').length;
       const preparingCount = orders.filter(o => o.status === 'preparo').length;
       const deliveryCount = orders.filter(o => o.status === 'entrega').length;
       const concludedCount = orders.filter(o => o.status === 'concluido').length;
@@ -1621,6 +1641,8 @@
         .filter(o => o.status !== 'cancelado')
         .reduce((acc, o) => acc + (parseFloat(o.total) || 0), 0);
 
+      const pendingMetricEl = document.getElementById('metricPendingOrders');
+      if (pendingMetricEl) pendingMetricEl.innerText = pendingCount;
       document.getElementById('metricTotalOrders').innerText = totalOrders;
       document.getElementById('metricPreparingOrders').innerText = preparingCount;
       document.getElementById('metricDeliveryOrders').innerText = deliveryCount;
@@ -1628,6 +1650,8 @@
 
       // Atualiza badges das abas
       document.getElementById('badgeCount-todos').innerText = totalOrders;
+      const pendingBadgeEl = document.getElementById('badgeCount-pendente');
+      if (pendingBadgeEl) pendingBadgeEl.innerText = pendingCount;
       document.getElementById('badgeCount-pix').innerText = pixCount;
       document.getElementById('badgeCount-preparo').innerText = preparingCount;
       document.getElementById('badgeCount-entrega').innerText = deliveryCount;
@@ -1669,7 +1693,7 @@
         }
 
         return `
-          <div class="bg-[#181818] border ${ord.status === 'cancelado' ? 'border-red-950/60 opacity-75' : 'border-neutral-800'} rounded-2xl p-4 shadow-xl flex flex-col justify-between space-y-3 transition duration-150">
+          <div class="bg-[#181818] border ${ord.status === 'cancelado' ? 'border-red-950/60 opacity-75' : (ord.status === 'pendente' ? 'border-emerald-500 shadow-xl shadow-emerald-950/50 ring-2 ring-emerald-500/40' : 'border-neutral-800')} rounded-2xl p-4 shadow-xl flex flex-col justify-between space-y-3 transition duration-150">
             
             <!-- Topo do Card: ID, Horário e Status -->
             <div class="flex items-start justify-between border-b border-neutral-800/70 pb-2.5">
@@ -1724,6 +1748,37 @@
                 </div>
               </div>
             </div>
+
+            <!-- Se for Novo Pedido Pendente: BLOCO DE DESTAQUE PARA ACEITAR/RECUSAR -->
+            ${ord.status === 'pendente' ? `
+              <div class="bg-gradient-to-r from-emerald-950/80 to-[#1c2920] border-2 border-emerald-500 rounded-xl p-3 shadow-lg space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-1.5 text-emerald-400 font-black text-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
+                    <span>NOVO PEDIDO RECEBIDO!</span>
+                  </div>
+                  <span class="text-[10px] text-neutral-400 font-semibold">Aguardando Cozinha</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                  <button 
+                    onclick="acceptOrder(${ord.id})" 
+                    class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-1.5"
+                    title="Aceitar pedido e iniciar preparo"
+                  >
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    <span>ACEITAR PEDIDO</span>
+                  </button>
+                  <button 
+                    onclick="openCancelModal(${ord.id})" 
+                    class="py-2.5 px-3 bg-red-950/80 hover:bg-red-900 active:scale-95 text-red-300 hover:text-red-200 font-bold text-xs rounded-xl border border-red-800 transition flex items-center justify-center space-x-1"
+                    title="Recusar pedido e justificar motivo"
+                  >
+                    <i data-lucide="x-circle" class="w-4 h-4"></i>
+                    <span>RECUSAR</span>
+                  </button>
+                </div>
+              </div>
+            ` : ''}
 
             <!-- Botão de Destaque: Imprimir Comanda 58mm -->
             <div class="pt-1">
@@ -1802,6 +1857,8 @@
 
     function getStatusBadgeHTML(status) {
       switch (status) {
+        case 'pendente':
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 animate-pulse flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>🔔 Aguardando Aceite</span></span>`;
         case 'pix':
           return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">Aguardando PIX</span>`;
         case 'preparo':
@@ -1815,6 +1872,45 @@
         default:
           return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-neutral-300">Novo</span>`;
       }
+    }
+
+    // Aceite do Pedido pela Cozinha (Muda de Pendente para Em Preparo)
+    function acceptOrder(orderId) {
+      triggerWhatsAppStatus(orderId, 'preparo');
+    }
+
+    // Exportação do Histórico de Pedidos para Planilha Excel/CSV
+    function exportOrdersToCSV() {
+      const orders = getOrdersFromStorage();
+      if (!orders || orders.length === 0) {
+        alert('Nenhum pedido no histórico para exportar.');
+        return;
+      }
+      let csv = 'ID;Data/Hora;Cliente;Telefone;Bairro;Endereco;Tipo;Itens;Forma de Pagamento;Status;Total (R$)\n';
+      orders.forEach(o => {
+        const id = '#' + String(o.id).slice(-4);
+        const date = o.time || (o.createdAt ? new Date(o.createdAt).toLocaleString('pt-BR') : '');
+        const client = (o.clientName || '').replace(/;/g, ',');
+        const phone = o.clientPhone || '';
+        const neighborhood = (o.neighborhood || '').replace(/;/g, ',');
+        const address = (o.clientAddress || '').replace(/;/g, ',').replace(/\n/g, ' ');
+        const type = o.deliveryType || 'delivery';
+        const items = (o.itemsDescription || '').replace(/;/g, ',').replace(/\n/g, ' | ');
+        const payment = (o.paymentText || '').replace(/;/g, ',');
+        const status = o.status || '';
+        const total = (parseFloat(o.total) || 0).toFixed(2).replace('.', ',');
+        csv += `"${id}";"${date}";"${client}";"${phone}";"${neighborhood}";"${address}";"${type}";"${items}";"${payment}";"${status}";"${total}"\n`;
+      });
+
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio-pedidos-casa-oriental-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     function formatTimeAgo(timestamp) {
